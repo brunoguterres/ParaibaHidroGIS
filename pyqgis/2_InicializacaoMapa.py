@@ -38,10 +38,10 @@ def importar_captacoes(nome_bd, senha_bd):
     uri = QgsDataSourceUri()
     uri.setConnection(host_bd, porta_bd, nome_bd, usuario_bd, senha_bd)
     uri.setDataSource(schema_bd, 'CNARH_Estadual_ANA_2022', 'geom')
-    outorgas_estaduais = QgsVectorLayer(uri.uri(False), 'camada_outorgas_estaduais', 'postgres')
-    QgsProject.instance().addMapLayer(outorgas_estaduais, True)  # Camada adiciona, mas não visível.
+    outorgas = QgsVectorLayer(uri.uri(False), 'camada_outorgas', 'postgres')
+    QgsProject.instance().addMapLayer(outorgas, True)  # Camada adiciona, mas não visível.
     print('\n''-> Importação da camada de captações realizada.')
-    return outorgas_estaduais
+    return outorgas
     
 def importar_camada_fundo():
 #   função de carregamento da camada de plano de fundo

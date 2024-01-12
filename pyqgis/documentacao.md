@@ -46,13 +46,18 @@ Após a criação da lista com as camadas do projeto, é feita a verificação d
 
 > O *iface* é uma instância da classe QgisInterface que fornece acesso às interfaces do QGIS para plugins. O *mapCanvas* é o método utilizado para obter a referência à tela de visualização do mapa atual no QGIS.
 
+### 1.3. Execução do código
+
+É feita a execução do código chamando as duas funções definidas anteriormente **parametros_BDG** e **limpeza_residuos**.
+
 ## 2. Inicialização do Mapa
+
 Para essa etapa foram definidas cinco funções:
 - def importar_camada_ottobacias
 - def importar_camada_ottotrechos
-- importar_disponibilidade_hidrica
-- importar_captacoes
-- importar_camada_fundo
+- def importar_disponibilidade_hidrica
+- def importar_captacoes
+- def importar_camada_fundo
 
 ### 2.1. Importação da camada de ottobacia
 
@@ -68,7 +73,71 @@ A variável *ottobacias* cria um objeto **QgsVectorLayer** usando a URI configur
 
 ### 2.2. Importação da camada de ottotrechos
 
-A função **def_importar_camada_ottotrechos** realiza o carregamento de camadas vetoriais de ottotrechos do banco de dados. Essa função funciona basicamente como a **def_importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+A função **def importar_camada_ottotrechos** realiza o carregamento de camadas vetoriais de ottotrechos do banco de dados. Essa função funciona basicamente como a **def importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
+### 2.3. Importação da camada de disponibilidade hídrica
 
+A função **def importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **def importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+
+### 2.4. Importação da camada de outorgas de captação
+
+A função **def importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **def importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+
+### 2.5. Importação da camada de plano de fundo
+
+A função **def importar_camada_fundo** tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS. 
+
+A variável **service_url** contém uma URL para um serviço de mapas do Google. Os placeholders {x}, {y} e {z} são utilizados para representar os valores de latitude, longitude e zoom.
+
+A variável **serivce_uri** contém a URI do serviço de mapas, formatada com os parâmetros necessários. A função **requests.utilis.quote** é usada para garantir que a URL seja codificada corretamente.
+
+A função **iface.addRasterLayer** da interface do QGIS é utilizada para adicionar uma camada raster com os argumentos:
+- service_uri: a URI do serviço de mapas
+- Google_Road: nome da camada a ser adicionada
+- wms: tipo de serviço, indicando que é um Web Map Service
+
+### 2.6. Execução do código
+
+A função **importar_camada_fundo** é chamada para adicionar uma camada de fundo. 
+
+É declarada duas variáveis, uma para ottobacias e outra para ottotrechos. Depois são chamadas as funções **importar_camada_ottobacias** e **importar_camada_ottotrechos** com parâmetros relacionados ao banco de dados e as variáveis criadas anteriormente. 
+
+## 3. Definir vazão de captação por ottobacia
+
+Para essa etapa foi definida uma única função e duas etapas de processamento:
+- def agregacao_vazao_captacao
+- processo_bacias_outorgas
+- processo_de_agrupamento_por_ottobacias
+
+A função **def agregacao_vazao_captacao** recebe duas camadas como parâmetros: outorgas e ottobacias_montante e realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse.
+
+### 3.1 Interseção de outorgas com ottobacias
+
+A variável **processo_bacias_outorgas** utiliza o algoritmo de processamento do QGIS *native:intersection* para realizar a interseção entre as camadas outorgas e ottobacias_montante. O resultado é armazenado na variável **intersecao_bacias_outorgas** e é gerado uma camada temporária no QGIS.
+
+O **native:intersection** representa uma ferramenta fornecida pelo processamento do QGIS e na função **processing.run** refere-se ao algoritmo de interseção nativo (built-in) do QGIS, chamando a ferramenta de interseção do QGIS para realizar uma operação de interseção entre duas camadas vetoriais.. 
+
+A variável **context** faz a configuração de um contexto de expressão para trabalhar com o resultado da interseção. Depois, é adicionado escopos ao contexto de expressão que definem o contexto no qual variáveis e funções serão avaliadas. Nesse caso, é utilizado a função **QgsExpressionContextUtils.globalProjectLayerScopes** para obter escopos globais de camadas do projeto com base na variável **intersecao_bacias_outorgas**.  
+
+> A classe **QgsExpressionContext** é usada para definir o contexto no qual as expressões são avaliadas. Ela fornece um conjunto de variáveis e funções que podem ser usadas em expressões.
+
+### 3.2 Agregação de vazões por ottobacias
+
+A variável **processo_de_agrupamento_por_ottobacias** utiliza o algoritmo **native:aggregate** para agregar os dados resultantes da interseção. O agrupamento é feito com base no campo *cobacia* e duas agregações são realizadas: uma para obter a cobacia que será utilizada e outra para calcular a soma das vazões. O resultado será armazenado em **agrupamento por ottobacias** e será gerada uma camada temporária no QGIS.
+
+Em *AGGREGATES* são definidas as operações de agregação a serem realizadas.
+- Aggregate: especifica o tipo de agregação a ser realizado.
+- Delimiter: define o delimitador.
+- Input: indica a coluna pela qual a operação de agregação será realizada.
+- Length: define o comprimento da saída.
+- Name: nome atribuído à nova coluna resultante da operação de agregação.
+- Precision: define a precisão dos valores resultantes.
+- Sub_type e type: definem o tipo de dados da nova coluna.
+- Type_name: nome do tipo de dados.
+
+### 3.3 Execução do código
+
+Primeiro é feito a importação da camada de outorga usando a função **importar_outorgas**. 
+
+Depois é chamada a função **agregacao_vazao_captacao** com as camadas outorgas e ottobacias_montante como argumentos. Os resultados são armazenados nas variáveis **intersecao_bacias_outorgas** e **agrupamento_por_ottobacias**. 
 
