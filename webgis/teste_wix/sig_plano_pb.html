@@ -80,27 +80,23 @@
         <div id="caixa-legenda">
             <div id="titulo-legenda">Legenda:</div>
             <div class="item-legenda">
-                <img src="icones_legenda/icone_mineracao.png" alt="icone_sedes_municipais">
-                <span>Sedes Municipais</span>
-            </div>
-            <div class="item-legenda">
-                <img src="icones_legenda/icone_XXX.png" alt="icone_rodovias">
+                <img src="icones_legenda/icone_rodovias.png" alt="icone_rodovias">
                 <span>Rodovias</span>
             </div>
             <div class="item-legenda">
-                <img src="icones_legenda/icone_XXX.png" alt="icone_drenagem_principal">
+                <img src="icones_legenda/icone_drenagem.png" alt="icone_drenagem_principal">
                 <span>Drenagem Principal</span>
             </div>
             <div class="item-legenda">
-                <img src="icones_legenda/icone_XXX.png" alt="icone_acudes">
+                <img src="icones_legenda/icone_acudes.PNG" alt="icone_acudes">
                 <span>Açudes</span>
             </div>
             <div class="item-legenda">
-                <img src="icones_legenda/icone_XXX.png" alt="icone_bacias">
-                <span>Bacias</span>
+                <img src="icones_legenda/icone_bacia.png" alt="icone_bacias">
+                <span>Bacia do Rio Paraíba</span>
             </div>
             <div class="item-legenda">
-                <img src="icones_legenda/icone_XXX.png" alt="icone_municipios">
+                <img src="icones_legenda/icone_limites_municipais.PNG" alt="icone_municipios">
                 <span>Municípios</span>
             </div>
         </div>
@@ -160,16 +156,21 @@
             attribution: 'IBGE',
         });
 
+        var estado = L.Geoserver.wms('http://191.252.221.146:8080/geoserver/wms', {
+            layers: 'paraiba:divisa_estadual_pb',
+            attribution: 'IBGE',
+        });
+
         var map = L.map('map', {
             center: [-7.2, -37],
             zoom: 8,
             layers: [baseOpenStreetMap,
+                    estado,
                     municipios,
                     bacias,
                     acudes,
                     drenagemPrincipal,
-                    rodovias,
-                    sedesMunicipais],
+                    rodovias],
         });
 
         var baseMaps = {
@@ -179,12 +180,12 @@
         };
 
         var overlayMaps = {
+            "Estado": estado,
             "Municípios": municipios,
             "Bacias": bacias,
             "Açudes": acudes,
             "Drenagem Principal": drenagemPrincipal,
             "Rodovias": rodovias,
-            "Sedes Municipais": sedesMunicipais,
         };
 
         var layerControl = L.control.layers(baseMaps, overlayMaps);
