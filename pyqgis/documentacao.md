@@ -59,10 +59,10 @@ Esta seção destina-se a descrição detalhada de todas as etapas apresentadas 
 ---
 ```mermaid
     flowchart TD
-    subgraph A[Definir vazão de capatação por ottobacias]
+    subgraph A[Definir vazão de captação por ottobacias]
         B[Carregamento de camada de outorgas]
         B --> D[Interseção de outorgas com ottobacias]
-        D --> E[Agregação de vazão estadual e federal por ottobacias]
+        D --> E[Agregação de vazões por ottobacias]
     end
 ```
 ---
