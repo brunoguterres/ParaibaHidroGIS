@@ -6,7 +6,7 @@ Esta ferramenta esta sendo desenvolvida com o propósito de servir para o auxíl
 
 O desenvolvimento é realizado no contexto do projeto do **Plano de Recursos Hídricos da Bacia do Rio Paraíba(PRH-BPB)**.
 
-Este desenvolvimento é baseado na liguagem de programamção python incorporada ao software QGIS.
+Baseado na liguagem de programação python incorporada ao software QGIS.
 
 ## Objetivos da documentação
 
@@ -34,7 +34,13 @@ A estrutura funcional da ferramenta foi criada de forma hierarquica de modo a pr
     F --> G(FIM);    
 ```
 
-## Fluxograma de processos
+## Descrição detalhada das etapas
+
+Esta seção destina-se a descrição detalhada de todas as etapas apresentadas no fluxograma anterior, mostrando seus processos e explicando as respectivas funções.
+
+### 1.Procedimentos iniciais
+
+#### Fluxograma de processos
 
 ```mermaid
     flowchart TD    
@@ -54,12 +60,8 @@ A estrutura funcional da ferramenta foi criada de forma hierarquica de modo a pr
 ```mermaid
     flowchart TD
     subgraph A[Definir vazão de capatação por ottobacias]
-        B[Carregamento de camada
-        de outorgas estaduais]
-        C[Carregamento de camada
-        de outorgas federais]
+        B[Carregamento de camada de outorgas]
         B --> D[Interseção de outorgas com ottobacias]
-        C --> D
         D --> E[Agregação de vazão estadual e federal por ottobacias]
     end
 ```
