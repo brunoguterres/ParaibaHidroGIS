@@ -1,14 +1,18 @@
-def parametros_BDG():
-# função que define os parâmetros de entrada do banco de dados 
+def parametros_padrao_bd():
+# função que define os parâmetros padrão de conexão com banco de dados 
     parametros_conexao = {'host_bd': 'localhost',
                           'nome_bd': 'bdg_prh_rpb',
                           'usuario_bd': 'postgres',
                           'senha_bd': 'cobrape',
                           'porta_bd': '5432',
                           'schema_bd': 'public'}
+    return parametros_conexao
 
-    verify_postgis = QMessageBox()
-    verify_postgis.setText('Deseja continuar com os parâmetros de conexão padrão?'
+def verifica_parametros_bd():
+#função que apresenta os parâmetros de conexão com banco de dados
+    parametros_conexao = parametros_padrao_bd()
+    verifica_postgis = QMessageBox()
+    verifica_postgis.setText('Deseja continuar com os parâmetros de conexão padrão?'
                            '\n'
                            '\n''host: ' + str(parametros_conexao['host_bd']) +
                            '\n''nome: ' + str(parametros_conexao['nome_bd']) +
@@ -16,49 +20,47 @@ def parametros_BDG():
                            '\n''senha: ' + str(parametros_conexao['senha_bd']) +
                            '\n''porta: ' + str(parametros_conexao['porta_bd']) +
                            '\n''schema: ' + str(parametros_conexao['schema_bd']))
-    verify_postgis.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
- 
-    if verify_postgis.exec() == QMessageBox.Yes:
-        pass
-    elif verify_postgis.exec() == QMessageBox.No:
-        parametro_entrada = QInputDialog().getText(None,
-                                                   'Parâmetro de conexão',
-                                                   'Digite o host:')
-        if parametro_entrada[0] != '':
-            parametros_conexao['host_bd'] = parametro_entrada[0]
-        
-        parametro_entrada = QInputDialog().getText(None,
-                                                   'Parâmetro de conexão',
-                                                   'Digite o nome do banco:')
-        if parametro_entrada[0] != '':
-            parametros_conexao['nome_bd'] = parametro_entrada[0]
-        
-        parametro_entrada = QInputDialog().getText(None,
-                                                   'Parâmetro de conexão',
-                                                   'Digite o usuário:')
-        if parametro_entrada[0] != '':
-            parametros_conexao['usuario_bd'] = parametro_entrada[0]
-        
-        parametro_entrada = QInputDialog().getText(None,
-                                                   'Parâmetro de conexão',
-                                                   'Digite a senha:')
-        if parametro_entrada[0] != '':
-            parametros_conexao['senha_bd'] = parametro_entrada[0]
-        
-        parametro_entrada = QInputDialog().getText(None,
-                                                   'Parâmetro de conexão',
-                                                   'Digite o número da porta:')
-        if parametro_entrada[0] != '':
-            parametros_conexao['porta_bd'] = parametro_entrada[0]
-        
-        parametro_entrada = QInputDialog().getText(None,
-                                                   'Parâmetro de conexão',
-                                                   'Digite o schema:')
-        if parametro_entrada[0] != '':
-            parametros_conexao['schema_bd'] = parametro_entrada[0]
-    
-    print(parametros_conexao)
-    print('-> Parâmetros de entrada definidos.')
+    verifica_postgis.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+    return_value = verifica_postgis.exec()
+    if return_value == QMessageBox.No:
+        parametros_conexao = parametros_personalizados_bd(parametros_conexao)
+    else:
+        print('-> Parâmetros PADRÃO de conexão definidos.')
+    return parametros_conexao
+
+def parametros_personalizados_bd(parametros_conexao):
+# função de personalização dos parâmetros de conexão com banco de dados 
+    parametro_entrada = QInputDialog().getText(None,
+                                               'Parâmetro de conexão',
+                                               'Digite o host:')
+    if parametro_entrada[0] != '':
+        parametros_conexao['host_bd'] = parametro_entrada[0]
+    parametro_entrada = QInputDialog().getText(None,
+                                               'Parâmetro de conexão',
+                                               'Digite o nome do banco:')
+    if parametro_entrada[0] != '':
+        parametros_conexao['nome_bd'] = parametro_entrada[0]
+    parametro_entrada = QInputDialog().getText(None,
+                                               'Parâmetro de conexão',
+                                               'Digite o usuário:')
+    if parametro_entrada[0] != '':
+        parametros_conexao['usuario_bd'] = parametro_entrada[0]
+    parametro_entrada = QInputDialog().getText(None,
+                                               'Parâmetro de conexão',
+                                               'Digite a senha:')
+    if parametro_entrada[0] != '':
+        parametros_conexao['senha_bd'] = parametro_entrada[0]
+    parametro_entrada = QInputDialog().getText(None,
+                                               'Parâmetro de conexão',
+                                               'Digite o número da porta:')
+    if parametro_entrada[0] != '':
+        parametros_conexao['porta_bd'] = parametro_entrada[0]
+    parametro_entrada = QInputDialog().getText(None,
+                                               'Parâmetro de conexão',
+                                               'Digite o schema:')
+    if parametro_entrada[0] != '':
+        parametros_conexao['schema_bd'] = parametro_entrada[0]
+    print('-> Parâmetros PERSONALIZADOS de conexão definidos.')
     return parametros_conexao
 
 def limpeza_residuos():
@@ -78,5 +80,5 @@ def limpeza_residuos():
 
 ### EXECUÇÃO ###
 
-parametros_conexao = parametros_BDG()
-#limpeza_residuos()
+parametros_conexao = verifica_parametros_bd()
+limpeza_residuos()
