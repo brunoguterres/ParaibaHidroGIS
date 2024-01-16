@@ -8,13 +8,13 @@ def parametros_padrao_bd():
                           'senha_bd': 'cobrape',
                           'porta_bd': '5432',
                           'schema_bd': 'public'}
-    return parametros_conexao
+    status = '-> Parâmetros PADRÃO de conexão definidos.'
+    return parametros_conexao, status
 
-def verifica_parametros_bd():
+def verifica_parametros_bd(parametros_conexao, status):
 #função que apresenta os parâmetros de conexão com banco de dados
-    parametros_conexao = parametros_padrao_bd()
     verifica_postgis = QMessageBox()
-    verifica_postgis.setText('Deseja continuar com os parâmetros de conexão padrão?'
+    verifica_postgis.setText('Deseja continuar com os parâmetros de conexão abaixo?'
                            '\n'
                            '\n''host: ' + str(parametros_conexao['host_bd']) +
                            '\n''nome: ' + str(parametros_conexao['nome_bd']) +
@@ -25,9 +25,8 @@ def verifica_parametros_bd():
     verifica_postgis.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
     return_value = verifica_postgis.exec()
     if return_value == QMessageBox.No:
-        parametros_conexao = parametros_personalizados_bd(parametros_conexao)
-    else:
-        print('-> Parâmetros PADRÃO de conexão definidos.')
+        parametros_conexao, status = parametros_personalizados_bd(parametros_conexao)
+    print(status)
     return parametros_conexao
 
 def parametros_personalizados_bd(parametros_conexao):
@@ -62,8 +61,9 @@ def parametros_personalizados_bd(parametros_conexao):
                                                'Digite o schema:')
     if parametro_entrada[0] != '':
         parametros_conexao['schema_bd'] = parametro_entrada[0]
-    print('-> Parâmetros PERSONALIZADOS de conexão definidos.')
-    return parametros_conexao
+    status = '-> Parâmetros PERSONALIZADOS de conexão definidos.'
+    verifica_parametros_bd(parametros_conexao, status)
+    return parametros_conexao, status
 
 def limpeza_residuos():
     #   função de exclusao de camadas residuais do projeto
@@ -82,5 +82,6 @@ def limpeza_residuos():
 
 ### EXECUÇÃO ###
 
-parametros_conexao = verifica_parametros_bd()
+parametros_conexao, status = parametros_padrao_bd()
+parametros_conexao = verifica_parametros_bd(parametros_conexao, status)
 limpeza_residuos()
