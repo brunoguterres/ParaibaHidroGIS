@@ -1,0 +1,8 @@
+{
+    "host": "localhost",
+    "nome_bd": "bdg_prh_rpb",
+    "usuario_bd": "postgres",
+    "senha_bd": "cobrape",
+    "porta_bd": "5432",
+    "schema_bd": "public"
+  }
