@@ -2,10 +2,6 @@ import json
 
 def parametros_padrao_bd():
 # função que define os parâmetros padrão de conexão com banco de dados
-    with open('parametros_bd.json', 'r') as arquivo:
-        parametros_conexao = json.load(arquivo)
-    print(parametros_conexao)
-    '''
     parametros_conexao = {'host_bd': 'localhost',
                           'nome_bd': 'bdg_prh_rpb',
                           'usuario_bd': 'postgres',
@@ -13,7 +9,6 @@ def parametros_padrao_bd():
                           'porta_bd': '5432',
                           'schema_bd': 'public'}
     return parametros_conexao
-    '''
 
 def verifica_parametros_bd():
 #função que apresenta os parâmetros de conexão com banco de dados
