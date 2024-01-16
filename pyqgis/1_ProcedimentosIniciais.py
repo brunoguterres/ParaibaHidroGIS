@@ -82,6 +82,5 @@ def limpeza_residuos():
 
 ### EXECUÇÃO ###
 
-parametros_padrao_bd()
-#parametros_conexao = verifica_parametros_bd()
-#limpeza_residuos()
+parametros_conexao = verifica_parametros_bd()
+limpeza_residuos()
