@@ -12,7 +12,7 @@ def importar_camada_ottobacias(parametros_conexao, nome_camada_ottobacias):
     print('\n''-> Importação da camada de ottobacias realizada.')
     return ottobacias
 
-def importar_camada_ottotrechos(parametros_conexao, schema_bd, nome_camada_ottotrechos):
+def importar_camada_ottotrechos(parametros_conexao, nome_camada_ottotrechos):
 #   função de carregamento de camadas vetorial de ottotrechos do banco
     uri = QgsDataSourceUri()
     uri.setConnection(parametros_conexao['host_bd'], parametros_conexao['porta_bd'], parametros_conexao['nome_bd'], parametros_conexao['usuario_bd'], parametros_conexao['senha_bd'])
