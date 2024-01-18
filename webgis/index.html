@@ -15,7 +15,33 @@
 </head>
 
 <body>
-    <div id="map"></div>
+    <div id="map-container">
+        <div id="map"></div>
+        <div id="caixa-legenda">
+            <div id="titulo-legenda">Legenda:</div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_rodovias.png" alt="icone_rodovias">
+                <span>Rodovias</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_drenagem.png" alt="icone_drenagem_principal">
+                <span>Drenagem Principal</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_acudes.PNG" alt="icone_acudes">
+                <span>Açudes</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_bacia.png" alt="icone_bacias">
+                <span>Bacia do Rio Paraíba</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_limites_municipais.PNG" alt="icone_municipios">
+                <span>Municípios</span>
+            </div>
+        </div>
+    </div>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="L.Geoserver.js"></script>
     <script src="scripts.js"></script>  
