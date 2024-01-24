@@ -45,19 +45,22 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD    
     subgraph A[Procedimentos Iniciais]
-        B[Definição dos parâmetros de conexão com o Banco de Dados] --> C[Limpeza de Camadas Residuais];
+        B[Definição dos parâmetros de conexão com o banco de dados] --> C[Limpeza de camadas residuais];
     end
 ```
 
 Esta etapa possui dois processos
 - *Definição dos parâmetros de conexão com o Banco de Dados*
+- *Limpeza de camadas residuais*
 
-
+<!--
 Nos procedimentos iniciais, são definidas duas funções:
 - *parametros_BDG*
 - *limpeza_residuos*
+-->
 
-### 1.1. Definição dos parâmetros de entrada
+### 1.1. Definição dos parâmetros de conexão com o Banco de Dados
+---
 
 A função **parametros_BDG** define os parâmetros de conexão com o banco de dados e possibilita ao usuário decidir se mantém os parâmetros de conexão padrão ou se deseja inserir parâmetros personalizados.
 
@@ -85,7 +88,7 @@ Se a resposta for *não*, é utilizada a classe **QInputDialog** para obter novo
 
 > A classe **QInputDialog** faz parte do framework Qt e é utilizada para criar caixas de diálogo que solicitam entrada do usuário. Essas caixas de diálogo podem ser usadas para coletar informações como texto, números ou opções de uma lista. 
 
-### 1.2. Exclusão das camadas residuais do projeto
+### 1.2. Limpeza de camadas residuais
 
 A função **limpeza_residuos** realiza a limpeza de camadas residuais do projeto no QGIS. 
 
