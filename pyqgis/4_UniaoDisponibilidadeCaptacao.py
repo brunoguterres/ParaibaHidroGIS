@@ -10,4 +10,4 @@ def uniao_disponibilidade_captacoes():
 ### EXECUÇÃO ###
 
 disponibilidade_captacao = uniao_disponibilidade_captacoes()
-print('\n''-> União de disponibilidades com captações.')
+print('\n''-> União de disponibilidades com captações realizada.')
