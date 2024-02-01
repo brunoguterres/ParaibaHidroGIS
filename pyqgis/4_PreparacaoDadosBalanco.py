@@ -1,6 +1,6 @@
 
 def uniao_disponibilidade_captacoes():
-    query_uniao =    '?query=SELECT camada_ottotrechos.cobacia, camada_ottotrechos.cotrecho, camada_ottotrechos.nutrjus, camada_disp_hid.cobacia_2, camada_disp_hid.disp_x '\
+    query_uniao =    '?query=SELECT camada_ottotrechos.cobacia, camada_ottotrechos.cotrecho, camada_ottotrechos.nutrjus, camada_disp_hid.disp_x '\
                         'FROM camada_ottotrechos '\
                         'LEFT JOIN camada_disp_hid ON camada_ottotrechos.cobacia = camada_disp_hid.cobacia_2;'
     disponibilidade_captacao = QgsVectorLayer(query_uniao, 'uniao_disp_cap', 'virtual')
