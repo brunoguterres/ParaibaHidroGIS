@@ -166,10 +166,9 @@ O fluxograma de processos desta etapa é apresentado a seguir:
         D --> E[Agregação de vazões por ottobacias]
     end
 ```
+### 3.1 Interseção de outorgas com ottobacias
 
 A função **def agregacao_vazao_captacao** recebe duas camadas como parâmetros: outorgas e ottobacias_montante e realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse.
-
-### 3.1 Interseção de outorgas com ottobacias
 
 A variável **processo_bacias_outorgas** utiliza o algoritmo de processamento do QGIS *native:intersection* para realizar a interseção entre as camadas outorgas e ottobacias_montante. O resultado é armazenado na variável **intersecao_bacias_outorgas** e é gerado uma camada temporária no QGIS.
 
@@ -198,4 +197,41 @@ Em *AGGREGATES* são definidas as operações de agregação a serem realizadas.
 Primeiro é feito a importação da camada de outorga usando a função **importar_outorgas**. 
 
 Depois é chamada a função **agregacao_vazao_captacao** com as camadas outorgas e ottobacias_montante como argumentos. Os resultados são armazenados nas variáveis **intersecao_bacias_outorgas** e **agrupamento_por_ottobacias**. 
+
+## 4. Preparação de dados para balanço hídrico
+
+O fluxograma de processos desta etapa é apresentado a seguir:
+
+```mermaid
+    flowchart TD
+    subgraph A[Preparação de dados para o balanço hídrico]
+        B[União de atributos de disponibilidade e captações]
+    end
+```
+
+### 4.1 União entre disponibilidade hídrica e captações
+
+A função **uniao_disponibilidade_captacoes** realiza a união entre as camadas de disponibilidade hídrica e de captações. 
+
+O primeiro passo é criar uma string contendo a consulta SQL na variável **query_uniao**. Ela define essa consulta SQL que seleciona colunas específicas de duas camadas **camada_ottotrechos** e **camada_disp_hid** usando o *LEFT JOIN*. 
+
+Posteriormente, é criada uma camada vetorial virtual chamada **disponibilidade_captacao** e essa camada é adicionada ao projeto QGIS utilizando a instância do **QgsProject**.
+
+> OBS: a definição da classe **QgsProject** está explicada no item 1.2. da presente documentação.
+
+### 4.2 Execução do código
+
+Primeiro é chamada a função **uniao_disponibilidade_captacoes** e armazena o resultado na variável **disponibilidade_captacao**, e então, imprime uma mensagem indicando que a união das camadas foi realizada.
+
+## 5. Cálculo do balanço hídrico
+
+O fluxograma de processos desta etapa é apresentado a seguir:
+
+```mermaid
+    flowchart TD
+    subgraph A[Cálculo do balanço hídrico]
+        B[Ordenar tabela consolidada] --> C[Definir ottobacias de cabeceira]
+        C --> D[Calcular balanço hídrico]
+    end
+```
 
