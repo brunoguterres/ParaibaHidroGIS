@@ -1,8 +1,11 @@
 # Documentação - COB_HIDRO_001
 
+> :memo: **Notas**: 
+> - Alterar o nome do projeto.
+> - **Sugestão Bruno**: Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: cabeceiras).
 ## Resumo da ferramenta
 
-Esta ferramenta esta sendo desenvolvida com o propósito de servir para o auxílio nos trabalhos de projetos de Recursos Hídricos, sendo um facilitador nos procedimentos de cálculo do balanço hídrico.
+Esta ferramenta está sendo desenvolvida com o propósito de servir para o auxílio nos trabalhos de projetos de Recursos Hídricos, sendo um facilitador nos procedimentos de cálculo do balanço hídrico.
 
 O desenvolvimento é realizado no contexto do projeto do **Plano de Recursos Hídricos da Bacia do Rio Paraíba(PRH-BPB)**.
 
@@ -14,9 +17,9 @@ Esta documentação tem por objetivo primordial orientar a equipe de desenvolvim
 
 ## Estrutura
 
-A estrutura funcional da ferramenta foi criada de forma hierarquica de modo a propiciar melhor entendimento sobre todo os detalhes das etapas envolvidas no processo de execução da ferramenta. Para isto forma definidos os conceitos de **Etapas**, **Processos** e **Funções**.
+A estrutura funcional da ferramenta foi criada de forma hierarquica de modo a propiciar melhor entendimento sobre todo os detalhes das etapas envolvidas no processo de execução da ferramenta. Para isto, foram definidos os conceitos de **Etapas**, **Processos** e **Funções**.
 
-- **ETAPAS:** O primeiro nível de organização estrutural. Neste nível abstrai-se qualquer tipo de detalhamento, sendo apenas descritos de forma geral o processo do iinício ao fim.
+- **ETAPAS:** O primeiro nível de organização estrutural. Neste nível abstrai-se qualquer tipo de detalhamento, sendo apenas descritos de forma geral o processo do início ao fim.
 
 - **PROCESSOS:** O segundo nível de organização estrutural. Neste nível apresenta-se um detalhamento maior das etapas, a fim de que se possa diminuir o nível de abastração e identificar melhor as funcionalidades.
 
@@ -24,15 +27,20 @@ A estrutura funcional da ferramenta foi criada de forma hierarquica de modo a pr
 
 ## Fluxograma de etapas
 
+<center>
+
 ```mermaid
     flowchart TD
-    A(INÍCIO) --> B[Procedimentos iniciais];
-    B --> C[Inicialização do mapa];
-    C --> D[Definir vazão de capatação por ottobacias];
-    D --> E[Preparação de dados para balanço hídrico];
-    E --> F[Cálculo do balanço hídrico];
-    F --> G(FIM);    
+    A(INÍCIO) --> B[1. Procedimentos iniciais];
+    B --> C[2. Inicialização do mapa];
+    C --> D[3. Definir vazões de disponibilidade e capatações];
+    D --> E[4. Preparação de dados para balanço hídrico];
+    E --> F[5. Cálculo do balanço hídrico];
+    F --> G[6. Representação do balanço]; 
+    G --> H[7. Seleção da ottobacia];     
+    H --> I(FIM);    
 ```
+</center>
 
 ## Descrição detalhada das etapas
 
@@ -40,14 +48,19 @@ Esta seção destina-se a descrição detalhada de todas as etapas apresentadas 
 
 ### 1.Procedimentos iniciais
 
+>:memo: **Sugestão Tônico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
+
 O fluxograma de processos desta etapa é apresentado a seguir:
+
+<center>
 
 ```mermaid
     flowchart TD    
-    subgraph A[Procedimentos Iniciais]
-        B[Definição dos parâmetros de conexão com o banco de dados] --> C[Limpeza de camadas residuais];
+    subgraph A[<b>1. Procedimentos Iniciais</b>]
+        B[1.1. Definição dos parâmetros de conexão com o banco de dados] --> C[1.2. Limpeza de camadas residuais];
     end
 ```
+</center>
 
 ### 1.1. Definição dos parâmetros de conexão com o Banco de Dados
 
@@ -63,9 +76,13 @@ A função **parametros_BDG** define os parâmetros de conexão *padrão* com o 
 
 #### 1.1.1. Definição do dicionário
 
-**parametros_conexao** cria um dicionário que contém parâmetros de conexão padrão (host, nome do banco, usuário, senha, porta e schema) com o banco de dados. 
+>:warning: Verificar o nível.
+
+A variável **parametros_conexao** cria um dicionário que contém parâmetros de conexão padrão (host, nome do banco, usuário, senha, porta e schema) com o banco de dados. 
 
 #### 1.1.2. Verificação da conexão PostGIS
+
+>:warning: Verificar o nível.
 
 A função **verifica_parametros_bd** apresenta os parâmetros de conexão com o banco de dados e possibilita ao usuário decidir se mantém os parâmetros de conexão padrão ou se deseja inserir parâmetros personalizados.
 
@@ -78,14 +95,17 @@ Se a resposta do usuário for *sim*, a leitura do código será continuada e ser
 Se a resposta for *não*, o código segue para a função **patrametros_personalizados_bd**.
 
 #### 1.1.3. Definição dos parâmetros personalizados
+>:warning: Verificar o nível.
 
-A função **parametros_personalizados_bd** utiliza a classe **QInputDialog** para obter novos valores para os parâmetros de conexão. A classe é utilizada para cada parâmetro de conexão (host, nome do banco, usuário, senha, porta e schema) e, portanto, o processo é repetido seis vezes. O código faz a verificação se algum campo ficou vazio. Em casos que o usuário deixe os campos vazios, será utilizado os parâmetros de conexão padrão.
+A função **parametros_personalizados_bd** utiliza a classe **QInputDialog** para obter novos valores para os parâmetros de conexão. A classe é utilizada para cada parâmetro de conexão (host, nome do banco, usuário, senha, porta e schema) e, portanto, o processo é repetido seis vezes. 
+
+O código faz a verificação se algum campo ficou vazio. Em casos que o usuário deixe os campos vazios, será utilizado os parâmetros de conexão padrão.
 
 Depois de inserir os valores, é chamada a função **verifica_parametros_bd** onde são atualizados os parâmetros de conexão.
 
 > A classe **QInputDialog** faz parte do framework Qt e é utilizada para criar caixas de diálogo que solicitam entrada do usuário. Essas caixas de diálogo podem ser usadas para coletar informações como texto, números ou opções de uma lista. 
 
-### 1.2. Exclusão das camadas residuais do projeto
+### 1.2. Limpeza das camadas residuais
 
 A função **limpeza_residuos** realiza a limpeza de camadas residuais do projeto no QGIS. 
 
@@ -95,26 +115,35 @@ A variável **camada_residual** utiliza o **QgsProject.instance** para obter um 
 
 Após a criação da lista com as camadas do projeto, é feita a verificação da existência de camadas residuais, caso haja qualquer camada residual é feita a remoção da mesma. Caso contrário, será apenas obtido e atualizado o canvas do mapa do projeto utilizando o **qgis.utils.iface.mapCanvas()** e o **canvas.refresh()**.
 
-> O *iface* é uma instância da classe QgisInterface que fornece acesso às interfaces do QGIS para plugins. O *mapCanvas* é o método utilizado para obter a referência à tela de visualização do mapa atual no QGIS.
-
-### 1.3. Execução do código
-
-É feita a execução do código chamando a função **parametros_padrao_bd** que retorna dois valores atribuidos às variáveis *parametros_conexao* e *status*. Depois é chamada a função **verifica_parametros_bd** com os parâmetros *parametros_conexao* e *status*, e o retorno dessa função é atribuído à variável *parametros_conexao*. E, por fim, é chamada a função **limpeza_residuos**.
+> O **iface** é uma instância da classe QgisInterface que fornece acesso às interfaces do QGIS para plugins. O *mapCanvas* é o método utilizado para obter a referência à tela de visualização do mapa atual no QGIS.
 
 ## 2. Inicialização do Mapa
 
+>:warning: **Aviso**: revisar o código para criar função de carregamento (separar da importação).
+
 O fluxograma de processos desta etapa é apresentado a seguir:
+
+<center>
 
 ```mermaid
     flowchart TD
-    subgraph A[Inicialização do Mapa]
-        B[Importação de camadas da bacia] --> C[Carregamento de camada de ottotrechos no mapa];
-        C --> D[Carregamento de camada de fundo no mapa]
+    subgraph A[2. Inicialização do Mapa]
+        B[2.1. Importação de camadas da bacia] --> C[2.2. Carregamento de camada de ottotrechos no mapa];
+        C --> D[2.3. Carregamento de camada de fundo no mapa]
     end
 ```
-### 2.1. Importação da camada de ottobacia
 
-A função **def importar_camada_ottobacias** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
+</center>
+
+### 2.1. Importação da camada de camadas da bacia
+
+Nesse processo será feita a importação das camadas de ottobacia e ottotrechos.
+
+#### 2.1.1. Importação da camada de ottobacia
+
+>:warning: Correção de estilo no carregamento da camada de ottobacias, deixar mais fina e mais clara.
+
+A função **importar_camada_ottobacias** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
 
 A variável *uri* utiliza o **QgsDataSourceUri** para armazenar informações sobre a fonte de dados da camada vetorial, e, posteriormente, configura as informações de conexão com o banco de dados na URI. 
 
@@ -124,21 +153,19 @@ A variável *ottobacias* cria um objeto **QgsVectorLayer** usando a URI configur
 
 > O **QgsVectorLayer** é uma classe na biblioteca QGIS que representa uma camada vetorial dentro do ambiente QGIS. Essa classe é parte da API do QGIS e é usada para manipular dados vetoriais, como pontos, linhas e polígonos. 
 
-### 2.2. Importação da camada de ottotrechos
+#### 2.1.2. Importação da camada de ottotrechos
 
-A função **def importar_camada_ottotrechos** realiza o carregamento de camadas vetoriais de ottotrechos do banco de dados. Essa função funciona basicamente como a **def importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+>:warning: Correção de estilo no carregamento da camada de ottotrechos, colocar um azul mais escuro.
 
-### 2.3. Importação da camada de disponibilidade hídrica
+A função **importar_camada_ottotrechos** realiza o carregamento de camadas vetoriais de ottotrechos do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
-A função **def importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **def importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+### 2.2. Carregamento das camadas da bacia
 
-### 2.4. Importação da camada de outorgas de captação
+>:warning: **Aviso**: ainda falta arrumar o código para esse processo.
 
-A função **def importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **def importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+### 2.3.  Importação da camada de plano de fundo
 
-### 2.5. Importação da camada de plano de fundo
-
-A função **def importar_camada_fundo** tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS. 
+A função **importar_camada_fundo** tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS. 
 
 A variável **service_url** contém uma URL para um serviço de mapas do Google. Os placeholders {x}, {y} e {z} são utilizados para representar os valores de latitude, longitude e zoom.
 
@@ -149,26 +176,41 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 - Google_Road: nome da camada a ser adicionada
 - wms: tipo de serviço, indicando que é um Web Map Service
 
-### 2.6. Execução do código
-
-A função **importar_camada_fundo** é chamada para adicionar uma camada de fundo. 
-
-É declarada duas variáveis, uma para ottobacias e outra para ottotrechos. Depois são chamadas as funções **importar_camada_ottobacias** e **importar_camada_ottotrechos** com parâmetros relacionados ao banco de dados e as variáveis criadas anteriormente. 
-
 ## 3. Definir vazão de captação por ottobacia
 
+>:warning: **Aviso**: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.
+
 O fluxograma de processos desta etapa é apresentado a seguir:
+
+<center>
+
 ```mermaid
     flowchart TD
-    subgraph A[Definir vazão de captação por ottobacias]
-        B[Carregamento de camada de outorgas]
-        B --> D[Interseção de outorgas com ottobacias]
-        D --> E[Agregação de vazões por ottobacias]
+    subgraph A[3. Definir vazões de disponibilidade e captações]
+        B[3.1. Carregamento de camada de outorgas e disponibilidade]
+        B --> D[3.2. Interseção de outorgas com ottobacias]
+        D --> E[3.3. Agregação de vazões por ottobacias]
     end
 ```
-### 3.1 Interseção de outorgas com ottobacias
+</center>
 
-A função **def agregacao_vazao_captacao** recebe duas camadas como parâmetros: outorgas e ottobacias_montante e realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse.
+### 3.1 Carregamento de camada de outorgas e disponibilidade
+
+#### 3.1.1. Importação da camada de disponibilidade hídrica
+
+>:warning: **Aviso:** Precisa arrumar esse item, tanto a descrição quanto o código.
+
+>:memo: **Nota**: Os dados de disponibilidade já estão por ottobacias, caso a camada não estivesse pronta, os dados teriam que ser tratados fazendo o cruzamento como é feito para os dados de setores censitários. 
+
+A função **importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+
+#### 3.1.2 Importação da camada de outorgas de captação
+
+A função **importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+
+### 3.2. Interseção de outorgas com ottobacias
+
+A função **agregacao_vazao_captacao** recebe duas camadas como parâmetros: outorgas e ottobacias_montante e realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse.
 
 A variável **processo_bacias_outorgas** utiliza o algoritmo de processamento do QGIS *native:intersection* para realizar a interseção entre as camadas outorgas e ottobacias_montante. O resultado é armazenado na variável **intersecao_bacias_outorgas** e é gerado uma camada temporária no QGIS.
 
@@ -178,7 +220,7 @@ A variável **context** faz a configuração de um contexto de expressão para t
 
 > A classe **QgsExpressionContext** é usada para definir o contexto no qual as expressões são avaliadas. Ela fornece um conjunto de variáveis e funções que podem ser usadas em expressões.
 
-### 3.2 Agregação de vazões por ottobacias
+### 3.3 Agregação de vazões por ottobacias
 
 A variável **processo_de_agrupamento_por_ottobacias** utiliza o algoritmo **native:aggregate** para agregar os dados resultantes da interseção. O agrupamento é feito com base no campo *cobacia* e duas agregações são realizadas: uma para obter a cobacia que será utilizada e outra para calcular a soma das vazões. O resultado será armazenado em **agrupamento por ottobacias** e será gerada uma camada temporária no QGIS.
 
@@ -192,22 +234,22 @@ Em *AGGREGATES* são definidas as operações de agregação a serem realizadas.
 - Sub_type e type: definem o tipo de dados da nova coluna.
 - Type_name: nome do tipo de dados.
 
-### 3.3 Execução do código
-
-Primeiro é feito a importação da camada de outorga usando a função **importar_outorgas**. 
-
-Depois é chamada a função **agregacao_vazao_captacao** com as camadas outorgas e ottobacias_montante como argumentos. Os resultados são armazenados nas variáveis **intersecao_bacias_outorgas** e **agrupamento_por_ottobacias**. 
-
 ## 4. Preparação de dados para balanço hídrico
+
+>:warning: **Aviso**: faltou adicionar união da captação nessa etapa, foi feito apenas para a disponibilidade hídrica.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
+<center>
+
 ```mermaid
     flowchart TD
-    subgraph A[Preparação de dados para o balanço hídrico]
-        B[União de atributos de disponibilidade e captações]
+    subgraph A[4. Preparação de dados para o balanço hídrico]
+        B[4.1. União de atributos de disponibilidade e captações]
     end
 ```
+
+</center>
 
 ### 4.1 União entre disponibilidade hídrica e captações
 
@@ -219,19 +261,32 @@ Posteriormente, é criada uma camada vetorial virtual chamada **disponibilidade_
 
 > OBS: a definição da classe **QgsProject** está explicada no item 1.2. da presente documentação.
 
-### 4.2 Execução do código
-
-Primeiro é chamada a função **uniao_disponibilidade_captacoes** e armazena o resultado na variável **disponibilidade_captacao**, e então, imprime uma mensagem indicando que a união das camadas foi realizada.
-
 ## 5. Cálculo do balanço hídrico
+
+>:warning: **Avisos:** 
+>- Criar uma nova funcionalidade para calcular o índice de criticidade, sendo que o resultado deve ser apresentado em uma camada com a classificação utilizada no artigo da ABRHidro.
+>- O resultado do balanço vai para o banco de dados e para uma camada no QGIS (visualização) e deve ser por ottobacias.
+
+>:memo: **Nota**: A ideia é salvar os resultados do balanço em views no banco, porém temos que fazer testes sobre o carregamento de views no QGIS. 
+
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
+<center>
+
 ```mermaid
     flowchart TD
-    subgraph A[Cálculo do balanço hídrico]
-        B[Ordenar tabela consolidada] --> C[Definir ottobacias de cabeceira]
-        C --> D[Calcular balanço hídrico]
+    subgraph A[5. Cálculo do balanço hídrico]
+        B[A. Ordenar tabela consolidada] --> C[B. Definir ottobacias de cabeceira]
+        C --> D[C. Calcular balanço hídrico]
     end
 ```
+</center>
 
+## 6. Representação do balanço
+
+>:warning: **Aviso**: Precisa ser criada essa etapa e seus processos. Deverá ser representada por meio do índice de criticidade.
+
+## 7. Seleção da ottobacia
+
+>:warning: **Aviso**: Precisa ser criada essa etapa e seus processos. Deve selecionar montante em destaque e mostrar um quadro com valores de resultados.

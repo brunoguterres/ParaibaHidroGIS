@@ -1,6 +1,26 @@
 from qgis.core import QgsExpressionContext, QgsExpressionContextUtils
 from qgis import processing
 
+def importar_disponibilidade_hidrica(parametros_conexao, nome_camada_disp):
+#   função de carregamento de camadas vetorial de disponibilidade hídrica do banco
+    uri = QgsDataSourceUri()
+    uri.setConnection(parametros_conexao['host_bd'], parametros_conexao['porta_bd'], parametros_conexao['nome_bd'], parametros_conexao['usuario_bd'], parametros_conexao['senha_bd'])
+    uri.setDataSource(parametros_conexao['schema_bd'], nome_camada_disp, 'geom')
+    disponibilidade_hidrica = QgsVectorLayer(uri.uri(False), 'camada_disp_hid', 'postgres')
+    QgsProject.instance().addMapLayer(disponibilidade_hidrica)
+    print('\n''-> Importação da camada de disponibilidade hídrica realizada.')
+    return disponibilidade_hidrica
+
+def importar_captacoes(parametros_conexao, nome_camada_outorgas):
+#   função de carregamento de camadas vetorial de outorgas de captação do banco
+    uri = QgsDataSourceUri()
+    uri.setConnection(parametros_conexao['host_bd'], parametros_conexao['porta_bd'], parametros_conexao['nome_bd'], parametros_conexao['usuario_bd'], parametros_conexao['senha_bd'])
+    uri.setDataSource(parametros_conexao['schema_bd'], nome_camada_outorgas, 'geom')
+    outorgas = QgsVectorLayer(uri.uri(False), 'camada_outorgas', 'postgres')
+    QgsProject.instance().addMapLayer(outorgas, False) 
+    print('\n''-> Importação da camada de captações realizada.')
+    return outorgas
+
 def agregacao_vazao_captacao(outorgas, ottobacias):
     # método que realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse
     processo_bacias_outorgas = processing.run("native:intersection",{
@@ -40,7 +60,12 @@ def agregacao_vazao_captacao(outorgas, ottobacias):
 
 ### EXECUÇÃO ###
 
+# IMPORTAÇÃO DA CAMADA DE DISPONIBILIDADE #
+nome_camada_disp = 'disp_hid_pb_5k'
+disponibilidade = importar_disponibilidade_hidrica(parametros_conexao, nome_camada_disp)
+
 # IMPORTAÇÃO DE CAMADAS DE OUTORGAS #
+nome_camada_outorgas = 'outorgas_pb'
 outorgas = importar_captacoes(parametros_conexao, nome_camada_outorgas)
 
 # INTERSEÇÃO DE OTTOBACIAS E OUTORGAS DE CAPTAÇÃO, AGREGAÇÃO DAS VAZÕES DE CAPTAÇÃO #
