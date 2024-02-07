@@ -1,7 +1,7 @@
 # Documentação - COB_HIDRO_001
 
 
->:memo: Alterar o nome do projeto.
+>:memo: Alterar o nome do projeto.\
 :bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).
 
 ## Resumo da ferramenta
