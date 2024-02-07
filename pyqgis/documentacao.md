@@ -1,8 +1,8 @@
 # Documentação - COB_HIDRO_001
 
 
-:memo: ==Alterar o nome do projeto.==
-:bulb: ==**Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).==
+>:memo: Alterar o nome do projeto.
+:bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).
 
 ## Resumo da ferramenta
 
@@ -49,7 +49,7 @@ Esta seção destina-se a descrição detalhada de todas as etapas apresentadas 
 
 ### 1.Procedimentos iniciais
 
-:memo: ==**Sugestão Tônico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.==
+>:bulb: **Sugestão Tônico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -77,7 +77,7 @@ A função **parametros_BDG** define os parâmetros de conexão *padrão* com o 
 
 #### 1.1.1. Definição do dicionário
 
-:warning: ==Verificar o nível.==
+:warning: Verificar o nível.
 
 A variável **parametros_conexao** cria um dicionário que contém parâmetros de conexão padrão (host, nome do banco, usuário, senha, porta e schema) com o banco de dados. 
 
