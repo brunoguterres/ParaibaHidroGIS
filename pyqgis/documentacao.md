@@ -77,13 +77,13 @@ A função **parametros_BDG** define os parâmetros de conexão *padrão* com o 
 
 #### 1.1.1. Definição do dicionário
 
-:warning: Verificar o nível.
+>:warning: Verificar o nível.
 
 A variável **parametros_conexao** cria um dicionário que contém parâmetros de conexão padrão (host, nome do banco, usuário, senha, porta e schema) com o banco de dados. 
 
 #### 1.1.2. Verificação da conexão PostGIS
 
-:warning: ==Verificar o nível.==
+>:warning: Verificar o nível.
 
 A função **verifica_parametros_bd** apresenta os parâmetros de conexão com o banco de dados e possibilita ao usuário decidir se mantém os parâmetros de conexão padrão ou se deseja inserir parâmetros personalizados.
 
@@ -96,7 +96,8 @@ Se a resposta do usuário for *sim*, a leitura do código será continuada e ser
 Se a resposta for *não*, o código segue para a função **patrametros_personalizados_bd**.
 
 #### 1.1.3. Definição dos parâmetros personalizados
-:warning: ==Verificar o nível.==
+
+>:warning: Verificar o nível.
 
 A função **parametros_personalizados_bd** utiliza a classe **QInputDialog** para obter novos valores para os parâmetros de conexão. A classe é utilizada para cada parâmetro de conexão (host, nome do banco, usuário, senha, porta e schema) e, portanto, o processo é repetido seis vezes. 
 
@@ -120,7 +121,7 @@ Após a criação da lista com as camadas do projeto, é feita a verificação d
 
 ## 2. Inicialização do Mapa
 
-:warning: ==revisar o código para criar função de carregamento (separar da importação).==
+>:warning: Revisar o código para criar função de carregamento (separar da importação).
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -142,7 +143,7 @@ Nesse processo será feita a importação das camadas de ottobacia e ottotrechos
 
 #### 2.1.1. Importação da camada de ottobacia
 
-:warning: ==Correção de estilo no carregamento da camada de ottobacias, deixar mais fina e mais clara.==
+>:warning: Correção de estilo no carregamento da camada de ottobacias, deixar mais fina e mais clara.
 
 A função **importar_camada_ottobacias** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
 
@@ -156,13 +157,13 @@ A variável *ottobacias* cria um objeto **QgsVectorLayer** usando a URI configur
 
 #### 2.1.2. Importação da camada de ottotrechos
 
-:warning: ==Correção de estilo no carregamento da camada de ottotrechos, colocar um azul mais escuro.==
+>:warning: Correção de estilo no carregamento da camada de ottotrechos, colocar um azul mais escuro.
 
 A função **importar_camada_ottotrechos** realiza o carregamento de camadas vetoriais de ottotrechos do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
 ### 2.2. Carregamento das camadas da bacia
 
-:warning: ==Ainda falta arrumar o código para esse processo.==
+>:warning: Ainda falta arrumar o código para esse processo.
 
 ### 2.3.  Importação da camada de plano de fundo
 
@@ -179,7 +180,7 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 
 ## 3. Definir vazão de captação por ottobacia
 
-:warning: ==Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.==
+>:warning: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -199,8 +200,8 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 #### 3.1.1. Importação da camada de disponibilidade hídrica
 
-:memo: ==Os dados de disponibilidade já estão por ottobacias, caso a camada não estivesse pronta, os dados teriam que ser tratados fazendo o cruzamento como é feito para os dados de setores censitários.==
-:warning: ==Precisa arrumar esse item, tanto a descrição quanto o código.==
+>:memo: Os dados de disponibilidade já estão por ottobacias, caso a camada não estivesse pronta, os dados teriam que ser tratados fazendo o cruzamento como é feito para os dados de setores censitários.\
+:warning: Precisa arrumar esse item, tanto a descrição quanto o código.
 
 A função **importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
@@ -236,7 +237,7 @@ Em *AGGREGATES* são definidas as operações de agregação a serem realizadas.
 
 ## 4. Preparação de dados para balanço hídrico
 
-:warning: ==faltou adicionar união da captação nessa etapa, foi feito apenas para a disponibilidade hídrica.==
+>:warning: faltou adicionar união da captação nessa etapa, foi feito apenas para a disponibilidade hídrica.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -262,9 +263,9 @@ Posteriormente, é criada uma camada vetorial virtual chamada **disponibilidade_
 
 ## 5. Cálculo do balanço hídrico
 
-:memo: ==A ideia é salvar os resultados do balanço em views no banco, porém temos que fazer testes sobre o carregamento de views no QGIS.== 
-:warning: ==Criar uma nova funcionalidade para calcular o índice de criticidade, sendo que o resultado deve ser apresentado em uma camada com a classificação utilizada no artigo da ABRHidro.==
-:warning: ==O resultado do balanço vai para o banco de dados e para uma camada no QGIS (visualização) e deve ser por ottobacias.==
+>:memo: A ideia é salvar os resultados do balanço em views no banco, porém temos que fazer testes sobre o carregamento de views no QGIS.\
+:warning: Criar uma nova funcionalidade para calcular o índice de criticidade, sendo que o resultado deve ser apresentado em uma camada com a classificação utilizada no artigo da ABRHidro.\
+:warning: O resultado do balanço vai para o banco de dados e para uma camada no QGIS (visualização) e deve ser por ottobacias.
 
 
 O fluxograma de processos desta etapa é apresentado a seguir:
@@ -282,8 +283,8 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ## 6. Representação do balanço
 
-:warning: ==Precisa ser criada essa etapa e seus processos. Deverá ser representada por meio do índice de criticidade.==
+>:warning: Precisa ser criada essa etapa e seus processos. Deverá ser representada por meio do índice de criticidade.
 
 ## 7. Seleção da ottobacia
 
-:warning: ==Precisa ser criada essa etapa e seus processos. Deve selecionar montante em destaque e mostrar um quadro com valores de resultados.==
+>:warning: Precisa ser criada essa etapa e seus processos. Deve selecionar montante em destaque e mostrar um quadro com valores de resultados.
