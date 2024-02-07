@@ -120,7 +120,7 @@ Após a criação da lista com as camadas do projeto, é feita a verificação d
 
 ## 2. Inicialização do Mapa
 
-:warning: ==**Aviso**: revisar o código para criar função de carregamento (separar da importação).==
+:warning: ==revisar o código para criar função de carregamento (separar da importação).==
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -162,7 +162,7 @@ A função **importar_camada_ottotrechos** realiza o carregamento de camadas vet
 
 ### 2.2. Carregamento das camadas da bacia
 
-:warning: ==**Aviso**: ainda falta arrumar o código para esse processo.==
+:warning: ==Ainda falta arrumar o código para esse processo.==
 
 ### 2.3.  Importação da camada de plano de fundo
 
@@ -179,7 +179,7 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 
 ## 3. Definir vazão de captação por ottobacia
 
-:warning: ==**Aviso**: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.==
+:warning: ==Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.==
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -188,7 +188,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD
     subgraph A[3. Definir vazões de disponibilidade e captações]
-        B[3.1. Carregamento de camada de outorgas e disponibilidade]
+        B[3.1. Carregamento de camadas de outorgas e disponibilidade]
         B --> D[3.2. Interseção de outorgas com ottobacias]
         D --> E[3.3. Agregação de vazões por ottobacias]
     end
