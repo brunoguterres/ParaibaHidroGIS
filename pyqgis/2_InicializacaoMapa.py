@@ -26,7 +26,7 @@ def importar_camada_fundo():
     service_url = 'mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
     service_uri = 'type=xyz&zmin=0&zmax=21&url=https://'+requests.utils.quote(service_url)
     iface.addRasterLayer(service_uri, 'Google_Road', 'wms')
-    print('--> Camada de fundo adicionada.')
+    print('--> Carregamento de camada basemap realizado.')
 
 ### EXECUÇÃO ###
 

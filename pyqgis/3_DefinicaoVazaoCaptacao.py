@@ -18,10 +18,11 @@ def carregar_camada(camada, simbologia):
     QgsProject.instance().addMapLayer(camada)
     print('--> Carregamento de "'+camada.name()+'" realizado.')
 
-def agregacao_vazao_captacao(outorgas, ottobacias):
+
+def processamento_captacao(captacoes, ottobacias):
     # método que realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse
     processo_bacias_outorgas = processing.run("native:intersection",{
-                                                    'INPUT': outorgas,
+                                                    'INPUT': captacoes,
                                                     'OVERLAY':ottobacias,
                                                     'OUTPUT':'memory: outorgas_e_ottobacias'})
     intersecao_bacias_outorgas = processo_bacias_outorgas['OUTPUT']
@@ -50,10 +51,9 @@ def agregacao_vazao_captacao(outorgas, ottobacias):
                                'sub_type': 0,
                                'type': 6,
                                'type_name': 'double precision'}],
-		        'OUTPUT':'memory: outorgas_agregadas'})
-    agrupamento_por_ottobacias = processo_de_agrupamento_por_ottobacias['OUTPUT']
-    QgsProject.instance().addMapLayer(agrupamento_por_ottobacias, True)
-    return intersecao_bacias_outorgas, agrupamento_por_ottobacias
+		        'OUTPUT':'memory: captacao_ottobacia'})
+    captacao_ottobacia = processo_de_agrupamento_por_ottobacias['OUTPUT']
+    return captacao_ottobacia
 
 ### EXECUÇÃO ###
 
@@ -61,8 +61,11 @@ nome_tabela_captacoes = 'outorgas_pb'
 nome_tabela_disponibilidade = 'disp_hid_pb_5k'
 captacoes = importar_camada_bdg(nome_tabela_bdg=nome_tabela_captacoes, nome_camada='camada_captacoes')
 disponibilidade = importar_camada_bdg(nome_tabela_bdg=nome_tabela_disponibilidade, nome_camada='camada_disponibilidade')
+captacao_ottobacia = processamento_captacao(captacoes, ottobacias)
 simbologia_captacoes = {'r':255, 'g':0, 'b':0, 'a':255}
 simbologia_disponibilidade = {'r':0, 'g':255, 'b':0, 'a':255}
+simbologia_captacao_ottobacia = {'r':255, 'g':180, 'b':0, 'a':255}
 carregar_camada(captacoes, simbologia_captacoes)
 carregar_camada(disponibilidade, simbologia_disponibilidade)
+carregar_camada(captacao_ottobacia, simbologia_captacao_ottobacia)
 #intersecao_bacias_outorgas, agrupamento_por_ottobacias = agregacao_vazao_captacao(outorgas, ottobacias)
