@@ -75,8 +75,7 @@ def limpeza_residuos():
         mensagem_saida_limpeza = '--> Não existem camadas residuais de execuções anteriores.'
     canvas = qgis.utils.iface.mapCanvas()
     canvas.refresh()
-    print('\n''-> Limpeza de camadas realizada.')
-    return mensagem_saida_limpeza
+    print(mensagem_saida_limpeza)
 
 ### EXECUÇÃO ###
 
