@@ -186,25 +186,23 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ```mermaid
     flowchart TD
-    subgraph A[3. Definir vazões de disponibilidade e captações]
-        B[3.1. Carregamento de camadas de outorgas e disponibilidade]
-        B --> D[3.2. Interseção de outorgas com ottobacias]
-        D --> E[3.3. Agregação de vazões por ottobacias]
+    subgraph A[3. Definir vazões de captações e disponibilidade]
+        B[3.1. Importação de camadas de captações e disponibilidade]
+        B --> C[3.2. Interseção de outorgas com ottobacias]
+        C --> D[3.3. Agregação de vazões por ottobacias]
     end
 ```
 </center>
 
-### 3.1 Carregamento de camada de outorgas e disponibilidade
-
-#### 3.1.1. Importação da camada de disponibilidade hídrica
-
->:warning: Precisa arrumar esse item (código e documentação).
-
-A função **importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+### 3.1 Importação de camadas de captações e disponibilidade
 
 #### 3.1.2 Importação da camada de outorgas de captação
 
 A função **importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+
+#### 3.1.1. Importação da camada de disponibilidade hídrica
+
+A função **importar_disponibilidade** realiza a importação da camada vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
 ### 3.2. Interseção de outorgas com ottobacias
 

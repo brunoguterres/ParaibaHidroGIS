@@ -6,7 +6,7 @@ def parametros_padrao_bd():
                           'senha_bd': 'cobrape',
                           'porta_bd': '5432',
                           'schema_bd': 'public'}
-    status = '-> Parâmetros PADRÃO de conexão definidos.'
+    status = '--> Parâmetros PADRÃO de conexão definidos.'
     return parametros_conexao, status
 
 def verifica_parametros_bd(parametros_conexao, status):
