@@ -57,7 +57,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ```mermaid
     flowchart TD    
-    subgraph A[<b>1. Procedimentos Iniciais</b>]
+    subgraph A[1. Procedimentos Iniciais]
         B[1.1. Definição dos parâmetros de conexão com o banco de dados] --> C[1.2. Limpeza de camadas residuais];
     end
 ```
@@ -121,8 +121,6 @@ Após a criação da lista com as camadas do projeto, é feita a verificação d
 
 ## 2. Inicialização do Mapa
 
->:warning: Revisar o código para criar função de carregamento (separar da importação).
-
 O fluxograma de processos desta etapa é apresentado a seguir:
 
 <center>
@@ -130,14 +128,14 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD
     subgraph A[2. Inicialização do Mapa]
-        B[2.1. Importação de camadas da bacia] --> C[2.2. Carregamento de camada de ottotrechos no mapa];
-        C --> D[2.3. Carregamento de camada de fundo no mapa]
+        B[2.1. Importação de camadas da bacia] --> C[2.2. Carregamento de camadas da bacia no mapa];
+        C --> D[2.3. Carregamento de basemap]
     end
 ```
 
 </center>
 
-### 2.1. Importação da camada de camadas da bacia
+### 2.1. Importação de camadas da bacia
 
 Nesse processo será feita a importação das camadas de ottobacia e ottotrechos.
 
@@ -163,9 +161,9 @@ A função **importar_camada_ottotrechos** realiza o carregamento de camadas vet
 
 ### 2.2. Carregamento das camadas da bacia
 
->:warning: Ainda falta arrumar o código para esse processo.
+>:warning: Verificar com **Beatriz** o que precisa ser feito.
 
-### 2.3.  Importação da camada de plano de fundo
+### 2.3.  Carregamento de basemap
 
 A função **importar_camada_fundo** tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS. 
 
@@ -178,7 +176,7 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 - Google_Road: nome da camada a ser adicionada
 - wms: tipo de serviço, indicando que é um Web Map Service
 
-## 3. Definir vazão de captação por ottobacia
+## 3. Definir vazões de disponibilidade e captações
 
 >:warning: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.
 
@@ -200,8 +198,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 #### 3.1.1. Importação da camada de disponibilidade hídrica
 
->:memo: Os dados de disponibilidade já estão por ottobacias, caso a camada não estivesse pronta, os dados teriam que ser tratados fazendo o cruzamento como é feito para os dados de setores censitários.\
-:warning: Precisa arrumar esse item, tanto a descrição quanto o código.
+>:warning: Precisa arrumar esse item (código e documentação).
 
 A função **importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
