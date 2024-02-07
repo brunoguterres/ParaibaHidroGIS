@@ -1,5 +1,3 @@
-import json
-
 def parametros_padrao_bd():
 # função que define os parâmetros padrão de conexão com banco de dados
     parametros_conexao = {'host_bd': 'localhost',

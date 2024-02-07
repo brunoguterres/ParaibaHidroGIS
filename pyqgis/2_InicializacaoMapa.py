@@ -1,5 +1,4 @@
 import requests
-from qgis.core import QgsVectorLayer
 
 def importar_camada_ottobacias(parametros_conexao, nome_camada_ottobacias):
 #   função de carregamento de camadas vetorial de ottobacias do banco
