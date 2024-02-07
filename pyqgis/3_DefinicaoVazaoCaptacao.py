@@ -1,6 +1,3 @@
-from qgis.core import QgsExpressionContext, QgsExpressionContextUtils
-from qgis import processing
-
 def importar_camada_bdg(nome_tabela_bdg, nome_camada):
     uri = QgsDataSourceUri()
     uri.setConnection(parametros_conexao['host_bd'],
@@ -10,7 +7,7 @@ def importar_camada_bdg(nome_tabela_bdg, nome_camada):
                       parametros_conexao['senha_bd'])
     uri.setDataSource(parametros_conexao['schema_bd'], nome_tabela_bdg, 'geom')
     camada_importada = QgsVectorLayer(uri.uri(False), nome_camada, 'postgres')
-    print('\n''-> Importação da camada "'+camada_importada.name()+'" realizada.')
+    print('--> Importação da camada "'+camada_importada.name()+'" realizada.')
     return camada_importada
 
 def carregar_camada(camada, simbologia):
@@ -19,7 +16,7 @@ def carregar_camada(camada, simbologia):
                                                simbologia['b'],
                                                simbologia['a']))
     QgsProject.instance().addMapLayer(camada)
-    print('\n''-> Carregamento de "'+camada.name()+'" realizado.')
+    print('--> Carregamento de "'+camada.name()+'" realizado.')
 
 def agregacao_vazao_captacao(outorgas, ottobacias):
     # método que realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse
@@ -69,4 +66,3 @@ simbologia_disponibilidade = {'r':0, 'g':255, 'b':0, 'a':255}
 carregar_camada(captacoes, simbologia_captacoes)
 carregar_camada(disponibilidade, simbologia_disponibilidade)
 #intersecao_bacias_outorgas, agrupamento_por_ottobacias = agregacao_vazao_captacao(outorgas, ottobacias)
-print('\n''-> Processamentos de captações realizados.')
