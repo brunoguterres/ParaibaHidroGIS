@@ -1,16 +1,13 @@
 def parametros_padrao_bd():
-# função que define os parâmetros padrão de conexão com banco de dados
     parametros_conexao = {'host_bd': 'localhost',
                           'nome_bd': 'bdg_prh_rpb',
                           'usuario_bd': 'postgres',
                           'senha_bd': 'cobrape',
                           'porta_bd': '5432',
                           'schema_bd': 'public'}
-    status = '--> Parâmetros PADRÃO de conexão definidos.'
-    return parametros_conexao, status
+    return parametros_conexao
 
-def verifica_parametros_bd(parametros_conexao, status):
-#função que apresenta os parâmetros de conexão com banco de dados
+def verifica_parametros_bd(parametros_conexao):
     verifica_postgis = QMessageBox()
     verifica_postgis.setText('Deseja continuar com os parâmetros de conexão abaixo?'
                            '\n'
@@ -23,12 +20,10 @@ def verifica_parametros_bd(parametros_conexao, status):
     verifica_postgis.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
     return_value = verifica_postgis.exec()
     if return_value == QMessageBox.No:
-        parametros_conexao, status = parametros_personalizados_bd(parametros_conexao)
-    print(status)
+        parametros_conexao = parametros_personalizados_bd(parametros_conexao)
     return parametros_conexao
 
 def parametros_personalizados_bd(parametros_conexao):
-# função de personalização dos parâmetros de conexão com banco de dados 
     parametro_entrada = QInputDialog().getText(None,
                                                'Parâmetro de conexão',
                                                'Digite o host:')
@@ -59,12 +54,10 @@ def parametros_personalizados_bd(parametros_conexao):
                                                'Digite o schema:')
     if parametro_entrada[0] != '':
         parametros_conexao['schema_bd'] = parametro_entrada[0]
-    status = '-> Parâmetros PERSONALIZADOS de conexão definidos.'
-    verifica_parametros_bd(parametros_conexao, status)
-    return parametros_conexao, status
+    verifica_parametros_bd(parametros_conexao)
+    return parametros_conexao
 
 def limpeza_residuos():
-    #   função de exclusao de camadas residuais do projeto
     camada_residual = QgsProject.instance().mapLayers().values()
     lista_camadas_residuais = [l for l in camada_residual]
     if len(lista_camadas_residuais) > 0:
@@ -79,6 +72,7 @@ def limpeza_residuos():
 
 ### EXECUÇÃO ###
 
-parametros_conexao, status = parametros_padrao_bd()
-parametros_conexao = verifica_parametros_bd(parametros_conexao, status)
+parametros_conexao = parametros_padrao_bd()
+parametros_conexao = verifica_parametros_bd(parametros_conexao)
+print('--> Parâmetros de conexão definidos.')
 limpeza_residuos()
