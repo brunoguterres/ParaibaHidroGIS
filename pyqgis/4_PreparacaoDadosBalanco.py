@@ -1,13 +1,17 @@
-
-def uniao_disponibilidade_captacoes():
-    query_uniao =    '?query=SELECT camada_ottotrechos.cobacia, camada_ottotrechos.cotrecho, camada_ottotrechos.nutrjus, camada_disp_hid.disp_x '\
-                        'FROM camada_ottotrechos '\
-                        'LEFT JOIN camada_disp_hid ON camada_ottotrechos.cobacia = camada_disp_hid.cobacia_2;'
-    disponibilidade_captacao = QgsVectorLayer(query_uniao, 'uniao_disp_cap', 'virtual')
-    QgsProject.instance().addMapLayer(disponibilidade_captacao)
-    return disponibilidade_captacao
+def uniao_trecho_disp_cap():
+    query_uniao =   '?query=SELECT  camada_ottotrechos.cobacia, '\
+                                    'camada_ottotrechos.cotrecho, '\
+                                    'camada_ottotrechos.nutrjus, '\
+                                    'camada_disponibilidade.disp_x, '\
+                                    'COALESCE(camada_captacao_ottobacia.cap_x, 0) AS captacao '\
+                    'FROM camada_ottotrechos '\
+                    'LEFT JOIN camada_disponibilidade ON camada_ottotrechos.cobacia = camada_disponibilidade.cobacia_2 '\
+                    'LEFT JOIN camada_captacao_ottobacia ON camada_ottotrechos.cobacia = camada_captacao_ottobacia.cobacia_2;'
+    trecho_disponibilidade_captacao = QgsVectorLayer(query_uniao, 'uniao_trecho_disp_cap', 'virtual')
+    QgsProject.instance().addMapLayer(trecho_disponibilidade_captacao)
+    return trecho_disponibilidade_captacao
 
 ### EXECUÇÃO ###
 
-disponibilidade_captacao = uniao_disponibilidade_captacoes()
+trecho_disponibilidade_captacao = uniao_trecho_disp_cap()
 print('\n''-> União de disponibilidades com captações realizada.')

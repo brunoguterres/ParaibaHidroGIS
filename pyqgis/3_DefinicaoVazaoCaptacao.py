@@ -58,7 +58,7 @@ def processamento_captacao(captacoes, ottobacias):
 ### EXECUÇÃO ###
 
 nome_tabela_captacoes = 'outorgas_pb'
-nome_tabela_captacao_ottobacia = ' captacao_ottobacia'
+nome_tabela_captacao_ottobacia = 'captacao_ottobacia'
 nome_tabela_disponibilidade = 'disp_hid_pb_5k'
 captacao_ottobacia = importar_camada_bdg(nome_tabela_bdg=nome_tabela_captacao_ottobacia, nome_camada='camada_captacao_ottobacia')
 disponibilidade = importar_camada_bdg(nome_tabela_bdg=nome_tabela_disponibilidade, nome_camada='camada_disponibilidade')
