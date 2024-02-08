@@ -2,7 +2,7 @@
 
 
 >:memo: Alterar o nome do projeto.\
-:bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).
+:bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras). 
 
 ## Resumo da ferramenta
 
@@ -49,7 +49,7 @@ Esta seção destina-se a descrição detalhada de todas as etapas apresentadas 
 
 ### 1.Procedimentos iniciais
 
->:bulb: **Sugestão Tônico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
+>:bulb: **Sugestão Tonico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -196,6 +196,8 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ### 3.1 Importação de camadas de captações e disponibilidade
 
+>:bulb: **Ideia**: Os dados de disponibilidade já estão por ottobacias, caso não estivesse pronto, os dados teriam que ser tratados fazendo o cruzamento como se fosse os setores censitários.
+
 #### 3.1.2 Importação da camada de outorgas de captação
 
 A função **importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
@@ -258,10 +260,10 @@ Posteriormente, é criada uma camada vetorial virtual chamada **disponibilidade_
 
 ## 5. Cálculo do balanço hídrico
 
->:memo: A ideia é salvar os resultados do balanço em views no banco, porém temos que fazer testes sobre o carregamento de views no QGIS.\
+>:bulb: A ideia é salvar os resultados do balanço em views no banco, porém temos que fazer testes sobre o carregamento de views no QGIS.\
 :warning: Criar uma nova funcionalidade para calcular o índice de criticidade, sendo que o resultado deve ser apresentado em uma camada com a classificação utilizada no artigo da ABRHidro.\
 :warning: O resultado do balanço vai para o banco de dados e para uma camada no QGIS (visualização) e deve ser por ottobacias.
-
+:memo: **Reunião 08/02**: Fazer ligação com a camada de ottobacias; 
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
