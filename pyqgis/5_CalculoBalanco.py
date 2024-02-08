@@ -24,10 +24,10 @@ def calculo_balanco(matriz): #esta função realiza o cálculo do balanço
 ### EXECUÇÃO ###
 
 matriz = []
-campos = disponibilidade_captacao.fields()
+campos = trecho_disponibilidade_captacao.fields()
 matriz.append([campo.name() for campo in campos])
 
-for feicao in disponibilidade_captacao.getFeatures():
+for feicao in trecho_disponibilidade_captacao.getFeatures():
     matriz.append([feicao[campo.name()] for campo in campos])
 
 matriz = criar_campos(matriz)
@@ -37,13 +37,12 @@ print(matriz)
 campo_cobacia = 0
 campo_cotrecho = 1
 campo_trechojus = 2
-#campo_trecho =
+campo_cabeceira = 3
 campo_disponibilidade = 4
-campo_cabeceira = 4
-campo_vazao_montante = 5
-campo_vazao_jusante = 6
-campo_captacao = 7
-campo_deficit = 9
+campo_captacao = 5
+campo_vazao_montante = 6
+campo_vazao_jusante = 7
+campo_deficit = 8
 
 '''
 resultado_balanco = calculo_balanco(matriz)
