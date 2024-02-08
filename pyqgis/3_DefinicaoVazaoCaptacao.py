@@ -58,14 +58,15 @@ def processamento_captacao(captacoes, ottobacias):
 ### EXECUÇÃO ###
 
 nome_tabela_captacoes = 'outorgas_pb'
+nome_tabela_captacao_ottobacia = ' captacao_ottobacia'
 nome_tabela_disponibilidade = 'disp_hid_pb_5k'
-captacoes = importar_camada_bdg(nome_tabela_bdg=nome_tabela_captacoes, nome_camada='camada_captacoes')
+captacao_ottobacia = importar_camada_bdg(nome_tabela_bdg=nome_tabela_captacao_ottobacia, nome_camada='camada_captacao_ottobacia')
 disponibilidade = importar_camada_bdg(nome_tabela_bdg=nome_tabela_disponibilidade, nome_camada='camada_disponibilidade')
-captacao_ottobacia = processamento_captacao(captacoes, ottobacias)
-simbologia_captacoes = {'r':255, 'g':0, 'b':0, 'a':255}
+#captacao_ottobacia = processamento_captacao(captacoes, ottobacias)
+#simbologia_captacoes = {'r':255, 'g':0, 'b':0, 'a':255}
 simbologia_disponibilidade = {'r':0, 'g':255, 'b':0, 'a':255}
 simbologia_captacao_ottobacia = {'r':255, 'g':180, 'b':0, 'a':255}
-carregar_camada(captacoes, simbologia_captacoes)
+#carregar_camada(captacoes, simbologia_captacoes)
 carregar_camada(disponibilidade, simbologia_disponibilidade)
 carregar_camada(captacao_ottobacia, simbologia_captacao_ottobacia)
 #intersecao_bacias_outorgas, agrupamento_por_ottobacias = agregacao_vazao_captacao(outorgas, ottobacias)
