@@ -18,7 +18,6 @@ def carregar_camada(camada, simbologia):
     QgsProject.instance().addMapLayer(camada)
     print('--> Carregamento de "'+camada.name()+'" realizado.')
 
-
 def processamento_captacao(captacoes, ottobacias):
     # método que realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse
     processo_bacias_outorgas = processing.run("native:intersection",{

@@ -16,4 +16,4 @@ def uniao_trecho_disp_cap():
 ### EXECUÇÃO ###
 
 trecho_disponibilidade_captacao = uniao_trecho_disp_cap()
-print('\n''-> União de disponibilidades com captações realizada.')
+print('--> União de disponibilidades com captações realizada.')
