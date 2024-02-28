@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teste WebGIS</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+</head>
+
+<body>
+    <div id="map-container">
+        <div id="map"></div>
+        <div id="caixa-legenda">
+            <div id="titulo-legenda">Legenda:</div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_rodovias.png" alt="icone_rodovias">
+                <span>Rodovias</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_drenagem.png" alt="icone_drenagem_principal">
+                <span>Drenagem Principal</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_acudes.PNG" alt="icone_acudes">
+                <span>Açudes</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_bacia.png" alt="icone_bacias">
+                <span>Bacia do Rio Paraíba</span>
+            </div>
+            <div class="item-legenda">
+                <img src="icones_legenda/icone_limites_municipais.PNG" alt="icone_municipios">
+                <span>Municípios</span>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="L.Geoserver.js"></script>
+    <script src="scripts.js"></script>  
+</body>
+
+</html>
