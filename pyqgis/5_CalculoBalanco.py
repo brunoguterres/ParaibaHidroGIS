@@ -25,10 +25,18 @@ def calcular_balanco(matriz):
                         break
     return matriz
 
+def criar_camada_resultado():
+    query = '?query= SELECT camada_ottobacias.cobacia, camada_ottobacias.geometry FROM camada_ottobacias;'
+    resultado_balanco = QgsVectorLayer(query, 'resultado_balanco', 'virtual')
+    QgsProject.instance().addMapLayer(resultado_balanco)
+    return resultado_balanco
+
+#ATENÇÃO: Retirar esta função depois da realização de testes e finalização da etapa
 def print_matriz(matriz):
     for row in matriz:
         print(" ".join(map(str, row)))
 
+#ATENÇÃO: Retirar esta função depois da realização de testes e finalização da etapa
 def print_matriz_2(matriz):
     for row in matriz:
         for item in row:
@@ -37,8 +45,11 @@ def print_matriz_2(matriz):
 
 def criar_camada_resultado():
     query = '?query= SELECT camada_ottobacias.cobacia, camada_ottobacias.geometry FROM camada_ottobacias;'
-    resultado_balanco = QgsVectorLayer(query, 'uniao_trecho_disp_cap', 'virtual')
+    resultado_balanco = QgsVectorLayer(query, 'resultado_balanco', 'virtual')
     QgsProject.instance().addMapLayer(resultado_balanco)
+
+    nomes_campos = ['cobacia', 'cotrecho', ]
+
     return resultado_balanco
 
 ### EXECUÇÃO ###
@@ -62,12 +73,11 @@ campo_vazao_montante = 6
 campo_vazao_jusante = 7
 campo_deficit = 8
 
-matriz_resultado = calcular_balanco(matriz)
+matriz_balanco = calcular_balanco(matriz)
 
 
 
 print('--> Cálculo do balanço hídrico realizado.')
-
 
 
 
