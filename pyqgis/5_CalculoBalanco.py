@@ -31,26 +31,33 @@ def criar_camada_resultado():
     QgsProject.instance().addMapLayer(resultado_balanco)
     return resultado_balanco
 
-#ATENÇÃO: Retirar esta função depois da realização de testes e finalização da etapa
-def print_matriz(matriz):
-    for row in matriz:
-        print(" ".join(map(str, row)))
-
-#ATENÇÃO: Retirar esta função depois da realização de testes e finalização da etapa
-def print_matriz_2(matriz):
-    for row in matriz:
-        for item in row:
-            print(f"{item} ({type(item).__name__})", end=" ")
-        print()
-
 def criar_camada_resultado():
-    query = '?query= SELECT camada_ottobacias.cobacia, camada_ottobacias.geometry FROM camada_ottobacias;'
-    resultado_balanco = QgsVectorLayer(query, 'resultado_balanco', 'virtual')
-    QgsProject.instance().addMapLayer(resultado_balanco)
-
-    nomes_campos = ['cobacia', 'cotrecho', ]
-
+    #MUDAR PARA CRIAÇÃO DE UMA CAMADA TEMPORÁRIA.
+    query = '?query= SELECT camada_ottobacias.geometry, '\
+                           'camada_ottobacias.cobacia '\
+                     'FROM camada_ottobacias;'
+    camada_resultado = QgsVectorLayer(query, 'resultado_balanco', 'virtual')
+    resultado_balanco = editar_camada_resultado(camada_resultado)
     return resultado_balanco
+
+def editar_camada_resultado(camada_edicao):
+    provedor = camada_edicao.dataProvider()
+    campos = [('cobacia', QVariant.String),
+              ('cotrecho', QVariant.String),
+              ('trechojus', QVariant.String),
+              ('cabeceira', QVariant.String),
+              ('disponibilidade', QVariant.Double),
+              ('captacao', QVariant.Double),
+              ('vazao_montante', QVariant.Double),
+              ('vazao_jusante', QVariant.Double),
+              ('deficit',QVariant.Double)]
+    
+    for nome_campo, tipo_campo in campos:
+        campo = QgsField(nome_campo, tipo_campo)
+        provedor.addAttributes([campo])
+    
+    camada_edicao.updateFields()
+    return camada_edicao
 
 ### EXECUÇÃO ###
 
@@ -74,8 +81,8 @@ campo_vazao_jusante = 7
 campo_deficit = 8
 
 matriz_balanco = calcular_balanco(matriz)
-
-
+resultado_balanco = criar_camada_resultado()
+QgsProject.instance().addMapLayer(resultado_balanco)
 
 print('--> Cálculo do balanço hídrico realizado.')
 
@@ -83,20 +90,10 @@ print('--> Cálculo do balanço hídrico realizado.')
 
 
 
-from qgis.core import QgsVectorLayer, QgsVectorDataProvider, QgsField, QgsFeature, QgsGeometry
 
-# Suponha que você já tem uma camada de destino existente chamada "camada_destino"
-# Se necessário, substitua "caminho_para_camada_destino" pelo caminho para a sua camada destino
-caminho_para_camada_destino = "caminho_para_camada_destino"
-
-# Carregue a camada destino existente
-camada_destino = QgsVectorLayer(caminho_para_camada_destino, "nome_camada_destino", "ogr")
-
+'''
 # Crie um provedor de dados para a camada destino
 provedor_camada_destino = camada_destino.dataProvider()
-
-# Suponha que você já tenha sua matriz de resultados
-matriz_resultados = []
 
 # Adicione os campos à camada destino, se necessário
 campos = matriz_resultados[0]  # Os campos são a primeira linha da matriz
@@ -126,9 +123,4 @@ for linha in matriz_resultados[1:]:
 
     # Adicione a feição à camada destino
     provedor_camada_destino.addFeatures([feicao])
-
-# Informe ao QGIS que a camada destino foi alterada
-camada_destino.updateExtents()
-
-# Atualize a interface do usuário do QGIS
-iface.layerTreeView().refreshLayerSymbology(camada_destino.id())
+'''
