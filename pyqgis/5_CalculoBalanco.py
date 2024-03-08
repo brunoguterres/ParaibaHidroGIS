@@ -36,8 +36,6 @@ def calcular_balanco(matriz):
 
 def criar_resultado(matriz_balanco):
 
-    matriz_banco = np.array2string(matriz_balanco, separator=',').replace('[','{').replace(']','')
-    print(matriz_banco)
 
     conexao = psycopg2.connect(
         dbname = str(parametros_conexao['nome_bd']),
@@ -48,17 +46,24 @@ def criar_resultado(matriz_balanco):
     cursor = conexao.cursor()
 
     # Adicione campos à camada
-    campos =   [('cobacia', 'text'),
-                ('cotrecho', 'text'),
-                ('trechojus', 'text'),
-                ('cabeceira', 'bolean'),
-                ('disponibilidade', 'double precision'),
-                ('captacao', 'double precision'),
-                ('vazao_montante', 'double precision'),
-                ('vazao_jusante', 'double precision'),
-                ('deficit', 'double precision')]
+    campos =   ['"cobacia VARCHAR(20)"',
+                '"cotrecho VARCHAR(20)"',
+                '"trechojus VARCHAR(20)"',
+                '"cabeceira BOOLEAN"',
+                '"disponibilidade DOUBLE PRECISION"',
+                '"captacao DOUBLE PRECISION"',
+                '"vazao_montante DOUBLE PRECISION"',
+                '"vazao_jusante DOUBLE PRECISION"',
+                '"deficit DOUBLE PRECISION"']
     
-
+    # Criar uma view a partir da matriz
+    cursor.execute(f"""
+        CREATE OR REPLACE VIEW view_exemplo AS
+        SELECT {', '.join(campos)}
+        FROM (
+            VALUES {', '.join([f"('{row[0]}', {row[1]})" for row in matriz_balanco])}
+        ) AS data({', '.join(campos)})
+    """)
 
 
 ### EXECUÇÃO ###
