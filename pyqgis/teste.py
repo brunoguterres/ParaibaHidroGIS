@@ -1,43 +1,28 @@
-import psycopg2
+# Defina o nome da camada e o nome do atributo que você deseja obter
+nome_camada = "ottobacias_icr"
+nome_atributo = "cobacia"
 
-# Conectar ao banco de dados
-conn = psycopg2.connect(
-    dbname="bdg_prh_rpb",
-    user="postgres",
-    password="guterres",
-    host="localhost"
-)
+# Obtenha a camada
+camada = QgsProject.instance().mapLayersByName('ottobacias_icr')[0]
 
-# Abrir um cursor para executar operações no banco de dados
-cur = conn.cursor()
+# Crie uma ferramenta de identificação de feição
+class MapToolIdentify(QgsMapToolIdentifyFeature):
+    def __init__(self, canvas, layer):
+        super().__init__(canvas)
+        self.layer = layer
 
-# Definir os nomes das colunas e seus tipos
-campos = [
-    'nome',
-    'idade',
-    'altura'
-]
+    def canvasReleaseEvent(self, event):
+        # Chame o método da superclasse para realizar a identificação da feição
+        super().canvasReleaseEvent(event)
+        # Obtenha a feição identificada
+        feicao = self.identify(event.x(), event.y(), [self.layer], QgsMapToolIdentifyFeature.TopDownAll)[0].mFeature
+        # Obtenha o valor do atributo específico da feição
+        valor_atributo = feicao.attribute(nome_atributo)
+        # Imprima o valor do atributo na console
+        print(f"Valor do atributo '{nome_atributo}' da feição selecionada: {valor_atributo}")
 
-# Definir os dados da matriz (lista de listas)
-dados = [
-    ['João', 30, 1.75],
-    ['Maria', 28, 1.80],
-    ['Pedro', 22, 1.85]
-]
+# Inicialize a ferramenta de identificação de feição
+canvas = iface.mapCanvas()
+map_tool = MapToolIdentify(canvas, camada)
+canvas.setMapTool(map_tool)
 
-# Criar uma view a partir da matriz
-cur.execute(f"""
-    DROP VIEW IF EXISTS view_exemplo
-    CREATE VIEW view_exemplo AS
-    SELECT {', '.join(campos)}
-    FROM (
-        VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]})" for row in dados])}
-    ) AS data({', '.join(campos)})
-""")
-
-# Commitar as operações
-conn.commit()
-
-# Fechar o cursor e a conexão com o banco de dados
-cur.close()
-conn.close()
