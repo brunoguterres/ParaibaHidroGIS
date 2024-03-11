@@ -93,6 +93,21 @@ def criar_resultado(matriz_balanco):
         ) AS data({', '.join(campos)})
     """)
 
+    conexao.commit()
+
+    cursor.execute(f"""
+        DROP VIEW IF EXISTS ottobacias_icr;
+        CREATE VIEW ottobacias_icr AS
+        SELECT 
+            ottobacias_pb_5k.cobacia,
+            ottobacias_pb_5k.geom,
+            resultado_balanco.icr
+        FROM 
+            ottobacias_pb_5k
+        LEFT JOIN resultado_balanco
+            ON ottobacias_pb_5k.cobacia = resultado_balanco.cobacia;
+    """)
+
     # Commitar as operações
     conexao.commit()
 
