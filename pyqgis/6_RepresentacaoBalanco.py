@@ -35,8 +35,9 @@ def carregar_camada_balanco():
     renderer = QgsCategorizedSymbolRenderer(campo, categorias)
     ottobacias_icr.setRenderer(renderer)
     ottobacias_icr.triggerRepaint()
+    return ottobacias_icr
 
 
 ### EXECUÇÃO ###
 
-carregar_camada_balanco()
+ottobacias_icr = carregar_camada_balanco()
