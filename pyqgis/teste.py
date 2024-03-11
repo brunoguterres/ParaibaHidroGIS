@@ -4,7 +4,7 @@ import psycopg2
 conn = psycopg2.connect(
     dbname="bdg_prh_rpb",
     user="postgres",
-    password="cobrape",
+    password="guterres",
     host="localhost"
 )
 
@@ -12,25 +12,27 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 # Definir os nomes das colunas e seus tipos
-columns_info = [
-    '"nome VARCHAR(100)"',
-    '"idade INTEGER"'
+campos = [
+    'nome',
+    'idade',
+    'altura'
 ]
 
 # Definir os dados da matriz (lista de listas)
-data = [
-    ['João', 30],
-    ['Maria', 28],
-    ['Pedro', 22]
+dados = [
+    ['João', 30, 1.75],
+    ['Maria', 28, 1.80],
+    ['Pedro', 22, 1.85]
 ]
 
 # Criar uma view a partir da matriz
 cur.execute(f"""
-    CREATE OR REPLACE VIEW view_exemplo AS
-    SELECT {', '.join(columns_info)}
+    DROP VIEW IF EXISTS view_exemplo
+    CREATE VIEW view_exemplo AS
+    SELECT {', '.join(campos)}
     FROM (
-        VALUES {', '.join([f"('{row[0]}', {row[1]})" for row in data])}
-    ) AS data({', '.join(columns_info)})
+        VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]})" for row in dados])}
+    ) AS data({', '.join(campos)})
 """)
 
 # Commitar as operações
