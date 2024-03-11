@@ -4,7 +4,7 @@ def uniao_trecho_disp_cap():
                                     'camada_ottotrechos.nutrjus, '\
                                     'camada_ottotrechos.cabeceira, '\
                                     'camada_disponibilidade.disp_x, '\
-                                    'COALESCE(camada_captacao_ottobacia.cap_x, 0) AS captacao '\
+                                    'COALESCE(camada_captacao_ottobacia.cap_x2, 0) AS captacao '\
                     'FROM camada_ottotrechos '\
                     'LEFT JOIN camada_disponibilidade ON camada_ottotrechos.cobacia = camada_disponibilidade.cobacia_2 '\
                     'LEFT JOIN camada_captacao_ottobacia ON camada_ottotrechos.cobacia = camada_captacao_ottobacia.cobacia_2 '\

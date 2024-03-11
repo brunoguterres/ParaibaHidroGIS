@@ -12,12 +12,27 @@ def criar_matriz_balanco():
         linha.append(0)
         linha.append(0)
         linha.append(0)
+        linha.append(0)
     return matriz
 
 def calcular_balanco(matriz):
     for i in range(len(matriz)):
         if matriz[i][campo_cabeceira] == 'True':
             matriz[i][campo_vazao_jusante] = float(matriz[i][campo_disponibilidade])-float(matriz[i][campo_captacao])
+            if matriz[i][campo_vazao_jusante] < 0:
+                matriz[i][campo_vazao_jusante] = 0
+                matriz[i][campo_deficit] = vazao_jusante*-1
+            
+            if matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.20:
+                matriz[i][campo_icr] = 1
+            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.20 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.40:
+                matriz[i][campo_icr] = 2
+            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.40 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.70:
+                matriz[i][campo_icr] = 3
+            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.70 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=1:
+                matriz[i][campo_icr] = 4
+            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>1:
+                matriz[i][campo_icr] = 5
         else:
             for j in range(i-1,-1,-1):
                 contador_montante = 0
@@ -32,6 +47,19 @@ def calcular_balanco(matriz):
                     contador_montante += 1
                     if contador_montante == 2:
                         break
+            
+            disp_total = matriz[i][campo_vazao_montante]+matriz[i][campo_disponibilidade]            
+            if matriz[i][campo_captacao]/disp_total<=0.20:
+                matriz[i][campo_icr] = 1
+            elif matriz[i][campo_captacao]/disp_total>0.20 and matriz[i][campo_captacao]/disp_total<=0.40:
+                matriz[i][campo_icr] = 2
+            elif matriz[i][campo_captacao]/disp_total>0.40 and matriz[i][campo_captacao]/disp_total<=0.70:
+                matriz[i][campo_icr] = 3
+            elif matriz[i][campo_captacao]/disp_total>0.70 and matriz[i][campo_captacao]/disp_total<=1:
+                matriz[i][campo_icr] = 4
+            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>1:
+                matriz[i][campo_icr] = 5
+            
     return matriz
 
 def criar_resultado(matriz_balanco):
@@ -52,7 +80,8 @@ def criar_resultado(matriz_balanco):
                 'captacao',
                 'vazao_montante',
                 'vazao_jusante',
-                'deficit']
+                'deficit',
+                'icr']
     
     # Criar uma view a partir da matriz
     cursor.execute(f"""
@@ -60,7 +89,7 @@ def criar_resultado(matriz_balanco):
         CREATE VIEW resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
-            VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}, {row[8]})" for row in matriz_balanco])}
+            VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}, {row[8]}, {row[9]})" for row in matriz_balanco])}
         ) AS data({', '.join(campos)})
     """)
 
@@ -83,6 +112,7 @@ campo_captacao = 5
 campo_vazao_montante = 6
 campo_vazao_jusante = 7
 campo_deficit = 8
+campo_icr = 9
 
 matriz = criar_matriz_balanco()
 matriz_balanco = calcular_balanco(matriz)
