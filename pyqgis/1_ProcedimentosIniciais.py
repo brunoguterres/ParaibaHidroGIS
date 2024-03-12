@@ -70,6 +70,7 @@ def limpeza_residuos():
     canvas.refresh()
     print(mensagem_saida_limpeza)
 
+
 ### EXECUÇÃO ###
 
 parametros_conexao = parametros_padrao_bd()

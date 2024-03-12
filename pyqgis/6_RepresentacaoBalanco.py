@@ -1,4 +1,5 @@
 def carregar_camada_balanco():
+    #ATENÇÃO TENTAR USAR FUNÇÃO "importar_camada_bdg" E "carregar_camada" da etapa 2
     uri = QgsDataSourceUri()
     uri.setConnection("localhost", "5432", "bdg_prh_rpb", "postgres", "cobrape")
     uri.setDataSource("", "ottobacias_icr", "geom", "", "cobacia")
@@ -41,3 +42,4 @@ def carregar_camada_balanco():
 ### EXECUÇÃO ###
 
 ottobacias_icr = carregar_camada_balanco()
+print('--> Carregamento de camada "'+ottobacias_icr.name()+'" Realizado.')

@@ -28,6 +28,7 @@ def importar_camada_fundo():
     iface.addRasterLayer(service_uri, 'Google_Road', 'wms')
     print('--> Carregamento de camada basemap realizado.')
 
+
 ### EXECUÇÃO ###
 
 nome_tabela_ottobacias = 'ottobacias_pb_5k'

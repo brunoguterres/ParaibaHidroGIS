@@ -13,6 +13,7 @@ def uniao_trecho_disp_cap():
     QgsProject.instance().addMapLayer(trecho_disponibilidade_captacao)
     return trecho_disponibilidade_captacao
 
+
 ### EXECUÇÃO ###
 
 trecho_disponibilidade_captacao = uniao_trecho_disp_cap()
