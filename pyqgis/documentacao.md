@@ -1,8 +1,10 @@
 # Documentação - COB_HIDRO_001
 
-> :memo: **Notas**: 
-> - Alterar o nome do projeto.
-> - **Sugestão Bruno**: Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: cabeceiras).
+
+>:memo: Alterar o nome do projeto.\
+:bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).\
+:bulb: **Sugestão Bruno:** Criar uma etapa adicional (etapa 8) para que seja apresentada a janela de informações.
+
 ## Resumo da ferramenta
 
 Esta ferramenta está sendo desenvolvida com o propósito de servir para o auxílio nos trabalhos de projetos de Recursos Hídricos, sendo um facilitador nos procedimentos de cálculo do balanço hídrico.
@@ -48,7 +50,7 @@ Esta seção destina-se a descrição detalhada de todas as etapas apresentadas 
 
 ### 1.Procedimentos iniciais
 
->:memo: **Sugestão Tônico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
+>:bulb: **Sugestão Tonico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -56,7 +58,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ```mermaid
     flowchart TD    
-    subgraph A[<b>1. Procedimentos Iniciais</b>]
+    subgraph A[1. Procedimentos Iniciais]
         B[1.1. Definição dos parâmetros de conexão com o banco de dados] --> C[1.2. Limpeza de camadas residuais];
     end
 ```
@@ -95,6 +97,7 @@ Se a resposta do usuário for *sim*, a leitura do código será continuada e ser
 Se a resposta for *não*, o código segue para a função **patrametros_personalizados_bd**.
 
 #### 1.1.3. Definição dos parâmetros personalizados
+
 >:warning: Verificar o nível.
 
 A função **parametros_personalizados_bd** utiliza a classe **QInputDialog** para obter novos valores para os parâmetros de conexão. A classe é utilizada para cada parâmetro de conexão (host, nome do banco, usuário, senha, porta e schema) e, portanto, o processo é repetido seis vezes. 
@@ -119,8 +122,6 @@ Após a criação da lista com as camadas do projeto, é feita a verificação d
 
 ## 2. Inicialização do Mapa
 
->:warning: **Aviso**: revisar o código para criar função de carregamento (separar da importação).
-
 O fluxograma de processos desta etapa é apresentado a seguir:
 
 <center>
@@ -128,14 +129,14 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD
     subgraph A[2. Inicialização do Mapa]
-        B[2.1. Importação de camadas da bacia] --> C[2.2. Carregamento de camada de ottotrechos no mapa];
-        C --> D[2.3. Carregamento de camada de fundo no mapa]
+        B[2.1. Importação de camadas da bacia] --> C[2.2. Carregamento de camadas da bacia no mapa];
+        C --> D[2.3. Carregamento de basemap]
     end
 ```
 
 </center>
 
-### 2.1. Importação da camada de camadas da bacia
+### 2.1. Importação de camadas da bacia
 
 Nesse processo será feita a importação das camadas de ottobacia e ottotrechos.
 
@@ -161,9 +162,9 @@ A função **importar_camada_ottotrechos** realiza o carregamento de camadas vet
 
 ### 2.2. Carregamento das camadas da bacia
 
->:warning: **Aviso**: ainda falta arrumar o código para esse processo.
+>:warning: Verificar com **Beatriz** o que precisa ser feito.
 
-### 2.3.  Importação da camada de plano de fundo
+### 2.3.  Carregamento de basemap
 
 A função **importar_camada_fundo** tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS. 
 
@@ -176,9 +177,9 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 - Google_Road: nome da camada a ser adicionada
 - wms: tipo de serviço, indicando que é um Web Map Service
 
-## 3. Definir vazão de captação por ottobacia
+## 3. Definir vazões de disponibilidade e captações
 
->:warning: **Aviso**: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.
+>:warning: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -186,27 +187,25 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ```mermaid
     flowchart TD
-    subgraph A[3. Definir vazões de disponibilidade e captações]
-        B[3.1. Carregamento de camada de outorgas e disponibilidade]
-        B --> D[3.2. Interseção de outorgas com ottobacias]
-        D --> E[3.3. Agregação de vazões por ottobacias]
+    subgraph A[3. Definir vazões de captações e disponibilidade]
+        B[3.1. Importação de camadas de captações e disponibilidade]
+        B --> C[3.2. Interseção de outorgas com ottobacias]
+        C --> D[3.3. Agregação de vazões por ottobacias]
     end
 ```
 </center>
 
-### 3.1 Carregamento de camada de outorgas e disponibilidade
+### 3.1 Importação de camadas de captações e disponibilidade
 
-#### 3.1.1. Importação da camada de disponibilidade hídrica
-
->:warning: **Aviso:** Precisa arrumar esse item, tanto a descrição quanto o código.
-
->:memo: **Nota**: Os dados de disponibilidade já estão por ottobacias, caso a camada não estivesse pronta, os dados teriam que ser tratados fazendo o cruzamento como é feito para os dados de setores censitários. 
-
-A função **importar_disponibilidade_hidrica** realiza o carregamento de camadas vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+>:bulb: **Ideia**: Os dados de disponibilidade já estão por ottobacias, caso não estivesse pronto, os dados teriam que ser tratados fazendo o cruzamento como se fosse os setores censitários.
 
 #### 3.1.2 Importação da camada de outorgas de captação
 
 A função **importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+
+#### 3.1.1. Importação da camada de disponibilidade hídrica
+
+A função **importar_disponibilidade** realiza a importação da camada vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
 
 ### 3.2. Interseção de outorgas com ottobacias
 
@@ -236,7 +235,7 @@ Em *AGGREGATES* são definidas as operações de agregação a serem realizadas.
 
 ## 4. Preparação de dados para balanço hídrico
 
->:warning: **Aviso**: faltou adicionar união da captação nessa etapa, foi feito apenas para a disponibilidade hídrica.
+>:warning: faltou adicionar união da captação nessa etapa, foi feito apenas para a disponibilidade hídrica.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -248,7 +247,6 @@ O fluxograma de processos desta etapa é apresentado a seguir:
         B[4.1. União de atributos de disponibilidade e captações]
     end
 ```
-
 </center>
 
 ### 4.1 União entre disponibilidade hídrica e captações
@@ -263,12 +261,7 @@ Posteriormente, é criada uma camada vetorial virtual chamada **disponibilidade_
 
 ## 5. Cálculo do balanço hídrico
 
->:warning: **Avisos:** 
->- Criar uma nova funcionalidade para calcular o índice de criticidade, sendo que o resultado deve ser apresentado em uma camada com a classificação utilizada no artigo da ABRHidro.
->- O resultado do balanço vai para o banco de dados e para uma camada no QGIS (visualização) e deve ser por ottobacias.
-
->:memo: **Nota**: A ideia é salvar os resultados do balanço em views no banco, porém temos que fazer testes sobre o carregamento de views no QGIS. 
-
+>:warning: revisar os números dos índices e o nome dos processos
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -277,16 +270,57 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD
     subgraph A[5. Cálculo do balanço hídrico]
-        B[A. Ordenar tabela consolidada] --> C[B. Definir ottobacias de cabeceira]
-        C --> D[C. Calcular balanço hídrico]
+        B[5.1. Ordenar tabela consolidada] --> C[5.2. Definir ottobacias de cabeceira]
+        C --> D[5.3. Calcular balanço hídrico]
     end
 ```
 </center>
 
+> O módulo **psycopg2** importa uma biblioteca para trabalhar com o PostgreSQL em Python, podendo executar consultas SQL e realizar operações (Criar, Ler, Atualizar e Deletar).
+
+### 5.1 Ordenar tabela consolidada
+
+#### 5.1.1 Criar a matriz de balanço
+
+A função **criar_matriz_balanco** cria uma matriz de balanço hídrico a partir dos dados disponíveis da camada **trecho_disponibilidade_captacao** gerada na etapa anterior. 
+
+Para isso é iniciada uma lista vazia chamada **matriz** que será utilizada para armazenar os dados da matriz de balanço. A variável **campos** obtém os campos disponíveis na camada **trecho_disponibilidade_captacao**, os quais serão adicionadas à matriz. Depois, é feito a iteração sobre as feições disponíveis e para cada feição é criada uma lista contendo os valores dos campos correspondentes à feição e é adicionada à matriz.
+
+### 5.2 Calculo do Balanço Hídrico
+
+A função **calcular_balanco(matriz)** calcula o balanço de disponibilidade e captação de recursos hídricos em cada linha da matriz.
+
+Para isso são realizadas iterações sobre cada linha da matriz, onde primeiramente é realizada a verificação se a linha representa um trecho de cabeceira ou não. Se o trecho for de cabeceira, a função calcula a vazão jusante subtraindo a captação da disponibilidade. 
+
+Se o trecho não for de cabeceira, a função calcula a vazão jusante considerando os trechos montantes correspondentes. É feita uma iteração reversa para encontrar trechos montantes, ou seja, o loop faz a iteração sobre as linhas anteriores à linha atual, de trás para frente, comparando o código do trecho atual com o código do trecho jusante do trecho anterior. Se houver um trecho montante correspondente, a vazão jusante do trecho atual é calculada somando as vazões jusantes dos trechos montantes. A vazão montante é armazenada na matriz. A vazão jusante é calculada somando a vazão montante calculada ao valor da disponibilidade local e subtraindo a captação. 
+
+Nos dois casos, se a vazão jusante calculada for menor que zero, isso indica um déficit e o mesmo é armazenado na matriz.
+
+O cálculo do **Índice de Condição de Recursos Hídricos (ICR)** é feito com base na relação entre a captação e a disponibilidade total de água. Essa relação pe dividida em intervalos e o ICR é atribuído de acordo com esses intervalos. 
+
+Por fim, a função retorna a matriz com os cálculos de vazão djusante, déficit e ICR para cada linha.
+
+##### 5.2.1 Salvar os resultados
+
+A função **salvar_resultado(matriz_balanco)** tem a finalidade de salvar os resultados do balanço hídrico em um banco de dados PostgreSQL. Primeiramente é realizada a conexão com o banco de dados usando os parâmetros de conexão. Depois, é feita a criação da estrutura de dados da VIEW **resultado_balanco** atráves de uma consulta SQL. 
+
+Os valores da *matriz_balanco* são usados para inserir os dados na VIEW garantindo que ela contenha as informações atualizadas do balanço hídrico. Após a criação da VIEW, é feito um commit para confirmar as alterações no banco de dados. Um processo semelhante é realizado para a VIEW **ottobacias_icr**. Por fim, o cursor é fechado e a conexão com o banco de dados é encerrada.
+
 ## 6. Representação do balanço
 
->:warning: **Aviso**: Precisa ser criada essa etapa e seus processos. Deverá ser representada por meio do índice de criticidade.
+>:warning: Precisa ser criado o fluxograma para essa etapa e seus processos. 
+
+A função **carregar_camada_balanco** é responsável por carregar uma camada de dados espaciais contendo informações sobre os Índices de Condição de Recursos Hídricos (ICR) no QGIS. 
+
+A função utiliza uma instância de **QgsDataSourceUri**, já explicado no item 2.1.1, para configurar os parâmetros de conexão com o banco de dados PostgreSQL. Utilizando os parâmetros de conexão já configurados, a função define a fonte de dados *setDataSource* como a tabela **ottobacias_icr** no banco de dados PostgreSQL, criando um objeto de camada vetorial. A camada é adicionada ao projeto do QGIS utilizando o *addMapLayer* da instância do projeto.
+
+Depois, é realizada a configuração da simbologia da camada com base nos valores únicos do campo **icr**. As cores dos símbolos são atribuídas com base em um dicionário **cores_classes** e os rótulos das categorias são definidos em um dicionário **rotulos_classes**. Por fim, é criado um renderizador de símbolos categorizado através do **QgsCategorizedSymbolRenderer**, o qual é atribuído à camada **ottobacias_icr**. 
+
+O método **triggerRepaint** é chamado na camada para garantir que as alterações de simbologia sejam aplicadas e então, a função retorna a camada ottobacias_icr.
+
+
 
 ## 7. Seleção da ottobacia
 
->:warning: **Aviso**: Precisa ser criada essa etapa e seus processos. Deve selecionar montante em destaque e mostrar um quadro com valores de resultados.
+>:warning: Precisa ser criadao o fluxograma dessa etapa e seus processos. 
+
