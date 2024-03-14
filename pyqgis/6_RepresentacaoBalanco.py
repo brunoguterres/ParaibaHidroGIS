@@ -4,20 +4,16 @@ def carregar_camada_balanco():
     uri.setConnection("localhost", "5432", "bdg_prh_rpb", "postgres", "cobrape")
     uri.setDataSource("", "ottobacias_icr", "geom", "", "cobacia")
     ottobacias_icr = QgsVectorLayer(uri.uri(), 'camada_ottobacias_icr', "postgres")
-    if not ottobacias_icr.isValid():
-        print("Erro ao carregar camada")
-    else:
-        QgsProject.instance().addMapLayer(ottobacias_icr)
-        print("Camada carregada com sucesso")
+    QgsProject.instance().addMapLayer(ottobacias_icr)
     
     campo = 'icr'
     indice = ottobacias_icr.fields().indexFromName(campo)
     unique_values = ottobacias_icr.uniqueValues(indice)
-    cores_classes = {   '1': QColor(0, 150, 0, 150),
-                        '2': QColor(0, 0, 150, 150),
-                        '3': QColor(0, 0, 150, 150),
-                        '4': QColor(0, 0, 150, 150),
-                        '5': QColor(150, 0, 0, 150)}
+    cores_classes = {   '1': QColor(80, 150, 162),
+                        '2': QColor(105, 217, 114),
+                        '3': QColor(255, 255, 116),
+                        '4': QColor(253, 144, 64),
+                        '5': QColor(215, 61, 125)}
     rotulos_classes = { '1': 'Sem criticidade',
                         '2': 'Baixo potencial de comprometimento',
                         '3': 'Médio potencial de comprometimento',
