@@ -10,6 +10,24 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         canvas.setMapTool(QgsMapToolPan(canvas))
         print('--> Bacia selecionada. Código cobacia:', bacia_selecionada)
 
+        conexao = psycopg2.connect(
+        dbname = str(parametros_conexao['nome_bd']),
+        user = str(parametros_conexao['usuario_bd']),
+        password = str(parametros_conexao['senha_bd']),
+        host = str(parametros_conexao['host_bd']),
+        port = str(parametros_conexao['porta_bd']))
+        cursor = conexao.cursor()
+
+        cursor.execute('DROP VIEW IF EXISTS selecao_montante CASCADE;'\
+            'CREATE VIEW selecao_montante AS '\
+            'SELECT * '\
+            FROM ottobacias_icr
+            WHERE cobacia LIKE ')
+
+        conexao.commit()
+        cursor.close()
+        conexao.close()
+
 def limpeza_camadas_extras():
     QgsProject.instance().removeMapLayer(ottobacias)
     QgsProject.instance().removeMapLayer(disponibilidade)
