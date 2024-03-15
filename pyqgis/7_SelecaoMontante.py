@@ -31,11 +31,11 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         campo = 'icr'
         indice = ottobacias_icr_sob.fields().indexFromName(campo)
         unique_values = ottobacias_icr_sob.uniqueValues(indice)
-        cores_classes = {   '1': QColor(80, 150, 162, 100),
-                            '2': QColor(105, 217, 114, 100),
-                            '3': QColor(255, 255, 116, 100),
-                            '4': QColor(253, 144, 64, 100),
-                            '5': QColor(215, 61, 125, 100)}
+        cores_classes = {   '1': QColor(80, 150, 162, 50),
+                            '2': QColor(105, 217, 114, 50),
+                            '3': QColor(255, 255, 116, 50),
+                            '4': QColor(253, 144, 64, 50),
+                            '5': QColor(215, 61, 125, 50)}
         rotulos_classes = { '1': 'Sem criticidade',
                             '2': 'Baixo potencial de comprometimento',
                             '3': 'Médio potencial de comprometimento',
