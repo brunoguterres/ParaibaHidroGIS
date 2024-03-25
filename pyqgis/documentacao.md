@@ -134,31 +134,28 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ### 2.1. Importação de camadas da bacia
 
-Nesse processo será feita a importação das camadas de ottobacia e ottotrechos.
-
-#### 2.1.1. Importação da camada de ottobacia
-
 >:warning: Correção de estilo no carregamento da camada de ottobacias, deixar mais fina e mais clara.
+>:warning: Correção de estilo no carregamento da camada de ottotrechos, colocar um azul mais escuro.
 
-A função **importar_camada_ottobacias** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
+Nesse processo será feita a importação das camadas do banco de dados.
+
+> O **import requests** faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.
+
+A função **importar_camada_bdg** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
 
 A variável *uri* utiliza o **QgsDataSourceUri** para armazenar informações sobre a fonte de dados da camada vetorial, e, posteriormente, configura as informações de conexão com o banco de dados na URI. 
 
 > O **QgsDataSourceUri** é uma classe na biblioteca QGIS que é usada para representar e manipular informações de conexão com fontes de dados, como bancos de dados espaciais, arquivos shapefile, serviços da web, entre outros. Essa classe permite que você construa e manipule de forma pragmática URIs (Uniform Resource Identifiers) que especificam a fonte de dados que será utilizada em um projeto QGIS.
 
-A variável *ottobacias* cria um objeto **QgsVectorLayer** usando a URI configurada e define o nome da camada como *camada_ottobacias*. Depois é realizada a configuração da cor do símbolo da camada e por fim, adicionada a camada ao projeto QGIS.
+A variável *camada_importada* cria um objeto **QgsVectorLayer** usando a URI configurada e define o nome da camada. 
 
 > O **QgsVectorLayer** é uma classe na biblioteca QGIS que representa uma camada vetorial dentro do ambiente QGIS. Essa classe é parte da API do QGIS e é usada para manipular dados vetoriais, como pontos, linhas e polígonos. 
 
-#### 2.1.2. Importação da camada de ottotrechos
+### 2.2. Carregamento de camadas da bacia no mapa
 
->:warning: Correção de estilo no carregamento da camada de ottotrechos, colocar um azul mais escuro.
+A função **carregar_camada** é responsável por configurar a simbologia de uma camada e adicioná-la ao projeto do QGIS. Recebe como entrada a camada e um dicionário de simbologia. A simbologia é definida alterando a cor do símbolo da camada usando *setColor* com base nos valores RGB e alfa (transparência) fornecidos no dicionário. Depois, adiciona-se a camada ao projeto do QGIS usando o **QgsProject.instance**.
 
-A função **importar_camada_ottotrechos** realiza o carregamento de camadas vetoriais de ottotrechos do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
-
-### 2.2. Carregamento das camadas da bacia
-
->:warning: Verificar com **Beatriz** o que precisa ser feito.
+> A classe **QgsProject** já foi definida na etapa 1.
 
 ### 2.3.  Carregamento de basemap
 
@@ -185,8 +182,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
     flowchart TD
     subgraph A[3. Definir vazões de captações e disponibilidade]
         B[3.1. Importação de camadas de captações e disponibilidade]
-        B --> C[3.2. Interseção de outorgas com ottobacias]
-        C --> D[3.3. Agregação de vazões por ottobacias]
+        B --> C[3.2. Processamento dos dados de captação]
     end
 ```
 </center>
@@ -195,17 +191,19 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 >:bulb: **Ideia**: Os dados de disponibilidade já estão por ottobacias, caso não estivesse pronto, os dados teriam que ser tratados fazendo o cruzamento como se fosse os setores censitários.
 
-#### 3.1.2 Importação da camada de outorgas de captação
+A função **importar_camada_bdg** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
 
-A função **importar_captacoes** realiza o carregamento de camadas vetorial de outorgas de captação do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+A variável *uri* utiliza o **QgsDataSourceUri** para armazenar informações sobre a fonte de dados da camada vetorial, e, posteriormente, configura as informações de conexão com o banco de dados na URI. 
 
-#### 3.1.1. Importação da camada de disponibilidade hídrica
+A variável *camada_importada* cria um objeto **QgsVectorLayer** usando a URI configurada e define o nome da camada. 
 
-A função **importar_disponibilidade** realiza a importação da camada vetorial de disponibilidade hídrica do banco de dados. Essa função funciona basicamente como a **importar_camada_ottobacias**, conforme descrito no tópico *2.1. Importação da camada de ottobacia*.
+A função **carregar_camada** é responsável por configurar a simbologia de uma camada e adicioná-la ao projeto do QGIS. Recebe como entrada a camada e um dicionário de simbologia. A simbologia é definida alterando a cor do símbolo da camada usando *setColor* com base nos valores RGB e alfa (transparência) fornecidos no dicionário. Depois, adiciona-se a camada ao projeto do QGIS usando o **QgsProject.instance**.
 
-### 3.2. Interseção de outorgas com ottobacias
+> As classes QgsDataSourceUri, QgsVectorLayer e QgsProject já foram definidas na etapa 2. 
 
-A função **agregacao_vazao_captacao** recebe duas camadas como parâmetros: outorgas e ottobacias_montante e realiza operações para obter o valor da vazão nas ottobacias a montante da bacia de interesse.
+### 3.2. Processamento dos dados de captação
+
+A função **processamento_captacao** recebe duas camadas como parâmetros: captacoes e ottobacias e realiza operações para obter a interseção das ottobacias e das outorgas.
 
 A variável **processo_bacias_outorgas** utiliza o algoritmo de processamento do QGIS *native:intersection* para realizar a interseção entre as camadas outorgas e ottobacias_montante. O resultado é armazenado na variável **intersecao_bacias_outorgas** e é gerado uma camada temporária no QGIS.
 
