@@ -1,8 +1,6 @@
-# Documentação - COB_HIDRO_001
+# Documentação - ParaibaHidroGIS
 
-
->:memo: Alterar o nome do projeto.\
-:bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).\
+>:bulb: **Sugestão Bruno:** Criar uma primeira etapa de gerenciamento de banco de dados para adicionar camadas no banco. Essa etapa deve preparar as camadas (Ex: Definição de cabeceiras).\
 :bulb: **Sugestão Bruno:** Criar uma etapa adicional (etapa 8) para que seja apresentada a janela de informações.
 
 ## Resumo da ferramenta
@@ -66,7 +64,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 ### 1.1. Definição dos parâmetros de conexão com o Banco de Dados
 
-A função **parametros_BDG** define os parâmetros de conexão *padrão* com o banco de dados. 
+A função **parametros_padrao_bd** define os parâmetros de conexão *padrão* com o banco de dados. 
 
 > **Parâmetros padrão**:
 >- host: localhost
@@ -97,8 +95,6 @@ Se a resposta do usuário for *sim*, a leitura do código será continuada e ser
 Se a resposta for *não*, o código segue para a função **patrametros_personalizados_bd**.
 
 #### 1.1.3. Definição dos parâmetros personalizados
-
->:warning: Verificar o nível.
 
 A função **parametros_personalizados_bd** utiliza a classe **QInputDialog** para obter novos valores para os parâmetros de conexão. A classe é utilizada para cada parâmetro de conexão (host, nome do banco, usuário, senha, porta e schema) e, portanto, o processo é repetido seis vezes. 
 
