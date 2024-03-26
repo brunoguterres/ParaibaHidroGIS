@@ -172,8 +172,6 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 
 ## 3. Definir vazões de disponibilidade e captações
 
->:warning: Vai precisar revisar essa etapa inteira na documentação depois de corrigir o código.
-
 O fluxograma de processos desta etapa é apresentado a seguir:
 
 <center>
@@ -226,7 +224,6 @@ Em *AGGREGATES* são definidas as operações de agregação a serem realizadas.
 - Type_name: nome do tipo de dados.
 
 ## 4. Preparação de dados para balanço hídrico
-
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -321,6 +318,8 @@ A classe **QgsCategorizedSymbolRenderer** é utilizada para criar um renderizado
  Através da classe **QgsRendererCategory** são definidas as categorias e os símbolos.
 
 ## 7. Seleção da ottobacia
+
+O fluxograma de processos desta etapa é apresentado a seguir:
 
 <center>
 
