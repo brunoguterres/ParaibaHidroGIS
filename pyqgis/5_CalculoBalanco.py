@@ -24,15 +24,15 @@ def calcular_balanco(matriz):
                
             
             if matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.20:
-                matriz[i][campo_icr] = 1
+                matriz[i][campo_isr] = 1
             elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.20 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.40:
-                matriz[i][campo_icr] = 2
+                matriz[i][campo_isr] = 2
             elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.40 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.70:
-                matriz[i][campo_icr] = 3
+                matriz[i][campo_isr] = 3
             elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.70 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=1:
-                matriz[i][campo_icr] = 4
+                matriz[i][campo_isr] = 4
             elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>1:
-                matriz[i][campo_icr] = 5
+                matriz[i][campo_isr] = 5
         else:
             for j in range(i-1,-1,-1):
                 contador_montante = 0
@@ -50,15 +50,15 @@ def calcular_balanco(matriz):
             
             disp_total = matriz[i][campo_vazao_montante]+matriz[i][campo_disponibilidade]            
             if matriz[i][campo_captacao]/disp_total<=0.20:
-                matriz[i][campo_icr] = 1
+                matriz[i][campo_isr] = 1
             elif matriz[i][campo_captacao]/disp_total>0.20 and matriz[i][campo_captacao]/disp_total<=0.40:
-                matriz[i][campo_icr] = 2
+                matriz[i][campo_isr] = 2
             elif matriz[i][campo_captacao]/disp_total>0.40 and matriz[i][campo_captacao]/disp_total<=0.70:
-                matriz[i][campo_icr] = 3
+                matriz[i][campo_isr] = 3
             elif matriz[i][campo_captacao]/disp_total>0.70 and matriz[i][campo_captacao]/disp_total<=1:
-                matriz[i][campo_icr] = 4
+                matriz[i][campo_isr] = 4
             elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>1:
-                matriz[i][campo_icr] = 5
+                matriz[i][campo_isr] = 5
             
     return matriz
 
@@ -79,7 +79,7 @@ def salvar_resultado(matriz_balanco):
                 'vazao_montante',
                 'vazao_jusante',
                 'deficit',
-                'icr']
+                'isr']
     
     cursor.execute(f"""
         DROP VIEW IF EXISTS resultado_balanco CASCADE;
@@ -92,12 +92,12 @@ def salvar_resultado(matriz_balanco):
 
     conexao.commit()
     cursor.execute(f"""
-        DROP VIEW IF EXISTS ottobacias_icr CASCADE;
-        CREATE VIEW ottobacias_icr AS
+        DROP VIEW IF EXISTS ottobacias_isr CASCADE;
+        CREATE VIEW ottobacias_isr AS
         SELECT 
             ottobacias_pb_5k.cobacia,
             ottobacias_pb_5k.geom,
-            resultado_balanco.icr
+            resultado_balanco.isr
         FROM 
             ottobacias_pb_5k
         LEFT JOIN resultado_balanco
@@ -119,7 +119,7 @@ campo_captacao = 5
 campo_vazao_montante = 6
 campo_vazao_jusante = 7
 campo_deficit = 8
-campo_icr = 9
+campo_isr = 9
 
 matriz = criar_matriz_balanco()
 matriz_balanco = calcular_balanco(matriz)
