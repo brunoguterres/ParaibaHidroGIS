@@ -1,19 +1,5 @@
 import psycopg2
 
-def criar_matriz_balanco():
-    matriz = []
-    campos = trecho_disponibilidade_captacao.fields()
-    matriz.append([campo.name() for campo in campos])
-    for feicao in trecho_disponibilidade_captacao.getFeatures():
-        matriz.append([feicao[campo.name()] for campo in campos])
-    matriz.pop(0)
-    for linha in matriz:
-        linha.append(0)
-        linha.append(0)
-        linha.append(0)
-        linha.append(0)
-    return matriz
-
 def criar_matriz():
     conexao = psycopg2.connect(
         dbname = str(parametros_conexao['nome_bd']),
@@ -46,7 +32,8 @@ def calcular_balanco(matriz):
             if matriz[i][campo_vazao_jusante] < 0:
                 matriz[i][campo_deficit] = matriz[i][campo_vazao_jusante]*-1
                 matriz[i][campo_vazao_jusante] = 0
-               
+            
+            matriz[i][campo_isr] = 1
             '''
             if matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.20:
                 matriz[i][campo_isr] = 1
@@ -74,6 +61,8 @@ def calcular_balanco(matriz):
                     contador_montante += 1
                     if contador_montante == 2:
                         break
+            
+            matriz[i][campo_isr] = 1
             '''
             disp_total = matriz[i][campo_vazao_montante]+matriz[i][campo_disponibilidade]            
             if matriz[i][campo_captacao]/disp_total<=0.20:
@@ -113,28 +102,30 @@ def salvar_resultado(matriz_balanco):
                 'isr']
     
     cursor.execute(f"""
-        DROP VIEW IF EXISTS resultado_balanco CASCADE;
-        CREATE VIEW resultado_balanco AS
+        DROP VIEW IF EXISTS cenario_0.resultado_balanco CASCADE;
+        CREATE VIEW cenario_0.resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
-            VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}, {row[8]}, {row[9], {row[8]}})" for row in matriz_balanco])}
+            VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}, {row[8]}, {row[9]}, {row[10]}, {row[11]}, {row[12]})" for row in matriz_balanco])}
         ) AS data({', '.join(campos)})
     """)
 
     conexao.commit()
+    '''
     cursor.execute(f"""
-        DROP VIEW IF EXISTS ottobacias_isr CASCADE;
-        CREATE VIEW ottobacias_isr AS
+        DROP VIEW IF EXISTS cenario_0.ottobacias_isr CASCADE;
+        CREATE VIEW cenario_0.ottobacias_isr AS
         SELECT 
-            ottobacias_pb_5k.cobacia,
-            ottobacias_pb_5k.geom,
-            resultado_balanco.isr
+            cenario_0.ottobacias_5k.cobacia,
+            cenario_0.ottobacias_5k.geom,
+            cenario_0.resultado_balanco.isr
         FROM 
-            ottobacias_pb_5k
+            cenario_0.ottobacias_5k
         LEFT JOIN resultado_balanco
-            ON ottobacias_pb_5k.cobacia = resultado_balanco.cobacia;
+            ON cenario_0.ottobacias_5k.cobacia = cenario_0.resultado_balanco.cobacia;
     """)
     conexao.commit()
+    '''
     cursor.close()
     conexao.close()
 
