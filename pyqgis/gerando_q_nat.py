@@ -12,16 +12,28 @@ def ler_arquivo_csv(nome_arquivo):
 
 def operacao(matriz):
     for i in range(len(matriz)):
+    #for i in range(7):
+        #print('-'*20)
+        #print('i:', i)
         if matriz[i][campo_cabeceira] == 'True':
             matriz[i][campo_q_nat] = matriz[i][campo_q_inc]
+            #print('cabeceira!')
+            #print('campo_q_nat:',  matriz[i][campo_q_nat])
         else:
-            #matriz[i][campo_q_nat] = 0
+            #print('NÃO é cabeceira!!!')
+            valor_q_nat = float(matriz[i][campo_q_inc])
+            #print('valor_inicial_q_nat:', valor_q_nat)
             for j in range(i-1,-1,-1):
+                #print('j:', j)
                 contador_montante = 0
                 if matriz[i][campo_cotrecho] == matriz[j][campo_trechojus] :
-                    matriz[i][campo_q_nat] += float(matriz[j][campo_q_nat])
+                    valor_q_nat += float(matriz[j][campo_q_nat])
+                    matriz[i][campo_q_nat] = valor_q_nat
+                    #print('campo_q_nat:',  valor_q_nat)
                     contador_montante += 1
                     if contador_montante == 2:
+                        #print('valor_final_q_nat:', matriz[i][campo_q_nat])
+                        #print('finalizou cálculo NAT!')
                         break
             
     return matriz
@@ -30,7 +42,7 @@ def salvar_resultado(matriz_resultado):
     conexao = psycopg2.connect(
         dbname='bdg_prh_rpb',
         user='postgres',
-        password='cobrape',
+        password='guterres',
         host='localhost',
         port='5432')
     cursor = conexao.cursor()
@@ -74,7 +86,7 @@ campo_q_inc = 4
 campo_q_nat = 5
 campo_cabeceira = 6
 
-nome_do_arquivo = 'C:/Users/brunoguterres/Desktop/intermediaria.csv'
+nome_do_arquivo = 'teste.csv'
 matriz = ler_arquivo_csv(nome_do_arquivo)
 
 matriz_resultado = operacao(matriz)
