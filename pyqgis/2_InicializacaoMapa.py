@@ -31,8 +31,8 @@ def importar_camada_fundo():
 
 ### EXECUÇÃO ###
 
-nome_tabela_ottobacias = 'ottobacias_pb_5k'
-nome_tabela_ottotrechos = 'ottotrechos_pb_5k'
+nome_tabela_ottobacias = 'ottobacias_5k'
+nome_tabela_ottotrechos = 'ottotrechos_5k'
 ottobacias = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottobacias, nome_camada='camada_ottobacias')
 ottotrechos = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottotrechos, nome_camada='camada_ottotrechos')
 simbologia_ottobacias = {'r':200, 'g':200, 'b':200, 'a':10}

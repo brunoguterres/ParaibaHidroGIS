@@ -4,7 +4,7 @@ def parametros_padrao_bd():
                           'usuario_bd': 'postgres',
                           'senha_bd': 'cobrape',
                           'porta_bd': '5432',
-                          'schema_bd': 'public'}
+                          'schema_bd': 'cenario_0'}
     return parametros_conexao
 
 def verifica_parametros_bd(parametros_conexao):
