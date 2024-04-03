@@ -16,10 +16,10 @@ def processamento_captacoes():
 	        cenario_0.ottobacias_5k.cobacia,
 	        SUM(cenario_0.outorgas.captacao_solicitada) AS captacao_solicitada
         FROM cenario_0.outorgas
-        JOIN cenario_0.ottobacias_5k
+        JOIN basemap.ottobacias_pb_5k
         ON ST_Intersects(cenario_0.outorgas.geom, cenario_0.ottobacias_5k.geom)
-        GROUP BY cenario_0.ottobacias_5k.cobacia
-        ORDER BY cenario_0.ottobacias_5k.cobacia DESC;
+        GROUP BY basemap.ottobacias_pb_5k.cobacia
+        ORDER BY basemap.ottobacias_pb_5k.cobacia DESC;
     """)
 
     conexao.commit()
