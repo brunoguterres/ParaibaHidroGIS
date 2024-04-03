@@ -17,11 +17,10 @@ def uniao_disp_cap():
             basemap.ottotrechos_pb_5k.cotrecho,
             basemap.ottotrechos_pb_5k.trechojus,
             basemap.ottotrechos_pb_5k.cabeceira,
-            cenario_0.disponibilidade.vazao_incremental,
-            cenario_0.disponibilidade.vazao_naturalizada,
+            cenario_0.disponibilidade_hidrica.vazao_incremental,
             COALESCE(cenario_0.captacoes_ottobacias.captacao_solicitada, 0) AS captacao_solicitada
         FROM basemap.ottotrechos_pb_5k
-        LEFT JOIN cenario_0.disponibilidade ON basemap.ottotrechos_pb_5k.cobacia = cenario_0.disponibilidade.cobacia
+        LEFT JOIN cenario_0.disponibilidade_hidrica ON basemap.ottotrechos_pb_5k.cobacia = cenario_0.disponibilidade_hidrica.cobacia
         LEFT JOIN cenario_0.captacoes_ottobacias ON basemap.ottotrechos_pb_5k.cobacia = cenario_0.captacoes_ottobacias.cobacia
         ORDER BY basemap.ottotrechos_pb_5k.cobacia DESC;
         """)
@@ -33,8 +32,6 @@ def uniao_disp_cap():
 
 ### EXECUÇÃO ###
 
-#trecho_disponibilidade_captacao = uniao_trecho_disp_cap()
 
 uniao_disp_cap()
-
-print('--> União de dados realizada.')
+print('--> Preparação de dados para balanço realizada.')
