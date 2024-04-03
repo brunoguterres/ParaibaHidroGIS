@@ -1,5 +1,18 @@
 import requests
 
+def limpeza_residuos():
+    camada_residual = QgsProject.instance().mapLayers().values()
+    lista_camadas_residuais = [l for l in camada_residual]
+    if len(lista_camadas_residuais) > 0:
+        for camada in lista_camadas_residuais:
+            QgsProject.instance().removeMapLayer(camada)
+        mensagem_saida_limpeza = '--> Limpeza de camadas residuais de execuções anteriores realizada!'
+    else:
+        mensagem_saida_limpeza = '--> Não existem camadas residuais de execuções anteriores.'
+    canvas = qgis.utils.iface.mapCanvas()
+    canvas.refresh()
+    print(mensagem_saida_limpeza)
+
 def importar_camada_bdg(nome_tabela_bdg, nome_camada):
     uri = QgsDataSourceUri()
     uri.setConnection(parametros_conexao['host_bd'],
@@ -20,7 +33,6 @@ def carregar_camada(camada, simbologia):
     QgsProject.instance().addMapLayer(camada)
     print('--> Carregamento de "'+camada.name()+'" realizado.')
 
-
 def importar_camada_fundo():
     # função de carregamento da camada de plano de fundo
     service_url = 'mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
@@ -31,8 +43,10 @@ def importar_camada_fundo():
 
 ### EXECUÇÃO ###
 
-nome_tabela_ottobacias = 'ottobacias_5k'
-nome_tabela_ottotrechos = 'ottotrechos_5k'
+limpeza_residuos()
+nome_tabela_ottobacias = 'ottobacias_pb_5k'
+nome_tabela_ottotrechos = 'ottotrechos_pb_5k'
+schema_basemap
 ottobacias = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottobacias, nome_camada='camada_ottobacias')
 ottotrechos = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottotrechos, nome_camada='camada_ottotrechos')
 simbologia_ottobacias = {'r':200, 'g':200, 'b':200, 'a':10}

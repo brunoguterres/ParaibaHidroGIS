@@ -57,23 +57,9 @@ def parametros_personalizados_bd(parametros_conexao):
     verifica_parametros_bd(parametros_conexao)
     return parametros_conexao
 
-def limpeza_residuos():
-    camada_residual = QgsProject.instance().mapLayers().values()
-    lista_camadas_residuais = [l for l in camada_residual]
-    if len(lista_camadas_residuais) > 0:
-        for camada in lista_camadas_residuais:
-            QgsProject.instance().removeMapLayer(camada)
-        mensagem_saida_limpeza = '--> Limpeza de camadas residuais de execuções anteriores realizada!'
-    else:
-        mensagem_saida_limpeza = '--> Não existem camadas residuais de execuções anteriores.'
-    canvas = qgis.utils.iface.mapCanvas()
-    canvas.refresh()
-    print(mensagem_saida_limpeza)
-
 
 ### EXECUÇÃO ###
 
 parametros_conexao = parametros_padrao_bd()
 parametros_conexao = verifica_parametros_bd(parametros_conexao)
 print('--> Parâmetros de conexão definidos.')
-limpeza_residuos()
