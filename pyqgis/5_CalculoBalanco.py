@@ -30,53 +30,31 @@ def calcular_balanco(matriz):
         if matriz[i][campo_cabeceira] == 'True':
             matriz[i][campo_vazao_jusante] = float(matriz[i][campo_vazao_incremental])-float(matriz[i][campo_captacao_solicitada])
             if matriz[i][campo_vazao_jusante] < 0:
-                matriz[i][campo_deficit] = matriz[i][campo_vazao_jusante]*-1
+                matriz[i][campo_deficit] = matriz[i][campo_vazao_jusante] * -1
                 matriz[i][campo_vazao_jusante] = 0
+                matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
+            else:
+                matriz[i][campo_captacao_atendida] = matriz[i][campo_captacao_solicitada]
+                # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
             
-            matriz[i][campo_isr] = 1
-            '''
-            if matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.20:
-                matriz[i][campo_isr] = 1
-            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.20 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.40:
-                matriz[i][campo_isr] = 2
-            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.40 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=0.70:
-                matriz[i][campo_isr] = 3
-            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>0.70 and matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]<=1:
-                matriz[i][campo_isr] = 4
-            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>1:
-                matriz[i][campo_isr] = 5
-            '''
-
         else:
             for j in range(i-1,-1,-1):
                 contador_montante = 0
-                if matriz[i][campo_cotrecho] == matriz[j][campo_trechojus] :
+                if matriz[i][campo_cotrecho] == matriz[j][campo_trechojus]:
                     matriz[i][campo_vazao_montante] += float(matriz[j][campo_vazao_jusante])
-                    vazao_jusante = float(matriz[i][campo_vazao_montante])+float(matriz[i][campo_vazao_incremental])-float(matriz[i][campo_captacao_solicitada])
-                    if vazao_jusante < 0:
+                    matriz[i][campo_vazao_jusante] = float(matriz[i][campo_vazao_montante])+float(matriz[i][campo_vazao_incremental])-float(matriz[i][campo_captacao_solicitada])
+                    if matriz[i][campo_vazao_jusante] < 0:
+                        matriz[i][campo_deficit] = matriz[i][campo_vazao_jusante] * -1
                         matriz[i][campo_vazao_jusante] = 0
-                        matriz[i][campo_deficit] = vazao_jusante*-1
+                        matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
                     else:
-                        matriz[i][campo_vazao_jusante] = vazao_jusante
+                        matriz[i][campo_captacao_atendida] = matriz[i][campo_captacao_solicitada]
+                        # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
                     contador_montante += 1
                     if contador_montante == 2:
                         break
             
-            matriz[i][campo_isr] = 1
-            '''
-            disp_total = matriz[i][campo_vazao_montante]+matriz[i][campo_disponibilidade]            
-            if matriz[i][campo_captacao]/disp_total<=0.20:
-                matriz[i][campo_isr] = 1
-            elif matriz[i][campo_captacao]/disp_total>0.20 and matriz[i][campo_captacao]/disp_total<=0.40:
-                matriz[i][campo_isr] = 2
-            elif matriz[i][campo_captacao]/disp_total>0.40 and matriz[i][campo_captacao]/disp_total<=0.70:
-                matriz[i][campo_isr] = 3
-            elif matriz[i][campo_captacao]/disp_total>0.70 and matriz[i][campo_captacao]/disp_total<=1:
-                matriz[i][campo_isr] = 4
-            elif matriz[i][campo_captacao]/matriz[i][campo_disponibilidade]>1:
-                matriz[i][campo_isr] = 5
-            '''
-            
+        matriz[i][campo_isr] = 1
     return matriz
 
 def salvar_resultado(matriz_balanco):
@@ -92,7 +70,7 @@ def salvar_resultado(matriz_balanco):
                 'trechojus',
                 'cabeceira',
                 'vazao_incremental',
-                'vazao_naturalizada',
+                'vazao_natural',
                 'captacao_solicitada',
                 'campo_vazao_montante',
                 'campo_vazao_jusante',
@@ -106,7 +84,7 @@ def salvar_resultado(matriz_balanco):
         CREATE VIEW cenario_0.resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
-            VALUES {', '.join([f"('{row[0]}', {row[1]}, {row[2]}, {row[3]}, {row[4]}, {row[5]}, {row[6]}, {row[7]}, {row[8]}, {row[9]}, {row[10]}, {row[11]}, {row[12]})" for row in matriz_balanco])}
+            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]}, {campo[12]})" for campo in matriz_balanco])}
         ) AS data({', '.join(campos)})
     """)
 
@@ -137,14 +115,13 @@ campo_cotrecho = 1
 campo_trechojus = 2
 campo_cabeceira = 3
 campo_vazao_incremental = 4
-campo_vazao_naturalizada = 5
-campo_captacao_solicitada = 6
-campo_vazao_montante = 7
-campo_vazao_jusante = 8
-campo_captacao_atendida = 9
-campo_captacao_acumulada = 10
-campo_deficit = 11
-campo_isr = 12
+campo_captacao_solicitada = 5
+campo_vazao_montante = 6
+campo_vazao_jusante = 7
+campo_captacao_atendida = 8
+campo_captacao_acumulada = 9
+campo_deficit = 10
+campo_isr = 11
 
 matriz = criar_matriz()
 matriz_balanco = calcular_balanco(matriz)
