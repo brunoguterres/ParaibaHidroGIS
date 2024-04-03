@@ -35,8 +35,7 @@ def calcular_balanco(matriz):
                 matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
             else:
                 matriz[i][campo_captacao_atendida] = matriz[i][campo_captacao_solicitada]
-                # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
-            
+                # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão 
         else:
             for j in range(i-1,-1,-1):
                 contador_montante = 0
@@ -70,7 +69,6 @@ def salvar_resultado(matriz_balanco):
                 'trechojus',
                 'cabeceira',
                 'vazao_incremental',
-                'vazao_natural',
                 'captacao_solicitada',
                 'campo_vazao_montante',
                 'campo_vazao_jusante',
@@ -84,11 +82,11 @@ def salvar_resultado(matriz_balanco):
         CREATE VIEW cenario_0.resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
-            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]}, {campo[12]})" for campo in matriz_balanco])}
+            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]})" for campo in matriz_balanco])}
         ) AS data({', '.join(campos)})
     """)
-
     conexao.commit()
+    
     '''
     cursor.execute(f"""
         DROP VIEW IF EXISTS cenario_0.ottobacias_isr CASCADE;
