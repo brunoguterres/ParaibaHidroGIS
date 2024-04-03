@@ -1,4 +1,5 @@
 import psycopg2
+import time
 
 def criar_matriz():
     conexao = psycopg2.connect(
@@ -69,6 +70,7 @@ def salvar_resultado(matriz_balanco):
                 'trechojus',
                 'cabeceira',
                 'vazao_incremental',
+                'vazao_natural',
                 'captacao_solicitada',
                 'campo_vazao_montante',
                 'campo_vazao_jusante',
@@ -82,11 +84,11 @@ def salvar_resultado(matriz_balanco):
         CREATE VIEW cenario_0.resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
-            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]})" for campo in matriz_balanco])}
+            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]}, {campo[12]})" for campo in matriz_balanco])}
         ) AS data({', '.join(campos)})
     """)
     conexao.commit()
-    
+
     '''
     cursor.execute(f"""
         DROP VIEW IF EXISTS cenario_0.ottobacias_isr CASCADE;
@@ -108,21 +110,26 @@ def salvar_resultado(matriz_balanco):
 
 ### EXECUÇÃO ###
 
+tempo_inicial = time.time()
+
 campo_cobacia = 0
 campo_cotrecho = 1
 campo_trechojus = 2
 campo_cabeceira = 3
 campo_vazao_incremental = 4
-campo_captacao_solicitada = 5
-campo_vazao_montante = 6
-campo_vazao_jusante = 7
-campo_captacao_atendida = 8
-campo_captacao_acumulada = 9
-campo_deficit = 10
-campo_isr = 11
+campo_vazao_natural = 5
+campo_captacao_solicitada = 6
+campo_vazao_montante = 7
+campo_vazao_jusante = 8
+campo_captacao_atendida = 9
+campo_captacao_acumulada = 10
+campo_deficit = 11
+campo_isr = 12
 
 matriz = criar_matriz()
 matriz_balanco = calcular_balanco(matriz)
 salvar_resultado(matriz_balanco)
+
+print('Tempo de execução do balanço:', time.time() - tempo_inicial)
 
 print('--> Cálculo do balanço hídrico realizado.')

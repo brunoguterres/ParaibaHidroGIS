@@ -18,6 +18,7 @@ def uniao_disp_cap():
             basemap.ottotrechos_pb_5k.trechojus,
             basemap.ottotrechos_pb_5k.cabeceira,
             cenario_0.disponibilidade_hidrica.vazao_incremental,
+            cenario_0.disponibilidade_hidrica.vazao_natural,
             COALESCE(cenario_0.captacoes_ottobacias.captacao_solicitada, 0) AS captacao_solicitada
         FROM basemap.ottotrechos_pb_5k
         LEFT JOIN cenario_0.disponibilidade_hidrica ON basemap.ottotrechos_pb_5k.cobacia = cenario_0.disponibilidade_hidrica.cobacia
