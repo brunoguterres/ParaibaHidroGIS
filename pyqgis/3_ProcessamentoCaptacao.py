@@ -1,6 +1,6 @@
 import psycopg2
 
-def processamento_captacoes():
+def processamento_captacoes(schema_cenario, basemap):
     conexao = psycopg2.connect(
         dbname = str(parametros_conexao['nome_bd']),
         user = str(parametros_conexao['usuario_bd']),
@@ -9,18 +9,18 @@ def processamento_captacoes():
         port = str(parametros_conexao['porta_bd']))
     cursor = conexao.cursor()
 
-    cursor.execute("""
-        DROP VIEW IF EXISTS cenario_0.captacoes_ottobacias CASCADE;
-        CREATE VIEW cenario_0.captacoes_ottobacias AS
+    cursor.execute('''
+        DROP VIEW IF EXISTS {schema_cenario}.captacoes_ottobacias CASCADE;
+        CREATE VIEW {schema_cenario}.captacoes_ottobacias AS
         SELECT
-	        basemap.ottobacias_pb_5k.cobacia,
-	        SUM(cenario_0.outorgas.captacao_solicitada) AS captacao_solicitada
-        FROM cenario_0.outorgas
-        JOIN basemap.ottobacias_pb_5k
-        ON ST_Intersects(cenario_0.outorgas.geom, basemap.ottobacias_pb_5k.geom)
-        GROUP BY basemap.ottobacias_pb_5k.cobacia
-        ORDER BY basemap.ottobacias_pb_5k.cobacia DESC;
-        """)
+	        {schema_base}.ottobacias_pb_5k.cobacia,
+	        SUM({schema_cenario}.outorgas.captacao_solicitada) AS captacao_solicitada
+        FROM {schema_cenario}.outorgas
+        JOIN {schema_base}.ottobacias_pb_5k
+        ON ST_Intersects({schema_cenario}.outorgas.geom, {schema_base}.ottobacias_pb_5k.geom)
+        GROUP BY {schema_base}.ottobacias_pb_5k.cobacia
+        ORDER BY {schema_base}.ottobacias_pb_5k.cobacia DESC;
+        '''.format(schema_cenario=schema_cenario, schema_base=basemap))
 
     conexao.commit()
     cursor.close()
@@ -29,5 +29,5 @@ def processamento_captacoes():
 
 ### EXECUÇÃO ###
 
-processamento_captacoes()
+processamento_captacoes(parametros_conexao['schema_cenario'], basemap)
 print('--> Processamento de captações realizado.')

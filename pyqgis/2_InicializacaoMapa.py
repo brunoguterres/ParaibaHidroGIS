@@ -46,9 +46,8 @@ def importar_camada_fundo():
 limpeza_residuos()
 nome_tabela_ottobacias = 'ottobacias_pb_5k'
 nome_tabela_ottotrechos = 'ottotrechos_pb_5k'
-schema_basemap = 'basemap'
-ottobacias = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottobacias, nome_schema_bdg=schema_basemap, nome_camada='camada_ottobacias')
-ottotrechos = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottotrechos, nome_schema_bdg=schema_basemap, nome_camada='camada_ottotrechos')
+ottobacias = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottobacias, nome_schema_bdg=basemap, nome_camada='camada_ottobacias')
+ottotrechos = importar_camada_bdg(nome_tabela_bdg=nome_tabela_ottotrechos, nome_schema_bdg=basemap, nome_camada='camada_ottotrechos')
 simbologia_ottobacias = {'r':200, 'g':200, 'b':200, 'a':10}
 simbologia_ottotrechos = {'r':0, 'g':150, 'b':255, 'a':255}
 importar_camada_fundo()

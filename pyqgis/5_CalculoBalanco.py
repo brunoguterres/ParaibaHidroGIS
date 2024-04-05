@@ -110,7 +110,7 @@ def salvar_resultado(matriz_balanco):
 
 ### EXECUÇÃO ###
 
-tempo_inicial = time.time()
+tempo_inicial = time.time() # Apenas para finalidade de apresentação do tempo
 
 campo_cobacia = 0
 campo_cotrecho = 1
@@ -127,9 +127,14 @@ campo_deficit = 11
 campo_isr = 12
 
 matriz = criar_matriz()
+tempo_matriz = time.time()  # Apenas para finalidade de apresentação do tempo
 matriz_balanco = calcular_balanco(matriz)
+tempo_balanco = time.time() # Apenas para finalidade de apresentação do tempo
 salvar_resultado(matriz_balanco)
-
-print('Tempo de execução do balanço:', time.time() - tempo_inicial)
-
+tempo_salvar_resultado = time.time()    # Apenas para finalidade de apresentação do tempo
 print('--> Cálculo do balanço hídrico realizado.')
+print('>>> TEMPOS <<<:\n'
+      '> Criação da matriz:', round(tempo_matriz - tempo_inicial, 2), 'segundos\n'
+      '> Cálculo do balanço:', round(tempo_balanco - tempo_matriz, 2), 'segundos\n'
+      '> Salvar resultado:', round(tempo_salvar_resultado - tempo_balanco, 2), 'segundos\n'
+      '> TOTAL da execução:', round(time.time() - tempo_inicial, 2), 'segundos')
