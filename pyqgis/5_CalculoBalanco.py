@@ -9,7 +9,7 @@ def criar_matriz():
         host = str(parametros_conexao['host_bd']),
         port = str(parametros_conexao['porta_bd']))
     cursor = conexao.cursor()
-    cursor.execute("SELECT * FROM cenario_0.dados_balanco;")
+    cursor.execute('SELECT * FROM {schema_cenario}.dados_balanco;'.format(schema_cenario=parametros_conexao['schema_cenario']))
     rows = cursor.fetchall()
     matriz = []
     for row in rows:
@@ -79,14 +79,14 @@ def salvar_resultado(matriz_balanco):
                 'campo_deficit',
                 'isr']
     
-    cursor.execute(f"""
-        DROP VIEW IF EXISTS cenario_0.resultado_balanco CASCADE;
-        CREATE VIEW cenario_0.resultado_balanco AS
+    cursor.execute(f'''
+        DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.resultado_balanco CASCADE;
+        CREATE VIEW {parametros_conexao['schema_cenario']}.resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
             VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]}, {campo[12]})" for campo in matriz_balanco])}
         ) AS data({', '.join(campos)})
-    """)
+    ''')
     conexao.commit()
 
     '''
