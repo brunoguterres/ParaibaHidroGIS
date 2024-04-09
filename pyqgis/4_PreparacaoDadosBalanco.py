@@ -33,6 +33,5 @@ def uniao_disp_cap():
 
 ### EXECUÇÃO ###
 
-
 uniao_disp_cap()
 print('--> Preparação de dados para balanço realizada.')
