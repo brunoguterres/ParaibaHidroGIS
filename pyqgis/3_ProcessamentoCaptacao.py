@@ -17,7 +17,7 @@ def processamento_captacoes():
 	        SUM({parametros_conexao['schema_cenario']}.outorgas.captacao_solicitada) AS captacao_solicitada
         FROM {parametros_conexao['schema_cenario']}.outorgas
         JOIN {basemap}.ottobacias_pb_5k
-        ON ST_Intersects({parametros_conexao['schema_cenario']}.outorgas.geom, {basemap}.ottobacias_pb_5k.geom)
+            ON ST_Intersects({parametros_conexao['schema_cenario']}.outorgas.geom, {basemap}.ottobacias_pb_5k.geom)
         GROUP BY {basemap}.ottobacias_pb_5k.cobacia
         ORDER BY {basemap}.ottobacias_pb_5k.cobacia DESC;
         ''')

@@ -20,7 +20,7 @@ def importar_camada_bdg(nome_tabela_bdg, nome_schema_bdg, nome_camada):
                       parametros_conexao['nome_bd'],
                       parametros_conexao['usuario_bd'],
                       parametros_conexao['senha_bd'])
-    uri.setDataSource(nome_schema_bdg, nome_tabela_bdg, 'geom')
+    uri.setDataSource(nome_schema_bdg, nome_tabela_bdg, 'geom') # Atenção para 2 parâmetros que faltam nesta declaração (vide etapa 6)
     camada_importada = QgsVectorLayer(uri.uri(False), nome_camada, 'postgres')
     print('--> Importação da camada "'+camada_importada.name()+'" realizada.')
     return camada_importada

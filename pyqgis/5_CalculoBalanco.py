@@ -89,21 +89,18 @@ def salvar_resultado(matriz_balanco):
     ''')
     conexao.commit()
 
-    '''
-    cursor.execute(f"""
-        DROP VIEW IF EXISTS cenario_0.ottobacias_isr CASCADE;
-        CREATE VIEW cenario_0.ottobacias_isr AS
+    cursor.execute(f'''
+        DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_isr CASCADE;
+        CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_isr AS
         SELECT 
-            cenario_0.ottobacias_5k.cobacia,
-            cenario_0.ottobacias_5k.geom,
-            cenario_0.resultado_balanco.isr
-        FROM 
-            cenario_0.ottobacias_5k
-        LEFT JOIN resultado_balanco
-            ON cenario_0.ottobacias_5k.cobacia = cenario_0.resultado_balanco.cobacia;
-    """)
+            {basemap}.ottobacias_pb_5k.cobacia,
+            {basemap}.ottobacias_pb_5k.geom,
+            {parametros_conexao['schema_cenario']}.resultado_balanco.isr
+        FROM {basemap}.ottobacias_pb_5k
+        LEFT JOIN {parametros_conexao['schema_cenario']}.resultado_balanco
+            ON {basemap}.ottobacias_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.resultado_balanco.cobacia;
+    ''')
     conexao.commit()
-    '''
     cursor.close()
     conexao.close()
 
@@ -127,9 +124,9 @@ campo_deficit = 11
 campo_isr = 12
 
 matriz = criar_matriz()
-tempo_matriz = time.time()  # Apenas para finalidade de apresentação do tempo
+tempo_matriz = time.time()              # Apenas para finalidade de apresentação do tempo
 matriz_balanco = calcular_balanco(matriz)
-tempo_balanco = time.time() # Apenas para finalidade de apresentação do tempo
+tempo_balanco = time.time()             # Apenas para finalidade de apresentação do tempo
 salvar_resultado(matriz_balanco)
 tempo_salvar_resultado = time.time()    # Apenas para finalidade de apresentação do tempo
 print('--> Cálculo do balanço hídrico realizado.')

@@ -21,8 +21,10 @@ def uniao_disp_cap():
             {parametros_conexao['schema_cenario']}.disponibilidade_hidrica.vazao_natural,
             COALESCE({parametros_conexao['schema_cenario']}.captacoes_ottobacias.captacao_solicitada, 0) AS captacao_solicitada
         FROM {basemap}.ottotrechos_pb_5k
-        LEFT JOIN {parametros_conexao['schema_cenario']}.disponibilidade_hidrica ON {basemap}.ottotrechos_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.disponibilidade_hidrica.cobacia
-        LEFT JOIN {parametros_conexao['schema_cenario']}.captacoes_ottobacias ON {basemap}.ottotrechos_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.captacoes_ottobacias.cobacia
+        LEFT JOIN {parametros_conexao['schema_cenario']}.disponibilidade_hidrica
+            ON {basemap}.ottotrechos_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.disponibilidade_hidrica.cobacia
+        LEFT JOIN {parametros_conexao['schema_cenario']}.captacoes_ottobacias
+            ON {basemap}.ottotrechos_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.captacoes_ottobacias.cobacia
         ORDER BY {basemap}.ottotrechos_pb_5k.cobacia DESC;
         ''')
     
