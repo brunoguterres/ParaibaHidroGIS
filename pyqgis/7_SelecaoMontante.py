@@ -1,17 +1,21 @@
 import psycopg2
 
 class MapToolIdentify(QgsMapToolIdentifyFeature):
-
+    
     uri = QgsDataSourceUri()
-    uri.setConnection("localhost", "5432", "bdg_prh_rpb", "postgres", "cobrape")
-    uri.setDataSource("", "ottotrechos_pb_5k", "geom", "", "cobacia")
-    ottotrechos_sob = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', "postgres")
+    uri.setConnection(parametros_conexao['host_bd'],
+                      parametros_conexao['porta_bd'],
+                      parametros_conexao['nome_bd'],
+                      parametros_conexao['usuario_bd'],
+                      parametros_conexao['senha_bd'])
+    uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
+    ottotrechos_sob = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
     ottotrechos_sob.renderer().symbol().setColor(QColor(0, 150, 255))
     QgsProject.instance().addMapLayer(ottotrechos_sob)
-    
-    def __init__(self, canvas, ottobacias_icr):
+
+    def __init__(self, canvas, ottobacias_isr):
         super().__init__(canvas)
-        self.layer = ottobacias_icr
+        self.layer = ottobacias_isr
 
     def canvasReleaseEvent(self, event):
         super().canvasReleaseEvent(event)
@@ -20,17 +24,20 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         canvas.setMapTool(QgsMapToolPan(canvas))
         print('--> Bacia selecionada. Código cobacia:', cod_otto_bacia)
 
-        QgsProject.instance().removeMapLayer(ottobacias_icr)
-        
+        QgsProject.instance().removeMapLayer(ottobacias_isr)
 
         uri = QgsDataSourceUri()
-        uri.setConnection("localhost", "5432", "bdg_prh_rpb", "postgres", "cobrape")
-        uri.setDataSource("", "ottobacias_icr", "geom", "", "cobacia")
-        ottobacias_icr_sob = QgsVectorLayer(uri.uri(), 'camada_ottobacias_icr', "postgres")
-        QgsProject.instance().addMapLayer(ottobacias_icr_sob)
-        campo = 'icr'
-        indice = ottobacias_icr_sob.fields().indexFromName(campo)
-        unique_values = ottobacias_icr_sob.uniqueValues(indice)
+        uri.setConnection(parametros_conexao['host_bd'],
+                          parametros_conexao['porta_bd'],
+                          parametros_conexao['nome_bd'],
+                          parametros_conexao['usuario_bd'],
+                          parametros_conexao['senha_bd'])
+        uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_isr', 'geom', '', 'cobacia')
+        ottobacias_isr_sob = QgsVectorLayer(uri.uri(), 'camada_ottobacias_isr', "postgres")
+        QgsProject.instance().addMapLayer(ottobacias_isr_sob)
+        campo = 'isr'
+        indice = ottobacias_isr_sob.fields().indexFromName(campo)
+        unique_values = ottobacias_isr_sob.uniqueValues(indice)
         cores_classes = {   '1': QColor(80, 150, 162, 50),
                             '2': QColor(105, 217, 114, 50),
                             '3': QColor(255, 255, 116, 50),
@@ -43,7 +50,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
                             '5': 'Déficit de atendimento às demandas'}
         categorias = []
         for value in unique_values:
-            simbologia = QgsSymbol.defaultSymbol(ottobacias_icr_sob.geometryType())
+            simbologia = QgsSymbol.defaultSymbol(ottobacias_isr_sob.geometryType())
             categoria = QgsRendererCategory(value, simbologia, str(value))
             if str(value) in cores_classes:
                 simbologia.setColor(cores_classes[str(value)])
@@ -51,8 +58,8 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
                 categoria.setLabel(rotulos_classes[str(value)])
             categorias.append(categoria)
         renderer = QgsCategorizedSymbolRenderer(campo, categorias)
-        ottobacias_icr_sob.setRenderer(renderer)
-        ottobacias_icr_sob.triggerRepaint()
+        ottobacias_isr_sob.setRenderer(renderer)
+        ottobacias_isr_sob.triggerRepaint()
         
         if (int(cod_otto_bacia) % 2) == 0:
             cod_otto_e = cod_otto_bacia
@@ -79,24 +86,29 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         port = str(parametros_conexao['porta_bd']))
         cursor = conexao.cursor()
 
-        cursor.execute("DROP VIEW IF EXISTS selecao_montante CASCADE;"\
-            "CREATE VIEW selecao_montante AS "\
-            "SELECT * "\
-            "FROM ottobacias_icr "\
-            "WHERE ottobacias_icr.cobacia LIKE '"+cod_otto_e+"%' AND ottobacias_icr.cobacia >= '"+cod_otto_bacia+"'")
-
+        cursor.execute(f'''
+            DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.selecao_montante CASCADE;
+            CREATE VIEW {parametros_conexao['schema_cenario']}.selecao_montante AS
+            SELECT *
+            FROM {parametros_conexao['schema_cenario']}.ottobacias_isr
+            WHERE {parametros_conexao['schema_cenario']}.ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND ottobacias_isr.cobacia >= '{cod_otto_bacia}';
+        ''')
         conexao.commit()
         cursor.close()
         conexao.close()
 
         #ATENÇÃO: Revisar, pois somente copiei da etapa 6
         uri = QgsDataSourceUri()
-        uri.setConnection("localhost", "5432", "bdg_prh_rpb", "postgres", "cobrape")
-        uri.setDataSource("", "selecao_montante", "geom", "", "cobacia")
+        uri.setConnection(parametros_conexao['host_bd'],
+                          parametros_conexao['porta_bd'],
+                          parametros_conexao['nome_bd'],
+                          parametros_conexao['usuario_bd'],
+                          parametros_conexao['senha_bd'])
+        uri.setDataSource(parametros_conexao['schema_cenario'], 'selecao_montante', 'geom', '', 'cobacia')
         selecao_montante = QgsVectorLayer(uri.uri(), 'camada_selelcao_montante', "postgres")
         QgsProject.instance().addMapLayer(selecao_montante)
         
-        campo = 'icr'
+        campo = 'isr'
         indice = selecao_montante.fields().indexFromName(campo)
         unique_values = selecao_montante.uniqueValues(indice)
         cores_classes = {   '1': QColor(80, 150, 162),
@@ -126,15 +138,12 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
 def limpeza_camadas_extras():
     QgsProject.instance().removeMapLayer(ottobacias)
     QgsProject.instance().removeMapLayer(ottotrechos)
-    QgsProject.instance().removeMapLayer(disponibilidade)
-    QgsProject.instance().removeMapLayer(captacao_ottobacia)
-    QgsProject.instance().removeMapLayer(trecho_disponibilidade_captacao)
     print('Camadas extras removidas!')
 
 
 ### EXECUÇÃO ###
 
 canvas = iface.mapCanvas()
-map_tool = MapToolIdentify(canvas, ottobacias_icr)
+map_tool = MapToolIdentify(canvas, ottobacias_isr)
 canvas.setMapTool(map_tool)
 limpeza_camadas_extras()
