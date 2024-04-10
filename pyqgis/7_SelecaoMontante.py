@@ -33,7 +33,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
                           parametros_conexao['usuario_bd'],
                           parametros_conexao['senha_bd'])
         uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_isr', 'geom', '', 'cobacia')
-        ottobacias_isr_sob = QgsVectorLayer(uri.uri(), 'camada_ottobacias_isr', "postgres")
+        ottobacias_isr_sob = QgsVectorLayer(uri.uri(), 'camada_ottobacias_isr', 'postgres')
         QgsProject.instance().addMapLayer(ottobacias_isr_sob)
         campo = 'isr'
         indice = ottobacias_isr_sob.fields().indexFromName(campo)
@@ -87,8 +87,8 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         cursor = conexao.cursor()
 
         cursor.execute(f'''
-            DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.selecao_montante CASCADE;
-            CREATE VIEW {parametros_conexao['schema_cenario']}.selecao_montante AS
+            DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_montante CASCADE;
+            CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_montante AS
             SELECT *
             FROM {parametros_conexao['schema_cenario']}.ottobacias_isr
             WHERE {parametros_conexao['schema_cenario']}.ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND ottobacias_isr.cobacia >= '{cod_otto_bacia}';
@@ -104,13 +104,13 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
                           parametros_conexao['nome_bd'],
                           parametros_conexao['usuario_bd'],
                           parametros_conexao['senha_bd'])
-        uri.setDataSource(parametros_conexao['schema_cenario'], 'selecao_montante', 'geom', '', 'cobacia')
-        selecao_montante = QgsVectorLayer(uri.uri(), 'camada_selelcao_montante', "postgres")
-        QgsProject.instance().addMapLayer(selecao_montante)
+        uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_montante', 'geom', '', 'cobacia')
+        ottobacias_montante = QgsVectorLayer(uri.uri(), 'camada_ottobacias_montante', 'postgres')
+        QgsProject.instance().addMapLayer(ottobacias_montante)
         
         campo = 'isr'
-        indice = selecao_montante.fields().indexFromName(campo)
-        unique_values = selecao_montante.uniqueValues(indice)
+        indice = ottobacias_montante.fields().indexFromName(campo)
+        unique_values = ottobacias_montante.uniqueValues(indice)
         cores_classes = {   '1': QColor(80, 150, 162),
                             '2': QColor(105, 217, 114),
                             '3': QColor(255, 255, 116),
@@ -123,7 +123,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
                             '5': 'Déficit de atendimento às demandas'}
         categorias = []
         for value in unique_values:
-            simbologia = QgsSymbol.defaultSymbol(selecao_montante.geometryType())
+            simbologia = QgsSymbol.defaultSymbol(ottobacias_montante.geometryType())
             categoria = QgsRendererCategory(value, simbologia, str(value))
             if str(value) in cores_classes:
                 simbologia.setColor(cores_classes[str(value)])
@@ -132,8 +132,8 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
             categorias.append(categoria)
 
         renderer = QgsCategorizedSymbolRenderer(campo, categorias)
-        selecao_montante.setRenderer(renderer)
-        selecao_montante.triggerRepaint()
+        ottobacias_montante.setRenderer(renderer)
+        ottobacias_montante.triggerRepaint()
 
 def limpeza_camadas_extras():
     QgsProject.instance().removeMapLayer(ottobacias)
