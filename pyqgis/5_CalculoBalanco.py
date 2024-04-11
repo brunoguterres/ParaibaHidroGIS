@@ -1,5 +1,4 @@
-import psycopg2
-import time
+import psycopg2, time
 
 def criar_matriz():
     conexao = psycopg2.connect(
@@ -9,7 +8,9 @@ def criar_matriz():
         host = str(parametros_conexao['host_bd']),
         port = str(parametros_conexao['porta_bd']))
     cursor = conexao.cursor()
-    cursor.execute('SELECT * FROM {schema_cenario}.dados_balanco;'.format(schema_cenario=parametros_conexao['schema_cenario']))
+    cursor.execute(f'''SELECT *
+                   FROM {parametros_conexao['schema_cenario']}.dados_balanco
+                   ORDER BY cobacia DESC;''')   # Garantir a ordenação de montante para jusante
     rows = cursor.fetchall()
     matriz = []
     for row in rows:
@@ -27,7 +28,8 @@ def criar_matriz():
     return matriz
 
 def calcular_balanco(matriz):
-    for i in range(len(matriz)):
+    #for i in range(len(matriz)):
+    for i in range(5):
         if matriz[i][campo_cabeceira] == 'True':
             matriz[i][campo_vazao_jusante] = float(matriz[i][campo_vazao_incremental])-float(matriz[i][campo_captacao_solicitada])
             if matriz[i][campo_vazao_jusante] < 0:
@@ -35,13 +37,16 @@ def calcular_balanco(matriz):
                 matriz[i][campo_vazao_jusante] = 0
                 matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
             else:
-                matriz[i][campo_captacao_atendida] = matriz[i][campo_captacao_solicitada]
+                matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada])
                 # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
-            matriz[i][campo_captacao_acumulada] = float(matriz[i][campo_captacao_atendida])
+            matriz[i][campo_cap_acum_mont] = float(0)
+            print(f'matriz[{i}][campo_cobacia]', matriz[i][campo_cobacia])
+            print(f'matriz[{i}][campo_cap_acum_mont]', matriz[i][campo_cap_acum_mont])
+            print('-'*30)
+
         else:
+            contador_montante = 0
             for j in range(i-1,-1,-1):
-                contador_montante = 0
-                acumulacao_montante = 0
                 if matriz[i][campo_cotrecho] == matriz[j][campo_trechojus]:
                     matriz[i][campo_vazao_montante] += float(matriz[j][campo_vazao_jusante])
                     matriz[i][campo_vazao_jusante] = float(matriz[i][campo_vazao_montante])+float(matriz[i][campo_vazao_incremental])-float(matriz[i][campo_captacao_solicitada])
@@ -50,10 +55,15 @@ def calcular_balanco(matriz):
                         matriz[i][campo_vazao_jusante] = 0
                         matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
                     else:
-                        matriz[i][campo_captacao_atendida] = matriz[i][campo_captacao_solicitada]
+                        matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada])
                         # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
-                    acumulacao_montante += float(matriz[j][campo_captacao_acumulada])
-                    matriz[i][campo_captacao_acumulada] = acumulacao_montante + float(matriz[i][campo_captacao_atendida])
+                    print(f'matriz[{i}][campo_cobacia]', matriz[i][campo_cobacia])
+                    print(f'matriz[{i}][campo_captacao_atendida]', matriz[i][campo_captacao_atendida])
+                    print(f'matriz[{j}][campo_cap_acum_mont]', matriz[j][campo_cap_acum_mont])
+                    matriz[i][campo_cap_acum_mont] = float(matriz[i][campo_cap_acum_mont])
+                    matriz[i][campo_cap_acum_mont] += matriz[j][campo_captacao_atendida] + matriz[j][campo_cap_acum_mont]
+                    print(f'matriz[{i}][campo_cap_acum_mont]', matriz[i][campo_cap_acum_mont])
+                    print('-'*30)
                     contador_montante += 1
                     if contador_montante == 2:
                         break
@@ -124,7 +134,7 @@ campo_captacao_solicitada = 6
 campo_vazao_montante = 7
 campo_vazao_jusante = 8
 campo_captacao_atendida = 9
-campo_captacao_acumulada = 10
+campo_cap_acum_mont = 10
 campo_deficit = 11
 campo_isr = 12
 
