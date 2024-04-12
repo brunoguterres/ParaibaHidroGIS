@@ -28,8 +28,7 @@ def criar_matriz():
     return matriz
 
 def calcular_balanco(matriz):
-    #for i in range(len(matriz)):
-    for i in range(5):
+    for i in range(len(matriz)):
         if matriz[i][campo_cabeceira] == 'True':
             matriz[i][campo_vazao_jusante] = float(matriz[i][campo_vazao_incremental])-float(matriz[i][campo_captacao_solicitada])
             if matriz[i][campo_vazao_jusante] < 0:
@@ -39,11 +38,7 @@ def calcular_balanco(matriz):
             else:
                 matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada])
                 # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
-            matriz[i][campo_cap_acum_mont] = float(0)
-            #print(f'matriz[{i}][campo_cobacia]', matriz[i][campo_cobacia])
-            #print(f'matriz[{i}][campo_cap_acum_mont]', matriz[i][campo_cap_acum_mont])
-            #print('-'*30)
-
+            matriz[i][campo_captacao_acumulada] = matriz[i][campo_captacao_atendida]
         else:
             contador_montante = 0
             for j in range(i-1,-1,-1):
@@ -57,17 +52,13 @@ def calcular_balanco(matriz):
                     else:
                         matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada])
                         # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
-                    #print(f'matriz[{i}][campo_cobacia]', matriz[i][campo_cobacia])
-                    #print(f'matriz[{i}][campo_captacao_atendida]', matriz[i][campo_captacao_atendida])
-                    matriz[i][campo_cap_acum_mont] = float(matriz[i][campo_cap_acum_mont])
-                    matriz[i][campo_cap_acum_mont] += matriz[j][campo_captacao_atendida] + matriz[j][campo_cap_acum_mont]
-                    #print(f'matriz[{i}][campo_cap_acum_mont]', matriz[i][campo_cap_acum_mont])
-                    #print('-'*30)
+                    matriz[i][campo_captacao_acumulada] = float(matriz[i][campo_captacao_acumulada])
+                    matriz[i][campo_captacao_acumulada] += matriz[j][campo_captacao_acumulada]
                     contador_montante += 1
                     if contador_montante == 2:
+                        matriz[i][campo_captacao_acumulada] += matriz[i][campo_captacao_atendida]
                         break
-            
-        matriz[i][campo_isr] = 1
+        matriz[i][campo_isr] = (matriz[i][campo_captacao_acumulada]+float(matriz[i][campo_deficit]))/float(matriz[i][campo_vazao_natural])
     return matriz
 
 def salvar_resultado(matriz_balanco):
@@ -133,7 +124,7 @@ campo_captacao_solicitada = 6
 campo_vazao_montante = 7
 campo_vazao_jusante = 8
 campo_captacao_atendida = 9
-campo_cap_acum_mont = 10
+campo_captacao_acumulada = 10
 campo_deficit = 11
 campo_isr = 12
 
