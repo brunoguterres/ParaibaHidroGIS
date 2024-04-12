@@ -61,15 +61,15 @@ def calcular_balanco(matriz):
                         break
         matriz[i][campo_isr] = (matriz[i][campo_captacao_acumulada]+float(matriz[i][campo_deficit]))/float(matriz[i][campo_vazao_natural])
         if matriz[i][campo_isr] <= 0.2:
-            matriz[i][campo_classe_isr] = 'Sem criticidade'
+            matriz[i][campo_classe_isr] = '1'
         elif matriz[i][campo_isr] > 0.2 and matriz[i][campo_isr] <= 0.4:
-            matriz[i][campo_classe_isr] = 'Baixo potencial de comprometimento'
+            matriz[i][campo_classe_isr] = '2'
         elif matriz[i][campo_isr] > 0.4 and matriz[i][campo_isr] <= 0.7:
-            matriz[i][campo_classe_isr] = 'Médio potencial de comprometimento'
+            matriz[i][campo_classe_isr] = '3'
         elif matriz[i][campo_isr] > 0.2 and matriz[i][campo_isr] <= 1:
-            matriz[i][campo_classe_isr] = 'Alto potencial de comprometimento'
+            matriz[i][campo_classe_isr] = '4'
         elif matriz[i][campo_isr] > 1:
-            matriz[i][campo_classe_isr] = 'Déficit de atendimento às demandas'
+            matriz[i][campo_classe_isr] = '5'
     return matriz
 
 def salvar_resultado(matriz_balanco):
@@ -112,7 +112,8 @@ def salvar_resultado(matriz_balanco):
         SELECT 
             {basemap}.ottobacias_pb_5k.cobacia,
             {basemap}.ottobacias_pb_5k.geom,
-            {parametros_conexao['schema_cenario']}.resultado_balanco.isr
+            {parametros_conexao['schema_cenario']}.resultado_balanco.isr,
+            {parametros_conexao['schema_cenario']}.resultado_balanco.classe_isr
         FROM {basemap}.ottobacias_pb_5k
         LEFT JOIN {parametros_conexao['schema_cenario']}.resultado_balanco
             ON {basemap}.ottobacias_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.resultado_balanco.cobacia;

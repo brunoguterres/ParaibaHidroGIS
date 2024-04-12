@@ -13,21 +13,21 @@ def importar_camada_bdg(nome_tabela_bdg, nome_camada):
 def carregar_camada_balanco(ottobacias_isr):
     QgsProject.instance().addMapLayer(ottobacias_isr)
     
-    campo = 'isr'
+    campo = 'classe_isr'
     indice = ottobacias_isr.fields().indexFromName(campo)
     unique_values = ottobacias_isr.uniqueValues(indice)
-    cores_classes = {'Sem criticidade': QColor(80, 150, 162),
-                     'Baixo potencial de comprometimento': QColor(105, 217, 114),
-                     'Médio potencial de comprometimento': QColor(255, 255, 116),
-                     'Alto potencial de comprometimento': QColor(253, 144, 64),
-                     'Déficit de atendimento às demandas': QColor(215, 61, 125)}
-    '''
+    cores_classes = {'1': QColor(80, 150, 162),
+                     '2': QColor(105, 217, 114),
+                     '3': QColor(255, 255, 116),
+                     '4': QColor(253, 144, 64),
+                     '5': QColor(215, 61, 125)}
+    
     rotulos_classes = {'1': 'Sem criticidade',
                        '2': 'Baixo potencial de comprometimento',
                        '3': 'Médio potencial de comprometimento',
                        '4': 'Alto potencial de comprometimento',
                        '5': 'Déficit de atendimento às demandas'}
-    '''
+    
                        
     categorias = []
     for value in unique_values:
@@ -35,9 +35,11 @@ def carregar_camada_balanco(ottobacias_isr):
         categoria = QgsRendererCategory(value, simbologia, str(value))
         if str(value) in cores_classes:
             simbologia.setColor(cores_classes[str(value)])
+        
         if str(value) in rotulos_classes:
             categoria.setLabel(rotulos_classes[str(value)])
         categorias.append(categoria)
+        
 
     renderer = QgsCategorizedSymbolRenderer(campo, categorias)
     ottobacias_isr.setRenderer(renderer)
