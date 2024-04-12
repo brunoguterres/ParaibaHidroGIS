@@ -25,6 +25,7 @@ def criar_matriz():
         linha.append(0)
         linha.append(0)
         linha.append(0)
+        linha.append(0)
     return matriz
 
 def calcular_balanco(matriz):
@@ -59,6 +60,16 @@ def calcular_balanco(matriz):
                         matriz[i][campo_captacao_acumulada] += matriz[i][campo_captacao_atendida]
                         break
         matriz[i][campo_isr] = (matriz[i][campo_captacao_acumulada]+float(matriz[i][campo_deficit]))/float(matriz[i][campo_vazao_natural])
+        if matriz[i][campo_isr] <= 0.2:
+            matriz[i][campo_classe_isr] = 'Sem criticidade'
+        elif matriz[i][campo_isr] > 0.2 and matriz[i][campo_isr] <= 0.4:
+            matriz[i][campo_classe_isr] = 'Baixo potencial de comprometimento'
+        elif matriz[i][campo_isr] > 0.4 and matriz[i][campo_isr] <= 0.7:
+            matriz[i][campo_classe_isr] = 'Médio potencial de comprometimento'
+        elif matriz[i][campo_isr] > 0.2 and matriz[i][campo_isr] <= 1:
+            matriz[i][campo_classe_isr] = 'Alto potencial de comprometimento'
+        elif matriz[i][campo_isr] > 1:
+            matriz[i][campo_classe_isr] = 'Déficit de atendimento às demandas'
     return matriz
 
 def salvar_resultado(matriz_balanco):
@@ -81,14 +92,15 @@ def salvar_resultado(matriz_balanco):
                 'captacao_atendida',
                 'captacao_acumulada',
                 'deficit',
-                'isr']
+                'isr',
+                'classe_isr']
     
     cursor.execute(f'''
         DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.resultado_balanco CASCADE;
         CREATE VIEW {parametros_conexao['schema_cenario']}.resultado_balanco AS
         SELECT {', '.join(campos)}
         FROM (
-            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]}, {campo[12]})" for campo in matriz_balanco])}
+            VALUES {', '.join([f"('{campo[0]}', {campo[1]}, {campo[2]}, {campo[3]}, {campo[4]}, {campo[5]}, {campo[6]}, {campo[7]}, {campo[8]}, {campo[9]}, {campo[10]}, {campo[11]}, {campo[12]}, '{campo[13]}')" for campo in matriz_balanco])}
         ) AS data({', '.join(campos)})
         ORDER BY cobacia DESC;
     ''')
@@ -127,6 +139,7 @@ campo_captacao_atendida = 9
 campo_captacao_acumulada = 10
 campo_deficit = 11
 campo_isr = 12
+campo_classe_isr = 13
 
 matriz = criar_matriz()
 tempo_matriz = time.time()              # Apenas para finalidade de apresentação do tempo
