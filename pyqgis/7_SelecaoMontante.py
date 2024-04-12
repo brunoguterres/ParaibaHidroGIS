@@ -35,7 +35,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_isr', 'geom', '', 'cobacia')
         ottobacias_isr_sob = QgsVectorLayer(uri.uri(), 'camada_ottobacias_isr', 'postgres')
         QgsProject.instance().addMapLayer(ottobacias_isr_sob)
-        campo = 'isr'
+        campo = 'classe_isr'
         indice = ottobacias_isr_sob.fields().indexFromName(campo)
         unique_values = ottobacias_isr_sob.uniqueValues(indice)
         cores_classes = {   '1': QColor(80, 150, 162, 50),
@@ -108,7 +108,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
         ottobacias_montante = QgsVectorLayer(uri.uri(), 'camada_ottobacias_montante', 'postgres')
         QgsProject.instance().addMapLayer(ottobacias_montante)
         
-        campo = 'isr'
+        campo = 'classe_isr'
         indice = ottobacias_montante.fields().indexFromName(campo)
         unique_values = ottobacias_montante.uniqueValues(indice)
         cores_classes = {   '1': QColor(80, 150, 162),
