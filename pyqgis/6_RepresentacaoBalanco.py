@@ -21,14 +21,11 @@ def carregar_camada_balanco(ottobacias_isr):
                      '3': QColor(255, 255, 116),
                      '4': QColor(253, 144, 64),
                      '5': QColor(215, 61, 125)}
-    
     rotulos_classes = {'1': 'Sem criticidade',
                        '2': 'Baixo potencial de comprometimento',
                        '3': 'Médio potencial de comprometimento',
                        '4': 'Alto potencial de comprometimento',
                        '5': 'Déficit de atendimento às demandas'}
-    
-                       
     categorias = []
     for value in unique_values:
         simbologia = QgsSymbol.defaultSymbol(ottobacias_isr.geometryType())
@@ -39,8 +36,6 @@ def carregar_camada_balanco(ottobacias_isr):
         if str(value) in rotulos_classes:
             categoria.setLabel(rotulos_classes[str(value)])
         categorias.append(categoria)
-        
-
     renderer = QgsCategorizedSymbolRenderer(campo, categorias)
     ottobacias_isr.setRenderer(renderer)
     ottobacias_isr.triggerRepaint()
