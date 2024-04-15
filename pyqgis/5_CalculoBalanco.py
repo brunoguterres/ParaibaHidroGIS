@@ -38,7 +38,7 @@ def calcular_balanco(matriz):
                 matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
             else:
                 matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada])
-                # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
+                matriz[i][campo_deficit] = 0
             matriz[i][campo_captacao_acumulada] = matriz[i][campo_captacao_atendida]
         else:
             contador_montante = 0
@@ -52,7 +52,7 @@ def calcular_balanco(matriz):
                         matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada]) - matriz[i][campo_deficit]
                     else:
                         matriz[i][campo_captacao_atendida] = float(matriz[i][campo_captacao_solicitada])
-                        # Não precisa alterar o valor do "campo_deficit", pois é 0 por padrão
+                        matriz[i][campo_deficit] = 0
                     matriz[i][campo_captacao_acumulada] = float(matriz[i][campo_captacao_acumulada])
                     matriz[i][campo_captacao_acumulada] += matriz[j][campo_captacao_acumulada]
                     contador_montante += 1
@@ -66,7 +66,7 @@ def calcular_balanco(matriz):
             matriz[i][campo_classe_isr] = '2'
         elif matriz[i][campo_isr] > 0.4 and matriz[i][campo_isr] <= 0.7:
             matriz[i][campo_classe_isr] = '3'
-        elif matriz[i][campo_isr] > 0.2 and matriz[i][campo_isr] <= 1:
+        elif matriz[i][campo_isr] > 0.7 and matriz[i][campo_isr] <= 1:
             matriz[i][campo_classe_isr] = '4'
         elif matriz[i][campo_isr] > 1:
             matriz[i][campo_classe_isr] = '5'
