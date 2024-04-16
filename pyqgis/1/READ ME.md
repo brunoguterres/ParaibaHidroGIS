@@ -2,7 +2,7 @@
 
 ### 1.Procedimentos iniciais
 
->:bulb: **Sugestão Tonico**: após carregar o banco o usuário saberá se há ou não cenários armazenados com resultados do balanço. Se houver, ele poderá escolher se vai para a próxima etapa (Etapa 2) rodar um novo cenário ou se vai direto para a Etapa 6 para ver os resultados.
+>:warning: A última versão do banco é a **versão 8** e deve ser utilizada para execução com a última atualização da aplicação. Isto é importante para que haja compatibilidade e evitar erros de execução difíceis de serem compreendidos pelo usuário. 
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
@@ -11,7 +11,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD    
     subgraph A[1. Procedimentos Iniciais]
-        B[1.1. Definição dos parâmetros de conexão com o banco de dados] --> C[1.2. Limpeza de camadas residuais];
+        B[1.1. Definição dos parâmetros de conexão com o banco de dados] --> C[1.2. Escolha do cenário];
     end
 ```
 </center>
@@ -28,15 +28,9 @@ A função **parametros_padrao_bd** define os parâmetros de conexão *padrão* 
 >- porta: 5432
 >- schema: public
 
-#### 1.1.1. Definição do dicionário
-
->:warning: Verificar o nível.
-
 A variável **parametros_conexao** cria um dicionário que contém parâmetros de conexão padrão (host, nome do banco, usuário, senha, porta e schema) com o banco de dados. 
 
-#### 1.1.2. Verificação da conexão PostGIS
-
->:warning: Verificar o nível.
+##### 1.1.1 Verificação da conexão PostGIS
 
 A função **verifica_parametros_bd** apresenta os parâmetros de conexão com o banco de dados e possibilita ao usuário decidir se mantém os parâmetros de conexão padrão ou se deseja inserir parâmetros personalizados.
 
@@ -48,7 +42,7 @@ Se a resposta do usuário for *sim*, a leitura do código será continuada e ser
 
 Se a resposta for *não*, o código segue para a função **patrametros_personalizados_bd**.
 
-#### 1.1.3. Definição dos parâmetros personalizados
+#### 1.1.2. Definição dos parâmetros personalizados
 
 A função **parametros_personalizados_bd** utiliza a classe **QInputDialog** para obter novos valores para os parâmetros de conexão. A classe é utilizada para cada parâmetro de conexão (host, nome do banco, usuário, senha, porta e schema) e, portanto, o processo é repetido seis vezes. 
 
@@ -58,14 +52,15 @@ Depois de inserir os valores, é chamada a função **verifica_parametros_bd** o
 
 > A classe **QInputDialog** faz parte do framework Qt e é utilizada para criar caixas de diálogo que solicitam entrada do usuário. Essas caixas de diálogo podem ser usadas para coletar informações como texto, números ou opções de uma lista. 
 
-### 1.2. Limpeza das camadas residuais
+### 1.2. Escolha do cenário
 
-A função **limpeza_residuos** realiza a limpeza de camadas residuais do projeto no QGIS. 
+Os cenários foram criados nos Schemas do banco de dados. Os Schemas estão divididos por:
 
-A variável **camada_residual** utiliza o **QgsProject.instance** para obter um dicionário de todas as camadas do projeto usando o método mapLayers() da instância do projeto e, em seguida, obtém os valores desse dicionário, resultando em uma lista de todas as camadas no projeto.
+- **Basemap**: onde contém as ottobacias e ottotrechos.
+- **Cenário 0**: vazão incremental 1 e captação 0 para todas as ottobacias.
+- **Cenário 1**: 10 ottobacias com captação 1 distribuídas pela bacia.
+- **Cenário 2**: algumas ottobacias estão com valores diferentes para realizar testes das classificações do ISR.
 
->O **QgsProject** é uma classe central no QGIS que representa o projeto em si. Ele armazena informações sobre camadas, configurações do projeto, sistemas de coordenadas e outros elementos relacionados ao ambiente de trabalho no QGIS. 
+Os resultados são salvos no próprio Schema de cada cenário, em forma de Visualizações (VIEWS). Estes cenários criados são apenas para fins de testes.
 
-Após a criação da lista com as camadas do projeto, é feita a verificação da existência de camadas residuais, caso haja qualquer camada residual é feita a remoção da mesma. Caso contrário, será apenas obtido e atualizado o canvas do mapa do projeto utilizando o **qgis.utils.iface.mapCanvas()** e o **canvas.refresh()**.
-
-> O **iface** é uma instância da classe QgisInterface que fornece acesso às interfaces do QGIS para plugins. O *mapCanvas* é o método utilizado para obter a referência à tela de visualização do mapa atual no QGIS.
+A função **definir_cenario** exibe inicialmente uma caixa de mensagem perguntando ao usuário se ele deseja alterar o cenário atual. Caso a resposta for *Sim*, será solicitado que ele insira o nome de um novo cenário. Assim o *novo_cenario** substituirá o Schema atual no dicionário de parâmetros de conexão. 

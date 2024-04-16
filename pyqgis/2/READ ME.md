@@ -9,21 +9,32 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD
     subgraph A[2. Inicialização do Mapa]
-        B[2.1. Importação de camadas da bacia] --> C[2.2. Carregamento de camadas da bacia no mapa];
-        C --> D[2.3. Carregamento de basemap]
+        B[2.1. Limpeza das camadas residuais] --> C[2.2. Importação de camadas da bacia] --> D[2.3. Carregamento de camadas da bacia no mapa] --> E[2.4. Carregamento de basemap]
     end
 ```
 
 </center>
 
-### 2.1. Importação de camadas da bacia
+> O **import requests** faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.
+
+### 2.1. Limpeza das camadas residuais
+
+A função **limpeza_residuos** realiza a limpeza de camadas residuais do projeto no QGIS. 
+
+A variável **camada_residual** utiliza o **QgsProject.instance** para obter um dicionário de todas as camadas do projeto usando o método mapLayers() da instância do projeto e, em seguida, obtém os valores desse dicionário, resultando em uma lista de todas as camadas no projeto.
+
+>O **QgsProject** é uma classe central no QGIS que representa o projeto em si. Ele armazena informações sobre camadas, configurações do projeto, sistemas de coordenadas e outros elementos relacionados ao ambiente de trabalho no QGIS. 
+
+Após a criação da lista com as camadas do projeto, é feita a verificação da existência de camadas residuais, caso haja qualquer camada residual é feita a remoção da mesma. Caso contrário, será apenas obtido e atualizado o canvas do mapa do projeto utilizando o **qgis.utils.iface.mapCanvas()** e o **canvas.refresh()**.
+
+> O **iface** é uma instância da classe QgisInterface que fornece acesso às interfaces do QGIS para plugins. O *mapCanvas* é o método utilizado para obter a referência à tela de visualização do mapa atual no QGIS.
+
+### 2.2. Importação de camadas da bacia
 
 >:warning: Correção de estilo no carregamento da camada de ottobacias, deixar mais fina e mais clara.
 >:warning: Correção de estilo no carregamento da camada de ottotrechos, colocar um azul mais escuro.
 
 Nesse processo será feita a importação das camadas do banco de dados.
-
-> O **import requests** faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.
 
 A função **importar_camada_bdg** recebe informações sobre o banco de dados (nome, senha, schema, nome da camada) para importar a camada vetorial correspondente.
 
@@ -35,13 +46,13 @@ A variável *camada_importada* cria um objeto **QgsVectorLayer** usando a URI co
 
 > O **QgsVectorLayer** é uma classe na biblioteca QGIS que representa uma camada vetorial dentro do ambiente QGIS. Essa classe é parte da API do QGIS e é usada para manipular dados vetoriais, como pontos, linhas e polígonos. 
 
-### 2.2. Carregamento de camadas da bacia no mapa
+### 2.3. Carregamento de camadas da bacia no mapa
 
 A função **carregar_camada** é responsável por configurar a simbologia de uma camada e adicioná-la ao projeto do QGIS. Recebe como entrada a camada e um dicionário de simbologia. A simbologia é definida alterando a cor do símbolo da camada usando *setColor* com base nos valores RGB e alfa (transparência) fornecidos no dicionário. Depois, adiciona-se a camada ao projeto do QGIS usando o **QgsProject.instance**.
 
 > OBS: A classe **QgsProject** já foi definida na etapa 1.
 
-### 2.3.  Carregamento de basemap
+### 2.4.  Carregamento de basemap
 
 A função **importar_camada_fundo** tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS. 
 
@@ -53,3 +64,4 @@ A função **iface.addRasterLayer** da interface do QGIS é utilizada para adici
 - service_uri: a URI do serviço de mapas
 - Google_Road: nome da camada a ser adicionada
 - wms: tipo de serviço, indicando que é um Web Map Service
+
