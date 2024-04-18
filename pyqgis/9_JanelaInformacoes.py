@@ -19,7 +19,7 @@ class ClassInfoDialog(QDialog):
         # Obtenha as classes únicas da camada
         classes = set()
         for feature in layer.getFeatures():
-            classes.add(feature['sua_coluna_de_classes'])
+            classes.add(feature['classe_isr'])
 
         # Crie itens na lista para cada classe
         for class_name in sorted(classes):
