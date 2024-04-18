@@ -1,6 +1,4 @@
-from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QLabel, QListWidget, QListWidgetItem
-from qgis.PyQt.QtGui import QPixmap
-from qgis.core import QgsProject, QgsRenderContext
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QLabel, QListWidget, QListWidgetItem, QPushButton, QLineEdit, QMessageBox
 
 class ClassInfoDialog(QDialog):
     def __init__(self, layer, parent=None):
@@ -13,28 +11,30 @@ class ClassInfoDialog(QDialog):
         label = QLabel("Classes na camada:")
         layout.addWidget(label)
 
-        list_widget = QListWidget()
-        layout.addWidget(list_widget)
+        self.list_widget = QListWidget()
+        layout.addWidget(self.list_widget)
 
-        # Obtenha as classes únicas da camada
-        classes = set()
-        for feature in layer.getFeatures():
-            classes.add(feature['classe_isr'])
+        self.populate_class_list()
 
-        # Crie itens na lista para cada classe
-        for class_name in sorted(classes):
-            item = QListWidgetItem(class_name)
-            list_widget.addItem(item)
-
-            # Obtenha o símbolo correspondente à classe e adicione à lista
-            render_context = QgsRenderContext()
-            symbol = layer.renderer().symbolForFeature(feature, render_context)
-            pixmap = QPixmap(symbol.asImage(QSize(24, 24)))
-            label = QLabel()
-            label.setPixmap(pixmap)
-            list_widget.setItemWidget(item, label)
+        ok_button = QPushButton("OK")
+        ok_button.clicked.connect(self.accept)
+        layout.addWidget(ok_button)
 
         self.setLayout(layout)
+
+    def populate_class_list(self):
+        classes = set()
+        for feature in self.layer.getFeatures():
+            classes.add(feature['classe_isr'])
+
+        for class_name in sorted(classes):
+            item = QListWidgetItem(class_name)
+            self.list_widget.addItem(item)
+
+    def exec_(self):
+        result = super(ClassInfoDialog, self).exec_()
+        if result:
+            QMessageBox.information(self, "Ação", "Você clicou em OK")
 
 # Uso:
 layer = QgsProject.instance().mapLayersByName('camada_ottobacias_montante')[0]
