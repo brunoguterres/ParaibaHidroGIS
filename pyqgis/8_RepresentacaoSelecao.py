@@ -8,7 +8,7 @@ host = str(parametros_conexao['host_bd']),
 port = str(parametros_conexao['porta_bd']))
 cursor = conexao.cursor()
 
-cursor.execute(f'SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada')
+cursor.execute(f'''SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada''')
 cod_otto_bacia = cursor.fetchone()[0]
 
 print(f'cod_otto_bacia: {cod_otto_bacia}')
