@@ -111,7 +111,7 @@ cursor.execute(f'''
         ottotrechos_pb_5k.nome_rio,
         ottotrechos_pb_5k.geom
     FROM {basemap}.ottotrechos_pb_5k
-    WHERE {sele2} AND ottotrechos_pb_5k.cobacia <= '{cod_otto_bacia}';
+    WHERE ({sele2}) AND ottotrechos_pb_5k.cobacia <= '{cod_otto_bacia}';
 ''')
 conexao.commit()
 cursor.close()
@@ -164,10 +164,11 @@ uri.setConnection(parametros_conexao['host_bd'],
 uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante', 'geom', '', 'cobacia')
 camada_ottrechos_jusante = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante', 'postgres')
 print('--> Importação da camada "'+camada_ottrechos_jusante.name()+'" realizada.')
-simbologia = {'r':20, 'g':0, 'b':255, 'a':255}
+simbologia = {'r':20, 'g':0, 'b':255, 'a':255, 'width':1}
 camada_ottrechos_jusante.renderer().symbol().setColor(QColor(simbologia['r'],
                                                              simbologia['g'],
                                                              simbologia['b'],
                                                              simbologia['a']))
+camada_ottrechos_jusante.renderer().symbol().setWidth(simbologia['width'])
 QgsProject.instance().addMapLayer(camada_ottrechos_jusante)
 print('--> Carregamento de "'+camada_ottrechos_jusante.name()+'" realizado.')
