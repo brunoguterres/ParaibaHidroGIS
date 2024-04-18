@@ -8,6 +8,11 @@ host = str(parametros_conexao['host_bd']),
 port = str(parametros_conexao['porta_bd']))
 cursor = conexao.cursor()
 
+cursor.execute(f'SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada')
+cod_otto_bacia = cursor.fetchone()[0]
+
+print(f'cod_otto_bacia: {cod_otto_bacia}')
+
 QgsProject.instance().removeMapLayer(ottobacias_isr)
 
 uri = QgsDataSourceUri()
@@ -154,7 +159,8 @@ uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
                   parametros_conexao['porta_bd'],
                   parametros_conexao['nome_bd'],
-                  parametros_conexao['usuario_bd'],parametros_conexao['senha_bd'])
+                  parametros_conexao['usuario_bd'],
+                  parametros_conexao['senha_bd'])
 uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante', 'geom', '', 'cobacia')
 camada_ottrechos_jusante = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante', 'postgres')
 print('--> Importação da camada "'+camada_ottrechos_jusante.name()+'" realizada.')
