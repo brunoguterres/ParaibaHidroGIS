@@ -41,9 +41,15 @@ def carregar_camada_balanco(ottobacias_isr):
     ottobacias_isr.triggerRepaint()
     print('--> Carregamento de camada "'+ottobacias_isr.name()+'" realizado.')
 
+def limpeza_camadas_extras():
+    QgsProject.instance().removeMapLayer(ottobacias)
+    QgsProject.instance().removeMapLayer(ottotrechos)
+    print('Camadas extras removidas!')
+
 
 ### EXECUÇÃO ###
 
+limpeza_camadas_extras()
 nome_consulta_ottobacias_isr = 'ottobacias_isr'
 ottobacias_isr = importar_camada_bdg(nome_tabela_bdg=nome_consulta_ottobacias_isr, nome_camada='camada_ottobacias_isr')
 carregar_camada_balanco(ottobacias_isr)

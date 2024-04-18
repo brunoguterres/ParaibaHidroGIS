@@ -1,6 +1,17 @@
 import psycopg2
 
 class MapToolIdentify(QgsMapToolIdentifyFeature):
+    
+    uri = QgsDataSourceUri()
+    uri.setConnection(parametros_conexao['host_bd'],
+                      parametros_conexao['porta_bd'],
+                      parametros_conexao['nome_bd'],
+                      parametros_conexao['usuario_bd'],
+                      parametros_conexao['senha_bd'])
+    uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
+    ottotrechos_sob = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
+    ottotrechos_sob.renderer().symbol().setColor(QColor(0, 150, 255))
+    QgsProject.instance().addMapLayer(ottotrechos_sob)
 
     def __init__(self, canvas, ottobacias_isr):
         super().__init__(canvas)
