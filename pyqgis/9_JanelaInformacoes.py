@@ -1,31 +1,32 @@
+from qgis.PyQt.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QWidget
+from qgis.PyQt.QtGui import QColor, QPainter, QPalette
 import sys
-from PyQt5.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QWidget
-from PyQt5.QtGui import QColor, QPainter, QFont, QPalette
-from PyQt5.QtCore import Qt
+
+class ColorWidget(QWidget):
+    def __init__(self, color, parent=None):
+        super().__init__(parent)
+        self.color = QColor(*color)
+        self.setFixedSize(20, 20)  # Define o tamanho fixo do widget de cor
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.fillRect(event.rect(), self.color)
 
 class CustomColorBox(QWidget):
     def __init__(self, color, text, parent=None):
         super().__init__(parent)
-        self.color = QColor(*color)
+        self.color_widget = ColorWidget(color)
         self.text = text
-
-        # Define a cor de fundo da caixa
-        palette = self.palette()
-        palette.setColor(QPalette.Background, self.color)
-        self.setAutoFillBackground(True)
-        self.setPalette(palette)
 
         # Define o texto da caixa
         self.label = QLabel(self.text, self)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)  # Alinha o texto à esquerda
 
         # Define o layout da caixa
-        layout = QVBoxLayout()
+        layout = QHBoxLayout()  
+        layout.addWidget(self.color_widget)
         layout.addWidget(self.label)
         self.setLayout(layout)
-
-        # Define o tamanho mínimo da caixa
-        self.setMinimumSize(200, 30)
 
 class ColorDialog(QDialog):
     def __init__(self, parent=None):
@@ -50,8 +51,12 @@ class ColorDialog(QDialog):
 
         self.setLayout(layout)
 
-if __name__ == "__main__":
+def run_color_dialog():
     app = QApplication(sys.argv)
     dialog = ColorDialog()
-    dialog.exec_()
-    sys.exit(app.exec_())
+    dialog.exec_()  # Mostra o diálogo e aguarda até que ele seja fechado
+    # O aplicativo continuará sendo executado aqui até que a janela seja fechada
+    # Não precisamos mais da chamada sys.exit()
+
+# Chamar a função para executar o diálogo de cores
+run_color_dialog()
