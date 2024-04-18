@@ -1,6 +1,6 @@
 from qgis.PyQt.QtWidgets import QDialog, QVBoxLayout, QLabel, QListWidget, QListWidgetItem
 from qgis.PyQt.QtGui import QPixmap
-from qgis.core import QgsProject, QgsSymbol
+from qgis.core import QgsProject, QgsRenderContext
 
 class ClassInfoDialog(QDialog):
     def __init__(self, layer, parent=None):
@@ -27,8 +27,9 @@ class ClassInfoDialog(QDialog):
             list_widget.addItem(item)
 
             # Obtenha o símbolo correspondente à classe e adicione à lista
-            symbol = layer.renderer().symbolForFeature(feature)
-            pixmap = QPixmap(symbol.previewImage(24, 24))
+            render_context = QgsRenderContext()
+            symbol = layer.renderer().symbolForFeature(feature, render_context)
+            pixmap = QPixmap(symbol.asImage(QSize(24, 24)))
             label = QLabel()
             label.setPixmap(pixmap)
             list_widget.setItemWidget(item, label)
