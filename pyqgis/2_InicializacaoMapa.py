@@ -22,7 +22,7 @@ def importar_camada_bdg(nome_tabela_bdg, nome_schema_bdg, nome_camada):
                       parametros_conexao['senha_bd'])
     uri.setDataSource(nome_schema_bdg, nome_tabela_bdg, 'geom', '', 'cobacia')
     camada_importada = QgsVectorLayer(uri.uri(False), nome_camada, 'postgres')
-    print('--> Importação da camada "'+camada_importada.name()+'" realizada.')
+    print(f'--> Importação da camada "{camada_importada.name()}" realizada.')
     return camada_importada
 
 def carregar_camada(camada, simbologia):
@@ -31,7 +31,12 @@ def carregar_camada(camada, simbologia):
                                                simbologia['b'],
                                                simbologia['a']))
     QgsProject.instance().addMapLayer(camada)
-    print('--> Carregamento de "'+camada.name()+'" realizado.')
+    print(f'--> Carregamento de "{camada.name()}" realizado.')
+
+    if camada.geometryType() == QgsWkbTypes.PolygonGeometry:
+        print("A camada é do tipo polígono.")
+    else:
+        print("A camada não é do tipo polígono.")
 
 def importar_camada_fundo():
     # função de carregamento da camada de plano de fundo
