@@ -27,11 +27,11 @@ QgsProject.instance().addMapLayer(ottobacias_isr_sob)
 campo = 'classe_isr'
 indice = ottobacias_isr_sob.fields().indexFromName(campo)
 unique_values = ottobacias_isr_sob.uniqueValues(indice)
-cores_classes = {'1': QColor(10, 204, 23, 50),
-                 '2': QColor(247, 210, 24, 50),
-                 '3': QColor(247, 98, 24, 50),
-                 '4': QColor(230, 23, 26, 50),
-                 '5': QColor(161, 23, 230, 50)}
+cores_classes = {'1': QColor(6, 128, 14),
+                 '2': QColor(153, 130, 15),
+                 '3': QColor(153, 59, 15),
+                 '4': QColor(153, 15, 61),
+                 '5': QColor(107, 15, 153)}
 rotulos_classes = {'1': 'Sem criticidade',
                    '2': 'Baixo potencial de comprometimento',
                    '3': 'Médio potencial de comprometimento',
@@ -127,11 +127,9 @@ cursor.execute(f'''
     WHERE ({sele2}) AND ottotrechos_pb_5k.cobacia >= '{cod_otto_bacia}';
 ''')
 conexao.commit()
-
 cursor.close()
 conexao.close()
 
-#ATENÇÃO: Revisar, pois somente copiei da etapa 6
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
                   parametros_conexao['porta_bd'],
@@ -145,12 +143,12 @@ QgsProject.instance().addMapLayer(ottobacias_montante)
 campo = 'classe_isr'
 indice = ottobacias_montante.fields().indexFromName(campo)
 unique_values = ottobacias_montante.uniqueValues(indice)
-cores_classes = {'1': QColor(80, 150, 162),
-                 '2': QColor(105, 217, 114),
-                 '3': QColor(255, 255, 116),
-                 '4': QColor(253, 144, 64),
-                 '5': QColor(215, 61, 125)}
-rotulos_classes = { '1': 'Sem criticidade',
+cores_classes = {'1': QColor(10, 204, 23),
+                 '2': QColor(247, 210, 24),
+                 '3': QColor(247, 98, 24),
+                 '4': QColor(230, 23, 26),
+                 '5': QColor(161, 23, 230)}
+rotulos_classes = {'1': 'Sem criticidade',
                    '2': 'Baixo potencial de comprometimento',
                    '3': 'Médio potencial de comprometimento',
                    '4': 'Alto potencial de comprometimento',
@@ -198,9 +196,9 @@ camada_ottrechos_jusante_2 = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_
 print('--> Importação da camada "'+camada_ottrechos_jusante_2.name()+'" realizada.')
 simbologia = {'r':20, 'g':0, 'b':255, 'a':255, 'width':0.4}
 camada_ottrechos_jusante_2.renderer().symbol().setColor(QColor(simbologia['r'],
-                                                             simbologia['g'],
-                                                             simbologia['b'],
-                                                             simbologia['a']))
+                                                               simbologia['g'],
+                                                               simbologia['b'],
+                                                               simbologia['a']))
 camada_ottrechos_jusante_2.renderer().symbol().setWidth(simbologia['width'])
 QgsProject.instance().addMapLayer(camada_ottrechos_jusante_2)
 print('--> Carregamento de "'+camada_ottrechos_jusante_2.name()+'" realizado.')
