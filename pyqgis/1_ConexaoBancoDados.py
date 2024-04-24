@@ -59,10 +59,10 @@ def definir_cenario(parametros_conexao):
                             '\n'
                             '< ' + parametros_conexao['schema_cenario'] + ' >\n'
                             '\n'
-                            'Deseja alterar o cenário?')
+                            'Deseja manter o cenário?')
     escolha_cenario.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
     return_value = escolha_cenario.exec()
-    if return_value == QMessageBox.Yes:
+    if return_value == QMessageBox.No:
         novo_cenario = QInputDialog().getText(None,
                                                'Escolha um cenário',
                                                'Digite o nome do cenário:')
