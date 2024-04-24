@@ -27,11 +27,11 @@ QgsProject.instance().addMapLayer(ottobacias_isr_sob)
 campo = 'classe_isr'
 indice = ottobacias_isr_sob.fields().indexFromName(campo)
 unique_values = ottobacias_isr_sob.uniqueValues(indice)
-cores_classes = {'1': QColor(80, 150, 162, 50),
-                 '2': QColor(105, 217, 114, 50),
-                 '3': QColor(255, 255, 116, 50),
-                 '4': QColor(253, 144, 64, 50),
-                 '5': QColor(215, 61, 125, 50)}
+cores_classes = {'1': QColor(10, 204, 23, 50),
+                 '2': QColor(247, 210, 24, 50),
+                 '3': QColor(247, 98, 24, 50),
+                 '4': QColor(230, 23, 26, 50),
+                 '5': QColor(161, 23, 230, 50)}
 rotulos_classes = {'1': 'Sem criticidade',
                    '2': 'Baixo potencial de comprometimento',
                    '3': 'Médio potencial de comprometimento',
