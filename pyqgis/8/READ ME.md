@@ -47,6 +47,16 @@ A parte de execução de instrução SQL ocorre de forma semelhante ao citado ac
 
 Em um primeiro momento são definidas as variáveis para o trecho de jusante (rio, rios, compri). 
 
-### 7.4. Limpeza de camadas extras
+//revisar
 
-A função **limpeza_camadas_extras** remove várias camadas adicionais do projeto do QGIS. Essa função é chamada para garantir que as camadas extras não interfiram com o restante do processo.
+Para realizar a seleção dos rios a jusante é feita uma iteração para definir o comprimento do código da ottobacia e testado se o número de dígitos é par ou impar, para redefinir as variáveis definidas.
+
+Adição do shape dos trechos de jusante
+
+São criados cursores para executar uma consulta SQL semelhante ao que já foi definido acima, com a diferença que será criada primeiramente a VIEW **ottotrechos_justante** e posteriormente a VIEW **ottotrechos_jusante_2**.
+
+Semelhante ao já descrito acima, é feito a configuração da simbologia das camadas ottobacias_montante, camada_ottotrechos_jusante e camada_ottotrechos_jusante_2.
+
+
+
+
