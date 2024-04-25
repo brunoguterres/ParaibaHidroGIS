@@ -1,3 +1,4 @@
+import os
 import psycopg2
 
 class MapToolIdentify(QgsMapToolIdentifyFeature):
@@ -49,7 +50,6 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
 
 
 ### EXECUÇÃO ###
-
 exec(open('C:/Users/brunoguterres/Desktop/GitHubFiles/ParaibaHidroGIS/pyqgis/2_InicializacaoMapa.py').read())
 canvas = iface.mapCanvas()
 map_tool = MapToolIdentify(canvas, ottobacias)
