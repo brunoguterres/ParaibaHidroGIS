@@ -13,9 +13,9 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
     ottotrechos_sob.renderer().symbol().setColor(QColor(0, 150, 255))
     QgsProject.instance().addMapLayer(ottotrechos_sob)
 
-    def __init__(self, canvas, ottobacias_isr):
+    def __init__(self, canvas, ottobacias):
         super().__init__(canvas)
-        self.layer = ottobacias_isr
+        self.layer = ottobacias
 
     def canvasReleaseEvent(self, event):
         super().canvasReleaseEvent(event)
@@ -51,5 +51,5 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
 ### EXECUÇÃO ###
 
 canvas = iface.mapCanvas()
-map_tool = MapToolIdentify(canvas, ottobacias_isr)
+map_tool = MapToolIdentify(canvas, ottobacias)
 canvas.setMapTool(map_tool)

@@ -13,7 +13,7 @@ cod_otto_bacia = cursor.fetchone()[0]
 
 print(f'cod_otto_bacia: {cod_otto_bacia}')
 
-QgsProject.instance().removeMapLayer(ottobacias_isr)
+#QgsProject.instance().removeMapLayer(ottobacias_isr)
 
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
