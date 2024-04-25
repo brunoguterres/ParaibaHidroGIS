@@ -9,7 +9,7 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 ```mermaid
     flowchart TD
     subgraph A[7. Seleção à montante]
-        B[7.1. Seleção de código otto da ottobacia] --> C[7.2. Edição de código otto] --> D[7.3. Criar camada de seleção à montante] --> E[7.4. Limpeza de camadas extras]
+        B[7.1. Seleção de código otto da ottobacia] --> C[7.2. Criar camada de seleção à montante] --> E[7.3. Limpeza de camadas extras]
     end
 ```
 </center>
@@ -18,9 +18,9 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 É definida uma classe chamada **MapToolIdentify** que é uma extensão especializada da funcionalidade de identificação de feições fornecida pelo QGIS.
 
-A variável **uri** configuram e adicionam uma nova camada vetorial ao projeto do QGIS. 
+É estabelecida uma conexão com o banco de dados, através do dicionário parametros_conexao (setConnection). Depois, é definida a fonte de dados para a camada no QGIS, utilizando a variável basemap (schema), ottotrechos_pb_5k como o nome da tabela, geom como a coluna de geometria e cobacia como filtro de atributos. A variável **uri** configura e adiciona uma nova camada vetorial ao projeto do QGIS (**camada_ottotrechos**). 
 
-É definida uma função com o método **__init__** é o construtor da classe **MapToolIdentify** e é chamado quando uma instância da classe é criada. O método *super()* chama o construtor da classe **QgsMapToolIdentifyFeature** e o atributo *layer* é definido como a camada **ottobacias_isr**.
+É definida uma função com o método **__init__** que é o construtor da classe **MapToolIdentify** e é chamado quando uma instância da classe é criada. O método *super()* chama o construtor da classe **QgsMapToolIdentifyFeature** e o atributo *layer* é definido como a camada **ottobacias_isr**.
 
 A função com o método **canvasReleaseEvent** é chamada sempre que ocorre um "clique" com o mouse no canvas do mapa. O método *super()* chama o **canvasReleaseEvent** para garantir que o comportamento padrão seja executado antes de executar qualquer código adicional.
 
@@ -28,13 +28,7 @@ A variável **feicao** identifica a feição na posição onde o mouse foi solto
 
 A variável **cod_otto_bacia** recupera o valor do atributo *cobacia* da feição identificada, que representa o código da bacia hidrográfica.
 
-Depois é feito a remoção da camada **ottobacias_isr** para que ela seja adicionada novamente mas com a simbologia atualizada para a seleção, semelhante ao que ocorre na etapa 6.
-
-### 7.2. Edição de código otto
-
-É feita uma iteração para a edição do código otto. É verificado se o código otto da bacia é par. Se for par, atribui seu valor a variável **cod_otto_e**. Se o código não for par, itera pelos caracteres do código até encontrar um que seja par. O código resultante é atrubuído a **cod_otto_e**.
-
-### 7.3. Criar camada de seleção à montante
+### 7.2. Criar camada de seleção à montante
 
 É estabelecida a conexão com o banco de dados PostgreSQL usando as informações de conexão fornecidas.
 
@@ -42,12 +36,15 @@ Depois, é executada uma consulta SQL para criar uma nova VIEW chamada **selecao
 
 Sobre a consulta SQL:
 
-- CREATE VIEW: cria a VIEW selecao_montante.
-- FROM: é especificada a tabela ottobacias_isr como fonte de dados para a visualização
-- WHERE: filtra as linhas da tabela com base em duas condições, primeiro a coluna cobacia é comparada com cod_otto_e e somente as linhas cujo valor começa com o mesmo valor serão selecionadas. Além disso, apenas as linhas com valores na coluna cobacia, maiores ou iguais a cod_otto_bacia são incluídas.
+- **DROP VIEW IF EXISTS**: exclui a VIEW chamada ottobacia_selecionada no schema especificado. 
+- **CASCADE**: é utilizado para garantir que, se a VIEW já existir, ela seja excluída juntamente com todas as dependências.
+- **CREATE VIEW**: cria a VIEW ottobacia_selecionada no schema especificado.
+- **SELECT**: seleciona os campos da tabela resultado_balanco no schema especificado e a geometria da tabela ottobacias_pb_5k no schema basemap.
+- **FROM & LEFT JOIN**: esse trecho especifica a fonte dos dados para a VIEW, utilizando uma junção esquerda entre a tabela resultado_balanco e a tabela ottobacias_pb_5k.
+- **WHERE**: filtra as linhas da tabela com base em duas condições, primeiro a coluna cobacia é comparada com cod_otto_bacia e somente as linhas cujo valor começa com o mesmo valor serão selecionadas. Além disso, apenas as linhas com valores na coluna cobacia, maiores ou iguais a cod_otto_bacia são incluídas.
 
-É criada uma nova camada vetorial chamada **selecao_montante** a partir da visualização SQL e sua renderização é definida com base em cores diferentes de acordo com o campo **isr** e atribui rótulos apropriados para cada categoria de dados.
+Por fim, confirma as alterações no banco de dados, fecha o cursor e a conexão com o banco após a execusão da consulta.
 
-### 7.4. Limpeza de camadas extras
+### 7.3. Limpeza de camadas extras
 
 A função **limpeza_camadas_extras** remove várias camadas adicionais do projeto do QGIS. Essa função é chamada para garantir que as camadas extras não interfiram com o restante do processo.
