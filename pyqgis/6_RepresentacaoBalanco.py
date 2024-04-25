@@ -16,11 +16,11 @@ def carregar_camada_balanco(ottobacias_isr):
     campo = 'classe_isr'
     indice = ottobacias_isr.fields().indexFromName(campo)
     unique_values = ottobacias_isr.uniqueValues(indice)
-    cores_classes = {'1': QColor(6, 128, 14),
-                     '2': QColor(153, 130, 15),
-                     '3': QColor(153, 59, 15),
-                     '4': QColor(153, 15, 61),
-                     '5': QColor(107, 15, 153)}
+    cores_classes = {'1': QColor(10, 204, 23),
+                     '2': QColor(247, 210, 24),
+                     '3': QColor(247, 98, 24),
+                     '4': QColor(230, 23, 26),
+                     '5': QColor(161, 23, 230)}
     rotulos_classes = {'1': 'Sem criticidade',
                        '2': 'Baixo potencial de comprometimento',
                        '3': 'Médio potencial de comprometimento',
