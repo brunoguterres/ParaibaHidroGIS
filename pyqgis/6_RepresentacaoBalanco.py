@@ -43,7 +43,7 @@ def carregar_camada_balanco(ottobacias_isr):
 
 def limpeza_camadas_extras():
     QgsProject.instance().removeMapLayer(ottobacias)
-    QgsProject.instance().removeMapLayer(ottotrechos)
+    #QgsProject.instance().removeMapLayer(ottotrechos)
     print('Camadas extras removidas!')
 
 

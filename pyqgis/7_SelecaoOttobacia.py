@@ -1,8 +1,10 @@
-import os
 import psycopg2
 
 class MapToolIdentify(QgsMapToolIdentifyFeature):
-    
+    if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
+        print(f'Camada {ottotrechos.name()} existe!!!')
+        QgsProject.instance().removeMapLayer(ottotrechos)
+
     uri = QgsDataSourceUri()
     uri.setConnection(parametros_conexao['host_bd'],
                       parametros_conexao['porta_bd'],
@@ -10,9 +12,9 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
                       parametros_conexao['usuario_bd'],
                       parametros_conexao['senha_bd'])
     uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
-    ottotrechos_sob = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
-    ottotrechos_sob.renderer().symbol().setColor(QColor(0, 150, 255))
-    QgsProject.instance().addMapLayer(ottotrechos_sob)
+    ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
+    ottotrechos.renderer().symbol().setColor(QColor(0, 150, 255))
+    QgsProject.instance().addMapLayer(ottotrechos)
 
     def __init__(self, canvas, ottobacias_isr):
         super().__init__(canvas)
@@ -50,7 +52,6 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
 
 
 ### EXECUÇÃO ###
-#exec(open('C:/Users/brunoguterres/Desktop/GitHubFiles/ParaibaHidroGIS/pyqgis/2_InicializacaoMapa.py').read())
 canvas = iface.mapCanvas()
 map_tool = MapToolIdentify(canvas, ottobacias_isr)
 canvas.setMapTool(map_tool)
