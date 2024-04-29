@@ -14,9 +14,9 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
     ottotrechos_sob.renderer().symbol().setColor(QColor(0, 150, 255))
     QgsProject.instance().addMapLayer(ottotrechos_sob)
 
-    def __init__(self, canvas, ottobacias):
+    def __init__(self, canvas, ottobacias_isr):
         super().__init__(canvas)
-        self.layer = ottobacias
+        self.layer = ottobacias_isr
 
     def canvasReleaseEvent(self, event):
         super().canvasReleaseEvent(event)
@@ -50,7 +50,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
 
 
 ### EXECUÇÃO ###
-exec(open('C:/Users/brunoguterres/Desktop/GitHubFiles/ParaibaHidroGIS/pyqgis/2_InicializacaoMapa.py').read())
+#exec(open('C:/Users/brunoguterres/Desktop/GitHubFiles/ParaibaHidroGIS/pyqgis/2_InicializacaoMapa.py').read())
 canvas = iface.mapCanvas()
-map_tool = MapToolIdentify(canvas, ottobacias)
+map_tool = MapToolIdentify(canvas, ottobacias_isr)
 canvas.setMapTool(map_tool)
