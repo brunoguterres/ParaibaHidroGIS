@@ -12,8 +12,10 @@ cursor.execute(f'''SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ot
 cod_otto_bacia = cursor.fetchone()[0]
 
 if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
+    ottotrechos = QgsProject.instance().mapLayersByName('camada_ottotrechos')[0]
     print(f'Camada {ottotrechos.name()} existe!!!')
     QgsProject.instance().removeMapLayer(ottotrechos)
+    print('Camada "camada_ottotrechos" REMOVIDA.')
 
 campo = 'classe_isr'
 indice = ottobacias_isr.fields().indexFromName(campo)
@@ -193,7 +195,7 @@ uri.setConnection(parametros_conexao['host_bd'],
                   parametros_conexao['senha_bd'])
 uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante_2', 'geom', '', 'cobacia')
 ottotrechos_jusante_2 = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante_2', 'postgres')
-print('--> Importação da camada "'+ottrechos_jusante_2.name()+'" realizada.')
+print('--> Importação da camada "'+ottotrechos_jusante_2.name()+'" realizada.')
 simbologia = {'r':20, 'g':0, 'b':255, 'a':255, 'width':0.4}
 ottotrechos_jusante_2.renderer().symbol().setColor(QColor(simbologia['r'],
                                                                 simbologia['g'],

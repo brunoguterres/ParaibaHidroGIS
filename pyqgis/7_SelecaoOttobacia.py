@@ -1,24 +1,29 @@
 import psycopg2
 
 class MapToolIdentify(QgsMapToolIdentifyFeature):
-    if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
-        print(f'Camada {ottotrechos.name()} existe!!!')
-        QgsProject.instance().removeMapLayer(ottotrechos)
-
-    uri = QgsDataSourceUri()
-    uri.setConnection(parametros_conexao['host_bd'],
-                      parametros_conexao['porta_bd'],
-                      parametros_conexao['nome_bd'],
-                      parametros_conexao['usuario_bd'],
-                      parametros_conexao['senha_bd'])
-    uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
-    ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
-    ottotrechos.renderer().symbol().setColor(QColor(0, 150, 255))
-    QgsProject.instance().addMapLayer(ottotrechos)
-
     def __init__(self, canvas, ottobacias_isr):
         super().__init__(canvas)
         self.layer = ottobacias_isr
+
+        if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
+            ottotrechos = QgsProject.instance().mapLayersByName('camada_ottotrechos')[0]
+            print(f'Camada {ottotrechos.name()} existe!!!')
+            QgsProject.instance().removeMapLayer(ottotrechos)
+            print('Camada "camada_ottotrechos" REMOVIDA.')
+        else:
+            print('Camada "camada_ottotrechos" NÃO existe!!!')
+
+        uri = QgsDataSourceUri()
+        uri.setConnection(parametros_conexao['host_bd'],
+                            parametros_conexao['porta_bd'],
+                            parametros_conexao['nome_bd'],
+                            parametros_conexao['usuario_bd'],
+                            parametros_conexao['senha_bd'])
+        uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
+        ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
+        ottotrechos.renderer().symbol().setColor(QColor(0, 150, 255))
+        QgsProject.instance().addMapLayer(ottotrechos)
+        print(f'--> Carregamento de "{ottotrechos.name()}" realizado.')
 
     def canvasReleaseEvent(self, event):
         super().canvasReleaseEvent(event)
@@ -52,6 +57,7 @@ class MapToolIdentify(QgsMapToolIdentifyFeature):
 
 
 ### EXECUÇÃO ###
+
 canvas = iface.mapCanvas()
 map_tool = MapToolIdentify(canvas, ottobacias_isr)
 canvas.setMapTool(map_tool)
