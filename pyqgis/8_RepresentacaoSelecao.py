@@ -175,7 +175,7 @@ uri.setConnection(parametros_conexao['host_bd'],
 uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante', 'geom', '', 'cobacia')
 ottotrechos_jusante = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante', 'postgres')
 print('--> Importação da camada "'+ottotrechos_jusante.name()+'" realizada.')
-simbologia = {'r':20, 'g':0, 'b':255, 'a':255, 'width':1}
+simbologia = {'r':20, 'g':0, 'b':255, 'a':255, 'width':1.2}
 ottotrechos_jusante.renderer().symbol().setColor(QColor(simbologia['r'],
                                                                 simbologia['g'],
                                                                 simbologia['b'],
@@ -196,7 +196,7 @@ uri.setConnection(parametros_conexao['host_bd'],
 uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante_2', 'geom', '', 'cobacia')
 ottotrechos_jusante_2 = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante_2', 'postgres')
 print('--> Importação da camada "'+ottotrechos_jusante_2.name()+'" realizada.')
-simbologia = {'r':20, 'g':0, 'b':255, 'a':255, 'width':0.4}
+simbologia = {'r':20, 'g':0, 'b':220, 'a':220, 'width':0.5}
 ottotrechos_jusante_2.renderer().symbol().setColor(QColor(simbologia['r'],
                                                                 simbologia['g'],
                                                                 simbologia['b'],
