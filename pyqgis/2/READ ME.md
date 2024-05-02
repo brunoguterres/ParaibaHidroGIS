@@ -2,6 +2,8 @@
 
 ## 2. Inicialização do Mapa
 
+>:warning:**Aviso**: Falta adicionar o guia da simbologia de RGB e transparência.
+
 O fluxograma de processos desta etapa é apresentado a seguir:
 
 <center>
@@ -48,9 +50,13 @@ A variável *camada_importada* cria um objeto **QgsVectorLayer** usando a URI co
 
 ### 2.3. Carregamento de camadas da bacia no mapa
 
-A função **carregar_camada** é responsável por configurar a simbologia de uma camada e adicioná-la ao projeto do QGIS. Recebe como entrada a camada e um dicionário de simbologia. A simbologia é definida alterando a cor do símbolo da camada usando *setColor* com base nos valores RGB e alfa (transparência) fornecidos no dicionário. Depois, adiciona-se a camada ao projeto do QGIS usando o **QgsProject.instance**.
+A função **carregar_camada** é responsável por configurar a simbologia de uma camada. Para isso, a variável **tipo_geometria** obtém o tipo de geometria da camada fornecida como parâmetro e depois é verificado se é um ponto. 
 
-> OBS: A classe **QgsProject** já foi definida na etapa 1.
+- Se for um ponto, é criado um símbolo de marcador simples com base nos parâmetros de cor e tamanho fornecidos na simbologia. Se não for ponto, verifica se é uma linha. 
+- Se for uma linha, cria um símbolo de linha simples com base nos parâmetros de cor e espessura fornecidos na simbologia. Se não for uma linha, verifica se é uma geometria de polígono.
+- Se for um polígono, cria um símbolo de preenchimento simples com base nos parâmetros de cor de preenchimento, cor de contorno e espessura do contorno fornecidos na simbologia.
+
+Então é criado um renderizador de símbolo único (**QgsSingleSymbolRenderer**) usando o símbolo definido anteriormente. E por fim, a camada é adicionada ao projeto QGIS.
 
 ### 2.4.  Carregamento de basemap
 
