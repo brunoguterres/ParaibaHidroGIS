@@ -111,9 +111,9 @@ def salvar_resultado(matriz_balanco):
         CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_isr AS
         SELECT 
             {basemap}.ottobacias_pb_5k.cobacia,
-            {basemap}.ottobacias_pb_5k.geom,
             {parametros_conexao['schema_cenario']}.resultado_balanco.isr,
-            {parametros_conexao['schema_cenario']}.resultado_balanco.classe_isr
+            {parametros_conexao['schema_cenario']}.resultado_balanco.classe_isr,
+            {basemap}.ottobacias_pb_5k.geom
         FROM {basemap}.ottobacias_pb_5k
         LEFT JOIN {parametros_conexao['schema_cenario']}.resultado_balanco
             ON {basemap}.ottobacias_pb_5k.cobacia = {parametros_conexao['schema_cenario']}.resultado_balanco.cobacia;
