@@ -1,62 +1,31 @@
-from qgis.PyQt.QtWidgets import QApplication, QDialog, QVBoxLayout, QHBoxLayout, QLabel, QWidget
-from qgis.PyQt.QtGui import QColor, QPainter, QPalette
-import sys
+def apresenta_informacoes(informacoes_selecao):
+    verifica_postgis = QMessageBox()
+    verifica_postgis.setWindowTitle('Resultado')
+    verifica_postgis.setText('Informações sobre a área selecionado'
+                           '\n'
+                           '\n NOME DO RIO: ' + str(informacoes_selecao['nome_rio']) +
+                           '\n ÁREA À MONTANTE: ' + str(informacoes_selecao['area_mont']) +
+                           '\n NÚMERO DE TRECHOS À MONTANTE: ' + str(informacoes_selecao['n_trechos_mont']) +
+                           '\n ISR DA OTTOBACIA: ' + str(informacoes_selecao['isr_otto']) +
+                           '\n VAZÃO CAPTADA À MONTANTE: ' + str(informacoes_selecao['q_cap_mont']) +
+                           '\n DISPONIBILIDADE À MONTANTE: ' + str(informacoes_selecao['disp_acum']))
+    verifica_postgis.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+    return_value = verifica_postgis.exec()
+    if return_value == QMessageBox.No:
+        parametros_conexao = parametros_personalizados_bd(parametros_conexao)
+    return parametros_conexao
 
-class ColorWidget(QWidget):
-    def __init__(self, color, parent=None):
-        super().__init__(parent)
-        self.color = QColor(*color)
-        self.setFixedSize(20, 20)  # Define o tamanho fixo do widget de cor
+def obter_informacoes():
+    informacoes_selecao = {'nome_rio':'RIO',
+                           'area_montante':9999,
+                           'n_trechos_mont':9999,
+                           'isr_otto':'X',
+                           'q_cap_mont':9999,
+                           'disp_acum':9999}
+    return informacoes_selecao
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.fillRect(event.rect(), self.color)
 
-class CustomColorBox(QWidget):
-    def __init__(self, color, text, parent=None):
-        super().__init__(parent)
-        self.color_widget = ColorWidget(color)
-        self.text = text
+### EXECUÇÃO ###
 
-        # Define o texto da caixa
-        self.label = QLabel(self.text, self)
-        self.label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)  # Alinha o texto à esquerda
-
-        # Define o layout da caixa
-        layout = QHBoxLayout()  
-        layout.addWidget(self.color_widget)
-        layout.addWidget(self.label)
-        self.setLayout(layout)
-
-class ColorDialog(QDialog):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setWindowTitle("Caixa de Diálogo de Cores")
-        self.initUI()
-
-    def initUI(self):
-        layout = QVBoxLayout()
-
-        color_texts = [
-            (QColor(80, 150, 162), "Sem criticidade"),
-            (QColor(105, 217, 114), "Baixo potencial de comprometimento"),
-            (QColor(255, 255, 116), "Médio potencial de comprometimento"),
-            (QColor(253, 144, 64), "Alto potencial de comprometimento"),
-            (QColor(215, 61, 125), "Déficit de atendimento às demandas")
-        ]
-
-        for color, text in color_texts:
-            box = CustomColorBox(color.getRgb(), text)
-            layout.addWidget(box)
-
-        self.setLayout(layout)
-
-def run_color_dialog():
-    app = QApplication(sys.argv)
-    dialog = ColorDialog()
-    dialog.exec_()  # Mostra o diálogo e aguarda até que ele seja fechado
-    # O aplicativo continuará sendo executado aqui até que a janela seja fechada
-    # Não precisamos mais da chamada sys.exit()
-
-# Chamar a função para executar o diálogo de cores
-run_color_dialog()
+informacoes_selecao = obter_informacoes()
+apresenta_informacoes(informacoes_selecao)
