@@ -4,7 +4,7 @@ def parametros_padrao_bd():
                           'senha_bd': 'cobrape',
                           'host_bd': 'localhost',
                           'porta_bd': '5432',
-                          'schema_cenario': 'cenario_0'}
+                          'schema_cenario': 'cenario_2'}
     return parametros_conexao
 
 def verifica_parametros_bd(parametros_conexao):
