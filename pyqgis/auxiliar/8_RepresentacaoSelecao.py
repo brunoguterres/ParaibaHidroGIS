@@ -1,32 +1,5 @@
 import psycopg2
 
-
-def carregar_camada(camada, simbologia):
-    tipo_geometria = camada.geometryType()
-    if tipo_geometria == QgsWkbTypes.PointGeometry:
-        symbol = QgsSimpleMarkerSymbolLayer.create({
-            'color': simbologia['cor'],
-            'size': simbologia['tamanho']
-        })
-    elif tipo_geometria == QgsWkbTypes.LineGeometry:
-        symbol = QgsLineSymbol.createSimple({
-            'color': simbologia['cor'],
-            'width': simbologia['espessura']
-        })
-    elif tipo_geometria == QgsWkbTypes.PolygonGeometry:
-        symbol = QgsFillSymbol.createSimple({
-            'color': simbologia['cor_preenchimento'],
-            'color_border': simbologia['cor_contorno'],
-            'width_border': simbologia['espessura_contorno']
-        })
-    renderer = QgsSingleSymbolRenderer(symbol)
-    camada.setRenderer(renderer)
-    QgsProject.instance().addMapLayer(camada)
-    print(f'--> Carregamento de "{camada.name()}" realizado.')
-
-
-
-
 conexao = psycopg2.connect(
 dbname = str(parametros_conexao['nome_bd']),
 user = str(parametros_conexao['usuario_bd']),
@@ -44,8 +17,35 @@ if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
     QgsProject.instance().removeMapLayer(ottotrechos)
     print('--> Camada "camada_ottotrechos" REMOVIDA.')
 
+campo = 'classe_isr'
+indice = ottobacias_isr.fields().indexFromName(campo)
+unique_values = ottobacias_isr.uniqueValues(indice)
+cores_classes = {'1': QColor(6, 128, 14),
+                 '2': QColor(153, 130, 15),
+                 '3': QColor(153, 59, 15),
+                 '4': QColor(153, 15, 61),
+                 '5': QColor(107, 15, 153)}
+rotulos_classes = {'1': 'Sem criticidade',
+                   '2': 'Baixo potencial de comprometimento',
+                   '3': 'Médio potencial de comprometimento',
+                   '4': 'Alto potencial de comprometimento',
+                   '5': 'Déficit de atendimento às demandas'}
+categorias = []
+for value in unique_values:
+    simbologia = QgsSymbol.defaultSymbol(ottobacias_isr.geometryType())
+    categoria = QgsRendererCategory(value, simbologia, str(value))
+    if str(value) in cores_classes:
+        simbologia.setColor(cores_classes[str(value)])
+    if str(value) in rotulos_classes:
+        categoria.setLabel(rotulos_classes[str(value)])
+    categorias.append(categoria)
+renderer = QgsCategorizedSymbolRenderer(campo, categorias)
+ottobacias_isr.setRenderer(renderer)
+ottobacias_isr.triggerRepaint()
+        
 if (int(cod_otto_bacia) % 2) == 0:
     cod_otto_e = cod_otto_bacia
+            
 else:
     for letra in range(len(cod_otto_bacia)):
         index = (letra + 1) * -1
@@ -56,46 +56,13 @@ else:
             break
 
 cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_isr_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_isr_montante AS
+    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_montante CASCADE;
+    CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_montante AS
     SELECT *
     FROM {parametros_conexao['schema_cenario']}.ottobacias_isr
     WHERE {parametros_conexao['schema_cenario']}.ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND ottobacias_isr.cobacia >= '{cod_otto_bacia}';
 ''')
 conexao.commit()
-
-
-
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.bacia_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.bacia_montante AS
-    SELECT ST_UNION(geom) as geom
-    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr_montante;
-''')
-conexao.commit()
-
-
-
-# solução provisória
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                    parametros_conexao['porta_bd'],
-                    parametros_conexao['nome_bd'],
-                    parametros_conexao['usuario_bd'],
-                    parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_isr_montante', 'geom', '', 'cobacia')
-ottobacias_isr_montante = QgsVectorLayer(uri.uri(False), 'camada_ottobacias_isr_montante', 'postgres')
-QgsProject.instance().addMapLayer(ottobacias_isr_montante)
-simbologia_ottobacias_isr_montante = {'cor_preenchimento': QColor(0, 0, 0, 0),
-                                        'cor_contorno': QColor(0, 0, 0, 0),
-                                        'espessura_contorno': 1}
-carregar_camada(ottobacias_isr_montante, simbologia_ottobacias_isr_montante)
-print(f'--> Importação da camada "{ottobacias_isr_montante.name()}" realizada.')
-bacia_montante = QgsVectorLayer(f'VirtualLayer?query=SELECT ST_UNION(geometry) FROM camada_ottobacias_isr_montante','camada_bacia_montante', 'virtual')
-
-
-
-
 
 # inicio da plotagem do trecho de jusante - apenas o jusante 1 no estilo antigo
 # calculo dos rios que estão a jusante
@@ -156,31 +123,43 @@ conexao.close()
 if QgsProject.instance().mapLayersByName('camada_ottobacias_montante'):
     QgsProject.instance().removeMapLayer(ottobacias_montante)
 
-
-
-"""
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
-                  parametros_conexao['porta_bd'],
-                  parametros_conexao['nome_bd'],
-                  parametros_conexao['usuario_bd'],
-                  parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'bacia_montante', 'geom', '', 'geom')
-bacia_montante = QgsVectorLayer(uri.uri(), 'camada_bacia_montante', 'postgres')
-QgsProject.instance().addMapLayer(bacia_montante)
-print(f'--> Carregamento de "{bacia_montante.name()}" realizado.')
-"""
-# solução provisória
-simbologia_bacia_montante = {'cor_preenchimento': QColor(0, 0, 0, 0),
-                            'cor_contorno': QColor(255, 0, 0, 255),
-                            'espessura_contorno': 1}
-carregar_camada(bacia_montante, simbologia_bacia_montante)
-print(f'--> Carregamento de "{bacia_montante.name()}" realizado.')
+                    parametros_conexao['porta_bd'],
+                    parametros_conexao['nome_bd'],
+                    parametros_conexao['usuario_bd'],
+                    parametros_conexao['senha_bd'])
+uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_montante', 'geom', '', 'cobacia')
+ottobacias_montante = QgsVectorLayer(uri.uri(), 'camada_ottobacias_montante', 'postgres')
+QgsProject.instance().addMapLayer(ottobacias_montante)
+print(f'--> Carregamento de "{ottobacias_montante.name()}" realizado.')
+            
+campo = 'classe_isr'
+indice = ottobacias_montante.fields().indexFromName(campo)
+unique_values = ottobacias_montante.uniqueValues(indice)
+cores_classes = {'1': QColor(10, 204, 23),
+                    '2': QColor(247, 210, 24),
+                    '3': QColor(247, 98, 24),
+                    '4': QColor(230, 23, 26),
+                    '5': QColor(161, 23, 230)}
+rotulos_classes = {'1': 'Sem criticidade',
+                    '2': 'Baixo potencial de comprometimento',
+                    '3': 'Médio potencial de comprometimento',
+                    '4': 'Alto potencial de comprometimento',
+                    '5': 'Déficit de atendimento às demandas'}
+categorias = []
+for value in unique_values:
+    simbologia = QgsSymbol.defaultSymbol(ottobacias_montante.geometryType())
+    categoria = QgsRendererCategory(value, simbologia, str(value))
+    if str(value) in cores_classes:
+        simbologia.setColor(cores_classes[str(value)])
+    if str(value) in rotulos_classes:
+        categoria.setLabel(rotulos_classes[str(value)])
+    categorias.append(categoria)
 
-
-
-
-
+renderer = QgsCategorizedSymbolRenderer(campo, categorias)
+ottobacias_montante.setRenderer(renderer)
+ottobacias_montante.triggerRepaint()
 
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
@@ -190,7 +169,7 @@ uri.setConnection(parametros_conexao['host_bd'],
                       parametros_conexao['senha_bd'])
 uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
 ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
-ottotrechos.renderer().symbol().setColor(QColor(70, 70, 255))
+ottotrechos.renderer().symbol().setColor(QColor(0, 150, 255))
 QgsProject.instance().addMapLayer(ottotrechos)
 print(f'--> Carregamento de "{ottotrechos.name()}" realizado.')
 
