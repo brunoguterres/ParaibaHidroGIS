@@ -50,7 +50,7 @@ else:
     for letra in range(len(cod_otto_bacia)):
         index = (letra + 1) * -1
         conv_num = int(cod_otto_bacia[index])
-        resto = conv_num % 2        
+        resto = conv_num % 2
         if resto == 0:
             cod_otto_e = cod_otto_bacia[:(index + 1)]
             break
