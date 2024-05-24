@@ -17,38 +17,6 @@ if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
     QgsProject.instance().removeMapLayer(ottotrechos)
     print('--> Camada "camada_ottotrechos" REMOVIDA.')
 
-
-
-"""
-campo = 'classe_isr'
-indice = ottobacias_isr.fields().indexFromName(campo)
-unique_values = ottobacias_isr.uniqueValues(indice)
-cores_classes = {'1': QColor(6, 128, 14),
-                 '2': QColor(153, 130, 15),
-                 '3': QColor(153, 59, 15),
-                 '4': QColor(153, 15, 61),
-                 '5': QColor(107, 15, 153)}
-rotulos_classes = {'1': 'Sem criticidade',
-                   '2': 'Baixo potencial de comprometimento',
-                   '3': 'Médio potencial de comprometimento',
-                   '4': 'Alto potencial de comprometimento',
-                   '5': 'Déficit de atendimento às demandas'}
-categorias = []
-for value in unique_values:
-    simbologia = QgsSymbol.defaultSymbol(ottobacias_isr.geometryType())
-    categoria = QgsRendererCategory(value, simbologia, str(value))
-    if str(value) in cores_classes:
-        simbologia.setColor(cores_classes[str(value)])
-    if str(value) in rotulos_classes:
-        categoria.setLabel(rotulos_classes[str(value)])
-    categorias.append(categoria)
-renderer = QgsCategorizedSymbolRenderer(campo, categorias)
-ottobacias_isr.setRenderer(renderer)
-ottobacias_isr.triggerRepaint()
-"""
-
-
-
 if (int(cod_otto_bacia) % 2) == 0:
     cod_otto_e = cod_otto_bacia
 else:
@@ -61,11 +29,19 @@ else:
             break
 
 cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_montante AS
+    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_isr_montante CASCADE;
+    CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_isr_montante AS
     SELECT *
     FROM {parametros_conexao['schema_cenario']}.ottobacias_isr
     WHERE {parametros_conexao['schema_cenario']}.ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND ottobacias_isr.cobacia >= '{cod_otto_bacia}';
+''')
+conexao.commit()
+
+cursor.execute(f'''
+    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.bacia_montante CASCADE;
+    CREATE VIEW {parametros_conexao['schema_cenario']}.bacia_montante AS
+    SELECT ST_UNION(geom)
+    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr_montante;
 ''')
 conexao.commit()
 
@@ -130,18 +106,21 @@ if QgsProject.instance().mapLayersByName('camada_ottobacias_montante'):
 
 
 
-"""
+
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
-                    parametros_conexao['porta_bd'],
-                    parametros_conexao['nome_bd'],
-                    parametros_conexao['usuario_bd'],
-                    parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_montante', 'geom', '', 'cobacia')
-ottobacias_montante = QgsVectorLayer(uri.uri(), 'camada_ottobacias_montante', 'postgres')
-QgsProject.instance().addMapLayer(ottobacias_montante)
-print(f'--> Carregamento de "{ottobacias_montante.name()}" realizado.')
-            
+                  parametros_conexao['porta_bd'],
+                  parametros_conexao['nome_bd'],
+                  parametros_conexao['usuario_bd'],
+                  parametros_conexao['senha_bd'])
+uri.setDataSource(parametros_conexao['schema_cenario'], 'bacia_montante', 'geom', '', '')
+bacia_montante = QgsVectorLayer(uri.uri(), 'camada_bacia_montante', 'postgres')
+QgsProject.instance().addMapLayer(bacia_montante)
+print(f'--> Carregamento de "{bacia_montante.name()}" realizado.')
+
+
+
+"""
 campo = 'classe_isr'
 indice = ottobacias_montante.fields().indexFromName(campo)
 unique_values = ottobacias_montante.uniqueValues(indice)
