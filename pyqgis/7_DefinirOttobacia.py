@@ -11,10 +11,12 @@ class PointTool(QgsMapToolEmitPoint):
             point = self.toMapCoordinates(event.pos())
             lat_ponto = point.y()
             long_ponto = point.x()
-            print("Coordenadas do ponto clicado:", lat_ponto, ",", long_ponto)
+            #print("Coordenadas do ponto clicado:", lat_ponto, ",", long_ponto)
             self.disconnect_signal = True
             self.deactivate()
             self.canvas.setCursor(Qt.ArrowCursor)
+        
+        ponto_interesse = QgsVectorLayer(f'VirtualLayer?query=SELECT MakePoint({long_ponto}, {lat_ponto}, 4674)','camada_ponto_interesse', 'virtual')
         
         conexao = psycopg2.connect(
         dbname = str(parametros_conexao['nome_bd']),
@@ -32,8 +34,14 @@ class PointTool(QgsMapToolEmitPoint):
             WHERE ST_Contains({basemap}.ottobacias_pb_5k.geom, ST_SetSRID(ST_MakePoint({long_ponto}, {lat_ponto}), 4674));
         ''')
         conexao.commit()
+
+        cursor.execute(f'''SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada''')
+        cod_otto_bacia = cursor.fetchone()[0]
+
         cursor.close()
         conexao.close()
+
+        print(f'Código otto da bacia: {cod_otto_bacia}')
 
         uri = QgsDataSourceUri()
         uri.setConnection(parametros_conexao['host_bd'],
@@ -46,6 +54,9 @@ class PointTool(QgsMapToolEmitPoint):
         ottobacia_selecionada.renderer().symbol().setColor(QColor(255, 255, 0))
         QgsProject.instance().addMapLayer(ottobacia_selecionada)
         print(f'--> Carregamento de "{ottobacia_selecionada.name()}" realizado.')
+
+        QgsProject.instance().addMapLayer(ponto_interesse)
+        print(f'--> Carregamento de "{ponto_interesse.name()}" realizado.')
 
 
 ### EXECUÇÃO ###
