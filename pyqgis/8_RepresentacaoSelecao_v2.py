@@ -40,7 +40,7 @@ conexao.commit()
 cursor.execute(f'''
     DROP VIEW IF EXISTS cenario_2.bacia_montante CASCADE;
     CREATE VIEW cenario_2.bacia_montante AS
-    SELECT ST_UNION(geom)
+    SELECT ST_UNION(geom) as geom
     FROM cenario_2.ottobacias_isr_montante;
 ''')
 conexao.commit()
