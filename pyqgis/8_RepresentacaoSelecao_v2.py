@@ -38,10 +38,10 @@ cursor.execute(f'''
 conexao.commit()
 
 cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.bacia_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.bacia_montante AS
+    DROP VIEW IF EXISTS cenario_2.bacia_montante CASCADE;
+    CREATE VIEW cenario_2.bacia_montante AS
     SELECT ST_UNION(geom)
-    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr_montante;
+    FROM cenario_2.ottobacias_isr_montante;
 ''')
 conexao.commit()
 
@@ -113,43 +113,10 @@ uri.setConnection(parametros_conexao['host_bd'],
                   parametros_conexao['nome_bd'],
                   parametros_conexao['usuario_bd'],
                   parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'bacia_montante', 'geom', '', '')
+uri.setDataSource(parametros_conexao['schema_cenario'], 'bacia_montante', 'geom')
 bacia_montante = QgsVectorLayer(uri.uri(), 'camada_bacia_montante', 'postgres')
 QgsProject.instance().addMapLayer(bacia_montante)
 print(f'--> Carregamento de "{bacia_montante.name()}" realizado.')
-
-
-
-"""
-campo = 'classe_isr'
-indice = ottobacias_montante.fields().indexFromName(campo)
-unique_values = ottobacias_montante.uniqueValues(indice)
-cores_classes = {'1': QColor(10, 204, 23),
-                    '2': QColor(247, 210, 24),
-                    '3': QColor(247, 98, 24),
-                    '4': QColor(230, 23, 26),
-                    '5': QColor(161, 23, 230)}
-rotulos_classes = {'1': 'Sem criticidade',
-                    '2': 'Baixo potencial de comprometimento',
-                    '3': 'Médio potencial de comprometimento',
-                    '4': 'Alto potencial de comprometimento',
-                    '5': 'Déficit de atendimento às demandas'}
-categorias = []
-for value in unique_values:
-    simbologia = QgsSymbol.defaultSymbol(ottobacias_montante.geometryType())
-    categoria = QgsRendererCategory(value, simbologia, str(value))
-    if str(value) in cores_classes:
-        simbologia.setColor(cores_classes[str(value)])
-    if str(value) in rotulos_classes:
-        categoria.setLabel(rotulos_classes[str(value)])
-    categorias.append(categoria)
-
-renderer = QgsCategorizedSymbolRenderer(campo, categorias)
-ottobacias_montante.setRenderer(renderer)
-ottobacias_montante.triggerRepaint()
-"""
-
-
 
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
