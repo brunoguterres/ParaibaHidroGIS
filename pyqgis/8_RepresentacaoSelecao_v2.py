@@ -17,6 +17,9 @@ if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
     QgsProject.instance().removeMapLayer(ottotrechos)
     print('--> Camada "camada_ottotrechos" REMOVIDA.')
 
+
+
+"""
 campo = 'classe_isr'
 indice = ottobacias_isr.fields().indexFromName(campo)
 unique_values = ottobacias_isr.uniqueValues(indice)
@@ -42,10 +45,12 @@ for value in unique_values:
 renderer = QgsCategorizedSymbolRenderer(campo, categorias)
 ottobacias_isr.setRenderer(renderer)
 ottobacias_isr.triggerRepaint()
-        
+"""
+
+
+
 if (int(cod_otto_bacia) % 2) == 0:
     cod_otto_e = cod_otto_bacia
-            
 else:
     for letra in range(len(cod_otto_bacia)):
         index = (letra + 1) * -1
@@ -123,6 +128,9 @@ conexao.close()
 if QgsProject.instance().mapLayersByName('camada_ottobacias_montante'):
     QgsProject.instance().removeMapLayer(ottobacias_montante)
 
+
+
+"""
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
                     parametros_conexao['porta_bd'],
@@ -160,6 +168,9 @@ for value in unique_values:
 renderer = QgsCategorizedSymbolRenderer(campo, categorias)
 ottobacias_montante.setRenderer(renderer)
 ottobacias_montante.triggerRepaint()
+"""
+
+
 
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
@@ -169,7 +180,7 @@ uri.setConnection(parametros_conexao['host_bd'],
                       parametros_conexao['senha_bd'])
 uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
 ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
-ottotrechos.renderer().symbol().setColor(QColor(0, 150, 255))
+ottotrechos.renderer().symbol().setColor(QColor(70, 70, 255))
 QgsProject.instance().addMapLayer(ottotrechos)
 print(f'--> Carregamento de "{ottotrechos.name()}" realizado.')
 

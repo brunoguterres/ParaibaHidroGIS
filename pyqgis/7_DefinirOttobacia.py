@@ -10,7 +10,7 @@ class PointTool(QgsMapToolEmitPoint):
                       parametros_conexao['senha_bd'])
     uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
     ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
-    ottotrechos.renderer().symbol().setColor(QColor(20, 0, 220))
+    ottotrechos.renderer().symbol().setColor(QColor(70, 70, 255))
     QgsProject.instance().addMapLayer(ottotrechos)
     print(f'--> Carregamento de "{ottotrechos.name()}" realizado.')
 
