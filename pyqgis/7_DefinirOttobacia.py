@@ -1,6 +1,19 @@
 import psycopg2
 
 class PointTool(QgsMapToolEmitPoint):
+
+    uri = QgsDataSourceUri()
+    uri.setConnection(parametros_conexao['host_bd'],
+                      parametros_conexao['porta_bd'],
+                      parametros_conexao['nome_bd'],
+                      parametros_conexao['usuario_bd'],
+                      parametros_conexao['senha_bd'])
+    uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
+    ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
+    ottotrechos.renderer().symbol().setColor(QColor(20, 0, 220))
+    QgsProject.instance().addMapLayer(ottotrechos)
+    print(f'--> Carregamento de "{ottotrechos.name()}" realizado.')
+
     def __init__(self, canvas):
         self.canvas = canvas
         QgsMapToolEmitPoint.__init__(self, self.canvas)
@@ -43,6 +56,8 @@ class PointTool(QgsMapToolEmitPoint):
 
         print(f'Código otto da bacia: {cod_otto_bacia}')
 
+        # trecho adicionado para teste de visualização de resultado
+        '''
         uri = QgsDataSourceUri()
         uri.setConnection(parametros_conexao['host_bd'],
                             parametros_conexao['porta_bd'],
@@ -54,6 +69,7 @@ class PointTool(QgsMapToolEmitPoint):
         ottobacia_selecionada.renderer().symbol().setColor(QColor(255, 255, 0))
         QgsProject.instance().addMapLayer(ottobacia_selecionada)
         print(f'--> Carregamento de "{ottobacia_selecionada.name()}" realizado.')
+        '''
 
         QgsProject.instance().addMapLayer(ponto_interesse)
         print(f'--> Carregamento de "{ponto_interesse.name()}" realizado.')
