@@ -118,7 +118,7 @@ ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
 
 
 # desta linha até a 151 são os comandos para consertar o rabicho do Paraiba
-sele2 +=" AND camada_ottotrechos.cobacia >= '{cod_otto_bacia}'"
+sele2 +=f" AND camada_ottotrechos.cobacia >= '{cod_otto_bacia}'"
 # precisa verificar se o ponto selecionado esta na bacia do 7588 ou na região abaixo ou acima dele. Cada caso é uma regra
 paraiba= '7588'
 foz = '75891'
@@ -131,7 +131,7 @@ else:
     sele2 += " AND camada_ottotrechos.cobacia < '"+ foz +"'"
 # aqui acaba a mudança o sele2 esta completo, não precisa mais nada na lina 164 ( o AND foi posto na linha 142)
 
-print()
+print(f'sele2:{sele2}')
 
 ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
                                             SELECT
