@@ -1,6 +1,5 @@
 import psycopg2
 
-
 def carregar_camada(camada, simbologia):
     tipo_geometria = camada.geometryType()
     if tipo_geometria == QgsWkbTypes.PointGeometry:
@@ -25,7 +24,7 @@ def carregar_camada(camada, simbologia):
     print(f'--> Carregamento de "{camada.name()}" realizado.')
 
 
-
+### EXECUÇÃO ###
 
 conexao = psycopg2.connect(
 dbname = str(parametros_conexao['nome_bd']),
@@ -34,15 +33,6 @@ password = str(parametros_conexao['senha_bd']),
 host = str(parametros_conexao['host_bd']),
 port = str(parametros_conexao['porta_bd']))
 cursor = conexao.cursor()
-
-cursor.execute(f'''SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada''')
-cod_otto_bacia = cursor.fetchone()[0]
-
-if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
-    ottotrechos = QgsProject.instance().mapLayersByName('camada_ottotrechos')[0]
-    print(f'--> Camada {ottotrechos.name()} existe!!!')
-    QgsProject.instance().removeMapLayer(ottotrechos)
-    print('--> Camada "camada_ottotrechos" REMOVIDA.')
 
 if (int(cod_otto_bacia) % 2) == 0:
     cod_otto_e = cod_otto_bacia
@@ -55,47 +45,24 @@ else:
             cod_otto_e = cod_otto_bacia[:(index + 1)]
             break
 
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_isr_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_isr_montante AS
-    SELECT *
-    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr
-    WHERE {parametros_conexao['schema_cenario']}.ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND ottobacias_isr.cobacia >= '{cod_otto_bacia}';
-''')
-conexao.commit()
+ottobacias_isr_montante = QgsVectorLayer(f'''VirtualLayer?query=
+                                                SELECT *
+                                                FROM camada_ottobacias_isr
+                                                WHERE camada_ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND camada_ottobacias_isr.cobacia >= '{cod_otto_bacia}';''',
+                                            'camada_ottobacias_isr_montante',
+                                            'virtual')
 
+if QgsProject.instance().mapLayersByName('camada_ottobacias_isr_montante'):
+    remover_camada = QgsProject.instance().mapLayersByName('camada_ottobacias_isr_montante')[0]
+    QgsProject.instance().removeMapLayer(remover_camada)
+QgsProject.instance().addMapLayer(ottobacias_isr_montante, False)
+print(f'--> Carregamento de "{ottobacias_isr_montante.name()}" realizado.')
 
-
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.bacia_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.bacia_montante AS
-    SELECT ST_UNION(geom) as geom
-    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr_montante;
-''')
-conexao.commit()
-
-
-
-# solução provisória
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                    parametros_conexao['porta_bd'],
-                    parametros_conexao['nome_bd'],
-                    parametros_conexao['usuario_bd'],
-                    parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_isr_montante', 'geom', '', 'cobacia')
-ottobacias_isr_montante = QgsVectorLayer(uri.uri(False), 'camada_ottobacias_isr_montante', 'postgres')
-QgsProject.instance().addMapLayer(ottobacias_isr_montante)
-simbologia_ottobacias_isr_montante = {'cor_preenchimento': QColor(0, 0, 0, 0),
-                                        'cor_contorno': QColor(0, 0, 0, 0),
-                                        'espessura_contorno': 1}
-carregar_camada(ottobacias_isr_montante, simbologia_ottobacias_isr_montante)
-print(f'--> Importação da camada "{ottobacias_isr_montante.name()}" realizada.')
-bacia_montante = QgsVectorLayer(f'VirtualLayer?query=SELECT ST_UNION(geometry) FROM camada_ottobacias_isr_montante','camada_bacia_montante', 'virtual')
-
-
-
-
+bacia_montante = QgsVectorLayer(f'''VirtualLayer?query=
+                                    SELECT ST_UNION(geometry)
+                                    FROM camada_ottobacias_isr_montante''',
+                                'camada_bacia_montante',
+                                'virtual')
 
 # inicio da plotagem do trecho de jusante - apenas o jusante 1 no estilo antigo
 # calculo dos rios que estão a jusante
@@ -118,120 +85,89 @@ for valor in range(len(cod_otto_bacia)):
 selecao = ""
 for elementos in rio:
     if elementos != '':
-        selecao = selecao + "basemap.ottotrechos_pb_5k.curso_dagua LIKE '"+ elementos +"' OR "
+        selecao = selecao + "camada_ottotrechos.curso_dagua LIKE '"+ elementos +"' OR "
     else:
         break
 comp = len(selecao)
 comp2 = comp - 3
 sele2 = selecao [:comp2]
 
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottotrechos_jusante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.ottotrechos_jusante AS
-    SELECT
-        ottotrechos_pb_5k.cobacia,
-        ottotrechos_pb_5k.curso_dagua,
-        ottotrechos_pb_5k.nome_rio,
-        ottotrechos_pb_5k.geom
-    FROM {basemap}.ottotrechos_pb_5k
-    WHERE ({sele2}) AND ottotrechos_pb_5k.cobacia < '{cod_otto_bacia}';
-''')
-conexao.commit()
-
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottotrechos_jusante_2 CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.ottotrechos_jusante_2 AS
-    SELECT
-        ottotrechos_pb_5k.cobacia,
-        ottotrechos_pb_5k.curso_dagua,
-        ottotrechos_pb_5k.nome_rio,
-        ottotrechos_pb_5k.geom
-    FROM {basemap}.ottotrechos_pb_5k
-    WHERE ({sele2}) AND ottotrechos_pb_5k.cobacia >= '{cod_otto_bacia}';
-''')
-conexao.commit()
-cursor.close()
-conexao.close()
-
-if QgsProject.instance().mapLayersByName('camada_ottobacias_montante'):
-    QgsProject.instance().removeMapLayer(ottobacias_montante)
-
-
-
+ottotrechos_jusante = QgsVectorLayer(f'''VirtualLayer?query=
+                                            SELECT
+                                                camada_ottotrechos.cobacia,
+                                                camada_ottotrechos.curso_dagua,
+                                                camada_ottotrechos.nome_rio,
+                                                camada_ottotrechos.geometry
+                                            FROM camada_ottotrechos
+                                            WHERE ({sele2}) AND camada_ottotrechos.cobacia < '{cod_otto_bacia}';''',
+                                        'camada_ottotrechos_jusante',
+                                        'virtual')
 """
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                  parametros_conexao['porta_bd'],
-                  parametros_conexao['nome_bd'],
-                  parametros_conexao['usuario_bd'],
-                  parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'bacia_montante', 'geom', '', 'geom')
-bacia_montante = QgsVectorLayer(uri.uri(), 'camada_bacia_montante', 'postgres')
-QgsProject.instance().addMapLayer(bacia_montante)
-print(f'--> Carregamento de "{bacia_montante.name()}" realizado.')
+ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
+                                            SELECT
+                                                camada_ottotrechos.cobacia,
+                                                camada_ottotrechos.curso_dagua,
+                                                camada_ottotrechos.nome_rio,
+                                                camada_ottotrechos.geometry
+                                            FROM camada_ottotrechos
+                                            WHERE ({sele2}) AND camada_ottotrechos.cobacia >= '{cod_otto_bacia}';''',
+                                        'camada_ottotrechos_jusante_2',
+                                        'virtual')
 """
-# solução provisória
+
+
+
+# desta linha até a 151 são os comandos para consertar o rabicho do Paraiba
+sele2 +=f" AND camada_ottotrechos.cobacia >= '{cod_otto_bacia}'"
+# precisa verificar se o ponto selecionado esta na bacia do 7588 ou na região abaixo ou acima dele. Cada caso é uma regra
+paraiba= '7588'
+foz = '75891'
+#verificar em que região está o ponto selecinado e completar o sele2 extendido na linha 142
+if cod_otto_bacia < paraiba:
+    sele2 += " AND camada_ottotrechos.cobacia < '"+ foz +"' OR camada_ottotrechos.curso_dagua LIKE '"+ paraiba +"'"
+elif cod_otto_bacia >= foz:
+    sele2 += " OR camada_ottotrechos.curso_dagua LIKE '"+ paraiba +"'"
+else:
+    sele2 += " AND camada_ottotrechos.cobacia < '"+ foz +"'"
+# aqui acaba a mudança o sele2 esta completo, não precisa mais nada na lina 164 ( o AND foi posto na linha 142)
+
+print(f'sele2:{sele2}')
+
+ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
+                                            SELECT
+                                                camada_ottotrechos.cobacia,
+                                                camada_ottotrechos.curso_dagua,
+                                                camada_ottotrechos.nome_rio,
+                                                camada_ottotrechos.geometry
+                                            FROM camada_ottotrechos
+                                            WHERE {sele2};''',
+                                        'camada_ottotrechos_jusante_2',
+                                        'virtual')
+
+
+
+
+if QgsProject.instance().mapLayersByName('camada_bacia_montante'):
+    remover_camada = QgsProject.instance().mapLayersByName('camada_bacia_montante')[0]
+    QgsProject.instance().removeMapLayer(remover_camada)
 simbologia_bacia_montante = {'cor_preenchimento': QColor(0, 0, 0, 0),
                             'cor_contorno': QColor(255, 0, 0, 255),
                             'espessura_contorno': 1}
 carregar_camada(bacia_montante, simbologia_bacia_montante)
 print(f'--> Carregamento de "{bacia_montante.name()}" realizado.')
 
-
-
-
-
-
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                      parametros_conexao['porta_bd'],
-                      parametros_conexao['nome_bd'],
-                      parametros_conexao['usuario_bd'],
-                      parametros_conexao['senha_bd'])
-uri.setDataSource(basemap, 'ottotrechos_pb_5k', 'geom', '', 'cobacia')
-ottotrechos = QgsVectorLayer(uri.uri(), 'camada_ottotrechos', 'postgres')
-ottotrechos.renderer().symbol().setColor(QColor(70, 70, 255))
-QgsProject.instance().addMapLayer(ottotrechos)
-print(f'--> Carregamento de "{ottotrechos.name()}" realizado.')
-
 if QgsProject.instance().mapLayersByName('camada_ottotrechos_jusante'):
-    QgsProject.instance().removeMapLayer(ottotrechos_jusante)
-
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                  parametros_conexao['porta_bd'],
-                  parametros_conexao['nome_bd'],
-                  parametros_conexao['usuario_bd'],
-                  parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante', 'geom', '', 'cobacia')
-ottotrechos_jusante = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante', 'postgres')
-print(f'--> Importação da camada "{ottotrechos_jusante.name()}" realizada.')
-simbologia = {'r':0, 'g':85, 'b':230, 'a':255, 'width':1.5}
-ottotrechos_jusante.renderer().symbol().setColor(QColor(simbologia['r'],
-                                                                simbologia['g'],
-                                                                simbologia['b'],
-                                                                simbologia['a']))
-ottotrechos_jusante.renderer().symbol().setWidth(simbologia['width'])
-QgsProject.instance().addMapLayer(ottotrechos_jusante)
+    remover_camada = QgsProject.instance().mapLayersByName('camada_ottotrechos_jusante')[0]
+    QgsProject.instance().removeMapLayer(remover_camada)
+simbologia_ottotrechos_jusante = {'cor': QColor(0, 85, 230, 255),
+                                  'espessura': 1.5}
+carregar_camada(ottotrechos_jusante, simbologia_ottotrechos_jusante)
 print(f'--> Carregamento de "{ottotrechos_jusante.name()}" realizado.')
 
 if QgsProject.instance().mapLayersByName('camada_ottotrechos_jusante_2'):
-    QgsProject.instance().removeMapLayer(ottotrechos_jusante_2)
-
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                  parametros_conexao['porta_bd'],
-                  parametros_conexao['nome_bd'],
-                  parametros_conexao['usuario_bd'],
-                  parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'ottotrechos_jusante_2', 'geom', '', 'cobacia')
-ottotrechos_jusante_2 = QgsVectorLayer(uri.uri(False), 'camada_ottotrechos_jusante_2', 'postgres')
-print(f'--> Importação da camada "{ottotrechos_jusante_2.name()}" realizada.')
-simbologia = {'r':20, 'g':0, 'b':220, 'a':220, 'width':0.5}
-ottotrechos_jusante_2.renderer().symbol().setColor(QColor(simbologia['r'],
-                                                                simbologia['g'],
-                                                                simbologia['b'],
-                                                                simbologia['a']))
-ottotrechos_jusante_2.renderer().symbol().setWidth(simbologia['width'])
-QgsProject.instance().addMapLayer(ottotrechos_jusante_2)
+    remover_camada = QgsProject.instance().mapLayersByName('camada_ottotrechos_jusante_2')[0]
+    QgsProject.instance().removeMapLayer(remover_camada)
+simbologia_ottotrechos_jusante_2 = {'cor': QColor(20, 0, 220, 255),
+                                  'espessura': 0.5}
+carregar_camada(ottotrechos_jusante_2, simbologia_ottotrechos_jusante_2)
 print(f'--> Carregamento de "{ottotrechos_jusante_2.name()}" realizado.')
