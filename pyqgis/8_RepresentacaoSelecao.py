@@ -102,7 +102,7 @@ ottotrechos_jusante = QgsVectorLayer(f'''VirtualLayer?query=
                                             WHERE ({sele2}) AND camada_ottotrechos.cobacia < '{cod_otto_bacia}';''',
                                         'camada_ottotrechos_jusante',
                                         'virtual')
-
+"""
 ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
                                             SELECT
                                                 camada_ottotrechos.cobacia,
@@ -113,6 +113,39 @@ ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
                                             WHERE ({sele2}) AND camada_ottotrechos.cobacia >= '{cod_otto_bacia}';''',
                                         'camada_ottotrechos_jusante_2',
                                         'virtual')
+"""
+
+
+
+# desta linha até a 151 são os comandos para consertar o rabicho do Paraiba
+sele2 +=" AND camada_ottotrechos.cobacia >= '{cod_otto_bacia}'"
+# precisa verificar se o ponto selecionado esta na bacia do 7588 ou na região abaixo ou acima dele. Cada caso é uma regra
+paraiba= '7588'
+foz = '75891'
+#verificar em que região está o ponto selecinado e completar o sele2 extendido na linha 142
+if cod_otto_bacia < paraiba:
+    sele2 += " AND camada_ottotrechos.cobacia < '"+ foz +"' OR camada_ottotrechos.curso_dagua LIKE '"+ paraiba +"'"
+elif cod_otto_bacia >= foz:
+    sele2 += " OR camada_ottotrechos.curso_dagua LIKE '"+ paraiba +"'"
+else:
+    sele2 += " AND camada_ottotrechos.cobacia < '"+ foz +"'"
+# aqui acaba a mudança o sele2 esta completo, não precisa mais nada na lina 164 ( o AND foi posto na linha 142)
+
+print()
+
+ottotrechos_jusante_2 = QgsVectorLayer(f'''VirtualLayer?query=
+                                            SELECT
+                                                camada_ottotrechos.cobacia,
+                                                camada_ottotrechos.curso_dagua,
+                                                camada_ottotrechos.nome_rio,
+                                                camada_ottotrechos.geometry
+                                            FROM camada_ottotrechos
+                                            WHERE {sele2};''',
+                                        'camada_ottotrechos_jusante_2',
+                                        'virtual')
+
+
+
 
 if QgsProject.instance().mapLayersByName('camada_bacia_montante'):
     remover_camada = QgsProject.instance().mapLayersByName('camada_bacia_montante')[0]
