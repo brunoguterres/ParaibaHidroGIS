@@ -55,43 +55,8 @@ ottobacias_isr_montante = QgsVectorLayer(f'''VirtualLayer?query=
 if QgsProject.instance().mapLayersByName('camada_ottobacias_isr_montante'):
     remover_camada = QgsProject.instance().mapLayersByName('camada_ottobacias_isr_montante')[0]
     QgsProject.instance().removeMapLayer(remover_camada)
-"""
-simbologia_ottobacia_isr_montante = {'cor_preenchimento': QColor(0, 0, 0, 255),
-                                     'cor_contorno': QColor(0, 0, 0, 255),
-                                     'espessura_contorno': 0.1}
-carregar_camada(ottobacias_isr_montante, simbologia_ottobacia_isr_montante)
-"""
 QgsProject.instance().addMapLayer(ottobacias_isr_montante, False)
 print(f'--> Carregamento de "{ottobacias_isr_montante.name()}" realizado.')
-
-
-
-"""
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.bacia_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.bacia_montante AS
-    SELECT ST_UNION(geom) as geom
-    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr_montante;
-''')
-conexao.commit()
-cursor.close()
-conexao.close()
-
-uri = QgsDataSourceUri()
-uri.setConnection(parametros_conexao['host_bd'],
-                    parametros_conexao['porta_bd'],
-                    parametros_conexao['nome_bd'],
-                    parametros_conexao['usuario_bd'],
-                    parametros_conexao['senha_bd'])
-uri.setDataSource(parametros_conexao['schema_cenario'], 'ottobacias_isr_montante', 'geom', '', 'cobacia')
-ottobacias_isr_montante = QgsVectorLayer(uri.uri(False), 'camada_ottobacias_isr_montante', 'postgres')
-QgsProject.instance().addMapLayer(ottobacias_isr_montante)
-simbologia_ottobacias_isr_montante = {'cor_preenchimento': QColor(0, 0, 0, 0),
-                                        'cor_contorno': QColor(0, 0, 0, 0),
-                                        'espessura_contorno': 1}
-carregar_camada(ottobacias_isr_montante, simbologia_ottobacias_isr_montante)
-print(f'--> Importação da camada "{ottobacias_isr_montante.name()}" realizada.')
-"""
 
 bacia_montante = QgsVectorLayer(f'''VirtualLayer?query=
                                     SELECT ST_UNION(geometry)
