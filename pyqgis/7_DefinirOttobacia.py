@@ -71,11 +71,17 @@ class PointTool(QgsMapToolEmitPoint):
         print(f'--> Carregamento de "{ottobacia_selecionada.name()}" realizado.')
         '''
 
+        
+        
         QgsProject.instance().addMapLayer(ponto_interesse)
         print(f'--> Carregamento de "{ponto_interesse.name()}" realizado.')
 
 
 ### EXECUÇÃO ###
+
+if QgsProject.instance().mapLayersByName('camada_ponto_interesse'):
+    remover_camada = QgsProject.instance().mapLayersByName('camada_ponto_interesse')[0]
+    QgsProject.instance().removeMapLayer(remover_camada)
 
 point_tool = PointTool(iface.mapCanvas())
 iface.mapCanvas().setMapTool(point_tool)
