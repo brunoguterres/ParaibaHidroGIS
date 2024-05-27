@@ -1,6 +1,5 @@
 import psycopg2
 
-
 def carregar_camada(camada, simbologia):
     tipo_geometria = camada.geometryType()
     if tipo_geometria == QgsWkbTypes.PointGeometry:
@@ -35,15 +34,6 @@ host = str(parametros_conexao['host_bd']),
 port = str(parametros_conexao['porta_bd']))
 cursor = conexao.cursor()
 
-cursor.execute(f'''SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada''')
-cod_otto_bacia = cursor.fetchone()[0]
-
-if QgsProject.instance().mapLayersByName('camada_ottotrechos'):
-    ottotrechos = QgsProject.instance().mapLayersByName('camada_ottotrechos')[0]
-    print(f'--> Camada {ottotrechos.name()} existe!!!')
-    #QgsProject.instance().removeMapLayer(ottotrechos)
-    #print('--> Camada "camada_ottotrechos" REMOVIDA.')
-
 if (int(cod_otto_bacia) % 2) == 0:
     cod_otto_e = cod_otto_bacia
 else:
@@ -55,17 +45,28 @@ else:
             cod_otto_e = cod_otto_bacia[:(index + 1)]
             break
 
-cursor.execute(f'''
-    DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.ottobacias_isr_montante CASCADE;
-    CREATE VIEW {parametros_conexao['schema_cenario']}.ottobacias_isr_montante AS
-    SELECT *
-    FROM {parametros_conexao['schema_cenario']}.ottobacias_isr
-    WHERE {parametros_conexao['schema_cenario']}.ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND ottobacias_isr.cobacia >= '{cod_otto_bacia}';
-''')
-conexao.commit()
+ottobacias_isr_montante = QgsVectorLayer(f'''VirtualLayer?query=
+                                                SELECT *
+                                                FROM camada_ottobacias_isr
+                                                WHERE camada_ottobacias_isr.cobacia LIKE '{cod_otto_e}%' AND camada_ottobacias_isr.cobacia >= '{cod_otto_bacia}';''',
+                                            'camada_ottobacias_isr_montante',
+                                            'virtual')
+
+if QgsProject.instance().mapLayersByName('camada_ottobacias_isr_montante'):
+    remover_camada = QgsProject.instance().mapLayersByName('camada_ottobacias_isr_montante')[0]
+    QgsProject.instance().removeMapLayer(remover_camada)
+"""
+simbologia_ottobacia_isr_montante = {'cor_preenchimento': QColor(0, 0, 0, 255),
+                                     'cor_contorno': QColor(0, 0, 0, 255),
+                                     'espessura_contorno': 0.1}
+carregar_camada(ottobacias_isr_montante, simbologia_ottobacia_isr_montante)
+"""
+QgsProject.instance().addMapLayer(ottobacias_isr_montante, False)
+print(f'--> Carregamento de "{ottobacias_isr_montante.name()}" realizado.')
 
 
 
+"""
 cursor.execute(f'''
     DROP VIEW IF EXISTS {parametros_conexao['schema_cenario']}.bacia_montante CASCADE;
     CREATE VIEW {parametros_conexao['schema_cenario']}.bacia_montante AS
@@ -76,8 +77,6 @@ conexao.commit()
 cursor.close()
 conexao.close()
 
-
-# solução provisória
 uri = QgsDataSourceUri()
 uri.setConnection(parametros_conexao['host_bd'],
                     parametros_conexao['porta_bd'],
@@ -92,6 +91,7 @@ simbologia_ottobacias_isr_montante = {'cor_preenchimento': QColor(0, 0, 0, 0),
                                         'espessura_contorno': 1}
 carregar_camada(ottobacias_isr_montante, simbologia_ottobacias_isr_montante)
 print(f'--> Importação da camada "{ottobacias_isr_montante.name()}" realizada.')
+"""
 
 bacia_montante = QgsVectorLayer(f'''VirtualLayer?query=
                                     SELECT ST_UNION(geometry)

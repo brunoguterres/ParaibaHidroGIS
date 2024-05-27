@@ -1,7 +1,6 @@
 import psycopg2
 
 class PointTool(QgsMapToolEmitPoint):
-
     uri = QgsDataSourceUri()
     uri.setConnection(parametros_conexao['host_bd'],
                       parametros_conexao['porta_bd'],
@@ -49,6 +48,7 @@ class PointTool(QgsMapToolEmitPoint):
         conexao.commit()
 
         cursor.execute(f'''SELECT cobacia FROM {parametros_conexao['schema_cenario']}.ottobacia_selecionada''')
+        global cod_otto_bacia
         cod_otto_bacia = cursor.fetchone()[0]
 
         cursor.close()
