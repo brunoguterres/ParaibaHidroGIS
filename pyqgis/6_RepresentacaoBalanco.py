@@ -16,11 +16,11 @@ def carregar_camada_balanco(ottobacias_isr):
     campo = 'classe_isr'
     indice = ottobacias_isr.fields().indexFromName(campo)
     unique_values = ottobacias_isr.uniqueValues(indice)
-    cores_classes = {'1': QColor(10, 204, 23),
-                     '2': QColor(247, 210, 24),
-                     '3': QColor(247, 98, 24),
-                     '4': QColor(230, 23, 26),
-                     '5': QColor(161, 23, 230)}
+    cores_classes = {'1': QColor(87, 196, 206),
+                     '2': QColor(38, 214, 50),
+                     '3': QColor(255, 242, 67),
+                     '4': QColor(251, 125, 34),
+                     '5': QColor(230, 48, 120)}
     rotulos_classes = {'1': 'Sem criticidade',
                        '2': 'Baixo potencial de comprometimento',
                        '3': 'Médio potencial de comprometimento',
@@ -32,7 +32,10 @@ def carregar_camada_balanco(ottobacias_isr):
         categoria = QgsRendererCategory(value, simbologia, str(value))
         if str(value) in cores_classes:
             simbologia.setColor(cores_classes[str(value)])
-        
+        linha_simbologia = simbologia.symbolLayer(0)
+        if linha_simbologia:
+            linha_simbologia.setStrokeColor(QColor(255, 255, 255))
+            linha_simbologia.setStrokeWidth(0.1)
         if str(value) in rotulos_classes:
             categoria.setLabel(rotulos_classes[str(value)])
         categorias.append(categoria)
