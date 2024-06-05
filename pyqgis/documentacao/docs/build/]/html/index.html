@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Documentação do Aplicativo ParaibaHidroGIS &mdash; Documentação ParaibaHidroGIS 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=88519e4e"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=000972dd"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="1. Conexão com o Banco de Dados" href="1conexaoBancoDados.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            ParaibaHidroGIS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <p class="caption" role="heading"><span class="caption-text">Sumário</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1conexaoBancoDados.html">1. Conexão com o Banco de Dados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2inicializacaoMapa.html">2. Inicialização do Mapa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3processamentoCaptacao.html">3. Processamento de captações</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para balanço hídrico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do balanço hídrico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ParaibaHidroGIS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Documentação do Aplicativo ParaibaHidroGIS</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="documentacao-do-aplicativo-paraibahidrogis">
+<h1>Documentação do Aplicativo ParaibaHidroGIS<a class="headerlink" href="#documentacao-do-aplicativo-paraibahidrogis" title="Link para este cabeçalho"></a></h1>
+<p><strong>Paraiba HidroGIS</strong> é um aplicativo desenvolvido para análise de bacias hidrográficas desenvolvido no contexto do Plano de Recursos Hídricos da Bacia Hidrográfia do Rio Paraíba (PRH-RPB).</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Este projeto está em desenvolvimento ativo.</p>
+</div>
+<section id="conteudo">
+<h2>Conteúdo<a class="headerlink" href="#conteudo" title="Link para este cabeçalho"></a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Sumário</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="1conexaoBancoDados.html">1. Conexão com o Banco de Dados</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="1conexaoBancoDados.html#definicao-dos-parametros-de-conexao-com-o-bdg">1.1 Definição dos parâmetros de conexão com o BDG</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="1conexaoBancoDados.html#verificacao-da-conexao-postgis">1.1.1 Verificação da conexão PostGIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="1conexaoBancoDados.html#definicao-dos-parametros-personalizados">1.1.2. Definição dos parâmetros personalizados</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="1conexaoBancoDados.html#escolha-do-cenario">1.2. Escolha do cenário</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="2inicializacaoMapa.html">2. Inicialização do Mapa</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="2inicializacaoMapa.html#limpeza-das-camadas-residuais">2.1. Limpeza das camadas residuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2inicializacaoMapa.html#importacao-de-camadas-da-bacia">2.2. Importação de camadas da bacia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2inicializacaoMapa.html#carregamento-de-camadas-da-bacia-no-mapa">2.3. Carregamento de camadas da bacia no mapa</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="2inicializacaoMapa.html#guia-rgba">2.3.1. Guia RGBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="2inicializacaoMapa.html#carregamento-de-basemap">2.4.  Carregamento de basemap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3processamentoCaptacao.html">3. Processamento de captações</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="3processamentoCaptacao.html#processamento-dos-dados-de-captacao">3.1. Processamento dos dados de captação</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para balanço hídrico</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="4preparacaoDadosBalanco.html#uniao-entre-disponibilidade-hidrica-e-captacoes">4.1 União entre disponibilidade hídrica e captações</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do balanço hídrico</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="5calculoBalanco.html#ordenar-tabela-consolidada">5.1 Ordenar tabela consolidada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="5calculoBalanco.html#id1">5.2 Calculo do Balanço Hídrico</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="5calculoBalanco.html#salvar-resultados">5.2.1 Salvar resultados</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="7definirOttobacia.html#selecao-de-codigo-otto-da-ottobacia">7.1. Seleção de código otto da ottobacia</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="8representacaoSelecao.html#carregamento-da-camada-de-bacia-montante">8.1. Carregamento da camada de bacia montante</a></li>
+<li class="toctree-l2"><a class="reference internal" href="8representacaoSelecao.html#selecao-dos-rios-a-jusante">8.2. Seleção dos rios a jusante</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="1conexaoBancoDados.html" class="btn btn-neutral float-right" title="1. Conexão com o Banco de Dados" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Direitos autorais 2024, COBRAPE Curitiba.</p>
+  </div>
+
+  Compilado com <a href="https://www.sphinx-doc.org/">Sphinx</a> usando um
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornecido por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Inicialização do Mapa &mdash; Documentação ParaibaHidroGIS 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=88519e4e"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=000972dd"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="3. Processamento de captações" href="3processamentoCaptacao.html" />
+    <link rel="prev" title="1. Conexão com o Banco de Dados" href="1conexaoBancoDados.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ParaibaHidroGIS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1conexaoBancoDados.html">1. Conexão com o Banco de Dados</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">2. Inicialização do Mapa</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#limpeza-das-camadas-residuais">2.1. Limpeza das camadas residuais</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#importacao-de-camadas-da-bacia">2.2. Importação de camadas da bacia</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#carregamento-de-camadas-da-bacia-no-mapa">2.3. Carregamento de camadas da bacia no mapa</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#guia-rgba">2.3.1. Guia RGBA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#carregamento-de-basemap">2.4.  Carregamento de basemap</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3processamentoCaptacao.html">3. Processamento de captações</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para balanço hídrico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do balanço hídrico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ParaibaHidroGIS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">2. Inicialização do Mapa</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/2inicializacaoMapa.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="inicializacao-do-mapa">
+<h1>2. Inicialização do Mapa<a class="headerlink" href="#inicializacao-do-mapa" title="Link para este cabeçalho"></a></h1>
+<p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
+<p>(ADICIONAR FLUXOGRAMA)</p>
+<p>O <strong>import requests</strong> faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.</p>
+<section id="limpeza-das-camadas-residuais">
+<h2>2.1. Limpeza das camadas residuais<a class="headerlink" href="#limpeza-das-camadas-residuais" title="Link para este cabeçalho"></a></h2>
+<p>A função <strong>limpeza_residuos</strong> realiza a limpeza de camadas residuais do projeto no QGIS.</p>
+<p>A variável <strong>camada_residual</strong> utiliza o <strong>QgsProject.instance</strong> para obter um dicionário de todas as camadas do projeto usando o método mapLayers() da instância do projeto e, em seguida, obtém os valores desse dicionário, resultando em uma lista de todas as camadas no projeto.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O <strong>QgsProject</strong> é uma classe central no QGIS que representa o projeto em si. Ele armazena informações sobre camadas, configurações do projeto, sistemas de coordenadas e outros elementos relacionados ao ambiente de trabalho no QGIS.</p>
+</div>
+<p>Após a criação da lista com as camadas do projeto, é feita a verificação da existência de camadas residuais, caso haja qualquer camada residual é feita a remoção da mesma. Caso contrário, será apenas obtido e atualizado o canvas do mapa do projeto utilizando o <strong>qgis.utils.iface.mapCanvas()</strong> e o <strong>canvas.refresh()</strong>.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O <strong>iface</strong> é uma instância da classe QgisInterface que fornece acesso às interfaces do QGIS para plugins. O <em>mapCanvas</em> é o método utilizado para obter a referência à tela de visualização do mapa atual no QGIS.</p>
+</div>
+</section>
+<section id="importacao-de-camadas-da-bacia">
+<h2>2.2. Importação de camadas da bacia<a class="headerlink" href="#importacao-de-camadas-da-bacia" title="Link para este cabeçalho"></a></h2>
+<p>Nesse processo será feita a importação das camadas do banco de dados.</p>
+<p>A função <strong>importar_camada_bdg</strong> recebe informações sobre o banco de dados (nome, schema, nome da camada) para importar a camada vetorial correspondente.</p>
+<p>A variável <em>uri</em> utiliza o <strong>QgsDataSourceUri</strong> para armazenar informações sobre a fonte de dados da camada vetorial, e, posteriormente, configura as informações de conexão com o banco de dados na URI.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O <strong>QgsDataSourceUri</strong> é uma classe na biblioteca QGIS que é usada para representar e manipular informações de conexão com fontes de dados, como bancos de dados espaciais, arquivos shapefile, serviços da web, entre outros. Essa classe permite que você construa e manipule de forma pragmática URIs (Uniform Resource Identifiers) que especificam a fonte de dados que será utilizada em um projeto QGIS.</p>
+</div>
+<p>A variável <em>camada_importada</em> cria um objeto <strong>QgsVectorLayer</strong> usando a URI configurada e define o nome da camada.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>O <strong>QgsVectorLayer</strong> é uma classe na biblioteca QGIS que representa uma camada vetorial dentro do ambiente QGIS. Essa classe é parte da API do QGIS e é usada para manipular dados vetoriais, como pontos, linhas e polígonos.</p>
+</div>
+</section>
+<section id="carregamento-de-camadas-da-bacia-no-mapa">
+<h2>2.3. Carregamento de camadas da bacia no mapa<a class="headerlink" href="#carregamento-de-camadas-da-bacia-no-mapa" title="Link para este cabeçalho"></a></h2>
+<p>A função <strong>carregar_camada</strong> é responsável por configurar a simbologia de uma camada. Para isso, a variável <strong>tipo_geometria</strong> obtém o tipo de geometria da camada fornecida como parâmetro e depois é verificado se é um ponto. A classe <strong>QgsWkbTypes</strong> é usada para verificação do tipo de geometria, enquanto as classes <strong>QgsSimpleMarkerSymbolLayer</strong>, <strong>QgsLineSymbol</strong> e <strong>QgsFillSymbol</strong> são utilizadas para representar a simbologia das camadas.</p>
+<ul class="simple">
+<li><p>Se for um ponto, é criado um símbolo de marcador simples com base nos parâmetros de cor e tamanho fornecidos na simbologia. Se não for ponto, verifica se é uma linha. Os parâmetros de simbologia que podem ser modificados são a cor e o tamanho.</p></li>
+<li><p>Se for uma linha, cria um símbolo de linha simples com base nos parâmetros de cor e espessura fornecidos na simbologia. Se não for uma linha, verifica se é uma geometria de polígono. Os parâmetros de simbologia que podem ser modificados são a cor e a espessura.</p></li>
+<li><p>Se for um polígono, cria um símbolo de preenchimento simples com base nos parâmetros de cor de preenchimento, cor de contorno e espessura do contorno fornecidos na simbologia. Os parâmetros de simbologia que podem ser modificados são a cor do preenchimento, a cor da borda e a espessura da borda.</p></li>
+</ul>
+<p>Então é criado um renderizador de símbolo único (<strong>QgsSingleSymbolRenderer</strong>) usando o símbolo definido anteriormente. E por fim, a camada é adicionada ao projeto QGIS.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<ul class="simple">
+<li><p>A classe <strong>QgsWkbTypes</strong> é usada para lidar com tipos Well-Known Binary, que é um formato binário usado para representar objetos geométricos. A classe fornece enumerações e funções para trabalhar com esses tipos WKB.</p></li>
+<li><p>A classe <strong>QgsSimpleMarkerSymbolLayer</strong> é utilizada para representar uma camada de símbolo de marcador simples.</p></li>
+<li><p>A classe <strong>QgsLineSymbol</strong> é utilizada para representar símbolos de linha em camadas vetoriais.</p></li>
+<li><p>A classe <strong>QgsFillSymbol</strong> é utilizada para representar símbolos de preenchimento em camadas vetoriais.</p></li>
+</ul>
+</div>
+<section id="guia-rgba">
+<h3>2.3.1. Guia RGBA<a class="headerlink" href="#guia-rgba" title="Link para este cabeçalho"></a></h3>
+<p>A simbologia RGBA (Red, Green, Blue, Alpha) é um modelo de cor usado para definir cores em gráficos, imagens e mapas. Cada componente representa a intensidade de uma cor primária (Red, Green, Blue), enquanto o componente Alpha representa a transparência da cor.</p>
+<p>A intensidade varia de 0 a 255 para todos, sendo que quanto maior o valor, mais próximo da saturação e luminosidade da cor estará aquele componente. Para a transparência, quanto maior o valor, menor é a transparência. Os valores também podem ser normalizados de 0 a 1. O preto é representado pelo 0 em todos os componentes.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Exemplo</strong>:</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>azul = (0, 0, 1, 1)</p>
+<p>vermelho semi-transparente = (1, 0, 0, 0.5)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="carregamento-de-basemap">
+<h2>2.4.  Carregamento de basemap<a class="headerlink" href="#carregamento-de-basemap" title="Link para este cabeçalho"></a></h2>
+<p>A função <strong>importar_camada_fundo</strong> tem como objetivo carregar uma camada de plano de fundo usando a biblioteca QGIS.</p>
+<p>A variável <strong>service_url</strong> contém uma URL para um serviço de mapas do Google. Os placeholders {x}, {y} e {z} são utilizados para representar os valores de latitude, longitude e zoom.</p>
+<p>A variável <strong>serivce_uri</strong> contém a URI do serviço de mapas, formatada com os parâmetros necessários. A função <strong>requests.utilis.quote</strong> é usada para garantir que a URL seja codificada corretamente.</p>
+<p>A função <strong>iface.addRasterLayer</strong> da interface do QGIS é utilizada para adicionar uma camada raster com os argumentos:</p>
+<ul class="simple">
+<li><p><strong>service_uri</strong>: a URI do serviço de mapas</p></li>
+<li><p><strong>Google_Road</strong>: nome da camada a ser adicionada</p></li>
+<li><p><strong>wms</strong>: tipo de serviço, indicando que é um Web Map Service</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="1conexaoBancoDados.html" class="btn btn-neutral float-left" title="1. Conexão com o Banco de Dados" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="3processamentoCaptacao.html" class="btn btn-neutral float-right" title="3. Processamento de captações" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Direitos autorais 2024, COBRAPE Curitiba.</p>
+  </div>
+
+  Compilado com <a href="https://www.sphinx-doc.org/">Sphinx</a> usando um
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornecido por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
