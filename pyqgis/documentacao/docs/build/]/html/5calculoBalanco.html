@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="pt-BR" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5. Cálculo do balanço hídrico &mdash; Documentação ParaibaHidroGIS 0.1</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=88519e4e"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script src="_static/translations.js?v=000972dd"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="6. Representação do balanço" href="6representacaoBalanco.html" />
+    <link rel="prev" title="4. Preparação de dados para balanço hídrico" href="4preparacaoDadosBalanco.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ParaibaHidroGIS
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Pesquisar documentos" aria-label="Pesquisar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu de navegação">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1conexaoBancoDados.html">1. Conexão com o Banco de Dados</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2inicializacaoMapa.html">2. Inicialização do Mapa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3processamentoCaptacao.html">3. Processamento de captações</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para balanço hídrico</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Cálculo do balanço hídrico</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ordenar-tabela-consolidada">5.1 Ordenar tabela consolidada</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">5.2 Calculo do Balanço Hídrico</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#salvar-resultados">5.2.1 Salvar resultados</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
+<li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu de navegação móvel" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ParaibaHidroGIS</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Navegação da página">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">5. Cálculo do balanço hídrico</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/5calculoBalanco.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="calculo-do-balanco-hidrico">
+<h1>5. Cálculo do balanço hídrico<a class="headerlink" href="#calculo-do-balanco-hidrico" title="Link para este cabeçalho"></a></h1>
+<p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
+<p>(ADICIONAR FLUXOGRAMA)</p>
+<p>Primeiramente é importado o módulo <strong>psycopg2</strong>.</p>
+<section id="ordenar-tabela-consolidada">
+<h2>5.1 Ordenar tabela consolidada<a class="headerlink" href="#ordenar-tabela-consolidada" title="Link para este cabeçalho"></a></h2>
+<p>A função <strong>criar_matriz</strong> cria uma matriz de balanço hídrico a partir dos dados do banco de dados.</p>
+<p>Para isso é aberta a conexão com o banco de dados usando os parâmetros fornecidos. Depois, é criado um cursor a partir da conexão com o banco de dados para executar comandos SQL.</p>
+<p>A primeira consulta SQL realizada seleciona (SELECT) todas as colunas da tabela <strong>dados_balanco</strong> no esquema especificado <strong>schema_cenario</strong> (FROM), ordenando (ORDER BY) os resultados pela coluna <strong>cobacia</strong> em ordem descendente (DESC).</p>
+<p>A variável <strong>rows</strong> recupera todas as linhas resultantes da consulta SQL, enquanto a variável <strong>matriz</strong> será utilizada para armazenar os dados recuperados do banco de dados. Depois, é feito uma iteração sobre cada linha recuperada do banco de dados, onde para cada linha, a iteração converte os valores em uma lista de strings e adiciona essa lista à <strong>matriz</strong>.</p>
+<p>A iteração da linha na matriz é realizada para adicionar zeros para criar novos campos que futuramente vão ser preenchidos no cálculo do balanço.</p>
+</section>
+<section id="id1">
+<h2>5.2 Calculo do Balanço Hídrico<a class="headerlink" href="#id1" title="Link para este cabeçalho"></a></h2>
+<p>A função <strong>calcular_balanco</strong> calcula o balanço de disponibilidade e captação de recursos hídricos em cada linha da matriz.</p>
+<p>Para isso são realizadas iterações sobre cada linha da matriz, onde primeiramente é realizada a verificação se a linha representa um trecho de cabeceira ou não. Se o trecho for de cabeceira, a função calcula a vazão jusante subtraindo a captação solicitada da vazão incremental na linha atual da matriz.</p>
+<p>Então, é verificado se a vazão jusante calculada é menor que zero, caso a resposta seja sim, é calculado o déficit e depois, definida a vazão jusante como zero para calcular a captação atendida. Caso a resoista seja não, então a captação atendida é igual à captação solicitada e o déficit é zero.</p>
+<p>Se o trecho não for de cabeceira, a função calcula a vazão jusante considerando os trechos montantes correspondentes. É feita uma iteração reversa para encontrar trechos montantes, ou seja, o loop faz a iteração sobre as linhas anteriores à linha atual, de trás para frente, comparando o código do trecho atual com o código do trecho jusante do trecho anterior.</p>
+<p>Se houver um trecho montante correspondente, a vazão jusante do trecho atual é calculada somando as vazões jusantes dos trechos montantes. A vazão montante é armazenada na matriz. A vazão jusante é calculada somando a vazão montante calculada ao valor da disponibilidade local e subtraindo a captação. E então é calculado o déficit, semelhante ao explicado acima, com base na vazão jusante calculada.</p>
+<p>O <strong>campo_captacao_acumulada</strong> atualiza a captação acumulada somando a mesma com as linhas anteriores, tendo um máximo de soma dela mesma com duas linhas anteriores.</p>
+<p>O cálculo do <strong>Índice de Condição de Recursos Hídricos (ISR)</strong> é feito com base na relação entre a soma da captação acumulada com o déficit e a vazão natural. Essa relação é dividida em intervalos e o ISR é atribuído de acordo com esses intervalos.</p>
+<p>Por fim, a função retorna a matriz com os cálculos de vazão jusante, déficit e ISR para cada linha.</p>
+<section id="salvar-resultados">
+<h3>5.2.1 Salvar resultados<a class="headerlink" href="#salvar-resultados" title="Link para este cabeçalho"></a></h3>
+<p>A função <strong>salvar_resultado</strong> tem a finalidade de salvar os resultados do balanço hídrico em um banco de dados PostgreSQL. Primeiramente é realizada a conexão com o banco de dados usando os parâmetros de conexão. Depois, é criado um objeto de cursor para exercutar comandos SQL no banco de dados. Então são definidos os nomes dos campos que serão utilizados para criar as VIEWS no banco de dados.</p>
+<p>Com o <strong>cursor.execute</strong> são executados os comandos SQL para criar uma VIEW chamada <strong>resultado_balanco</strong> no banco de dados. Essa view contém os campos especificados na lista <em>campos</em> e os dados da matriz <strong>matriz_balanco</strong></p>
+<p>Um processo semelhante é realizado para a VIEW <strong>ottobacias_isr</strong>. Essa VIEW contém informações sobre a cobacia, geometria, ISR e classe de ISR, obtidas a partir da tabela <em>ottobacias_pb_5k</em> e da view <em>resultado_balanco</em>. Por fim, é feito um commit para que as alterações sejam salvas no banco de dados, o cursor é fechado e a conexão com o banco de dados é encerrada.</p>
+<p>Os comandos utilizados SQL são:</p>
+<ul class="simple">
+<li><p>DROP VIEW IF EXISTS</p></li>
+<li><p>CREAT VIEW</p></li>
+<li><p>SELECT, FROM</p></li>
+<li><p>ORDER BY</p></li>
+<li><p>LEFT JOIN</p></li>
+</ul>
+<p>Os comandos já foram descritos anteriormente nos itens 3 e 4.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
+        <a href="4preparacaoDadosBalanco.html" class="btn btn-neutral float-left" title="4. Preparação de dados para balanço hídrico" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="6representacaoBalanco.html" class="btn btn-neutral float-right" title="6. Representação do balanço" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Direitos autorais 2024, COBRAPE Curitiba.</p>
+  </div>
+
+  Compilado com <a href="https://www.sphinx-doc.org/">Sphinx</a> usando um
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornecido por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
