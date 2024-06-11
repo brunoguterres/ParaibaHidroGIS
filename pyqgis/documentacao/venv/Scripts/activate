@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\beatrizkawano.COBRAPE\Desktop\documentacao\venv"
+VIRTUAL_ENV="C:\Users\brunoguterres\Desktop\GitHubFiles\ParaibaHidroGIS\pyqgis\documentacao\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

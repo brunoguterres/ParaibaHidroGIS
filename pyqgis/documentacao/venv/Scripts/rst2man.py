@@ -1,4 +1,4 @@
-#!C:\Users\beatrizkawano.COBRAPE\Desktop\documentacao\venv\Scripts\python.exe
+#!C:\Users\brunoguterres\Desktop\GitHubFiles\ParaibaHidroGIS\pyqgis\documentacao\venv\Scripts\python.exe
 
 # Author:
 # Contact: grubert@users.sf.net

@@ -1,4 +1,4 @@
-#!C:\Users\beatrizkawano.COBRAPE\Desktop\documentacao\venv\Scripts\python.exe
+#!C:\Users\brunoguterres\Desktop\GitHubFiles\ParaibaHidroGIS\pyqgis\documentacao\venv\Scripts\python.exe
 
 # $Id: rst2xetex.py 9115 2022-07-28 17:06:24Z milde $
 # Author: Guenter Milde
