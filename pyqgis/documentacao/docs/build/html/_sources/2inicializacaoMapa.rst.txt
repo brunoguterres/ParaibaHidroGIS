@@ -3,7 +3,12 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-(ADICIONAR FLUXOGRAMA)
+.. mermaid::
+
+    flowchart TD
+        subgraph A[2. Inicialização do Mapa]
+            B[2.1. Limpeza das camadas residuais] --> C[2.2. Importação de camadas da bacia] --> D[2.3. Carregamento de camadas da bacia no mapa] --> E[2.4. Carregamento de basemap]
+        end
 
 O **import requests** faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.
 

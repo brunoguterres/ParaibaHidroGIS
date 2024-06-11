@@ -19,6 +19,8 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/translations.js?v=000972dd"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -88,8 +90,12 @@
   <section id="processamento-de-captacoes">
 <h1>3. Processamento de captações<a class="headerlink" href="#processamento-de-captacoes" title="Link para este cabeçalho"></a></h1>
 <p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<p>(ADICIONAR FLUXOGRAMA)</p>
-<p>O módulo <strong>psycopg2</strong> é uma biblioteca do PostgreSQL para Python. Essa biblioteca permite a conexão e interação com um banco de dados PostgreSQL a partir do Python.</p>
+<div class="mermaid">
+            flowchart TD
+    subgraph A[3. Definir vazões de captações e disponibilidade]
+        B[3.1. Processamento dos dados de captação]
+    end
+        </div><p>O módulo <strong>psycopg2</strong> é uma biblioteca do PostgreSQL para Python. Essa biblioteca permite a conexão e interação com um banco de dados PostgreSQL a partir do Python.</p>
 <section id="processamento-dos-dados-de-captacao">
 <h2>3.1. Processamento dos dados de captação<a class="headerlink" href="#processamento-dos-dados-de-captacao" title="Link para este cabeçalho"></a></h2>
 <p>A função <strong>processamento_captacoes</strong> é definida para que possa se estabelecer uma conexão com o banco de dados PostgreSQL usando os parâmetros de cone~xão fornecidos anteriormente, além de criar um objeto cursor para executar comandos SQL no banco de dados.</p>

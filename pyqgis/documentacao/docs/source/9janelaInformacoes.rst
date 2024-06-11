@@ -3,8 +3,6 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-(ADICIONAR FLUXOGRAMA)
-
 Primeiramente é importado o módulo **psycopg2**.
 
 É feita a conexão com o banco de dados PostgreSQL usando o **psycopg2**. 

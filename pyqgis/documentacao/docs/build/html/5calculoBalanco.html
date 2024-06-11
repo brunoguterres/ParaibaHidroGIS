@@ -19,6 +19,8 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/translations.js?v=000972dd"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -92,8 +94,12 @@
   <section id="calculo-do-balanco-hidrico">
 <h1>5. Cálculo do balanço hídrico<a class="headerlink" href="#calculo-do-balanco-hidrico" title="Link para este cabeçalho"></a></h1>
 <p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<p>(ADICIONAR FLUXOGRAMA)</p>
-<p>Primeiramente é importado o módulo <strong>psycopg2</strong>.</p>
+<div class="mermaid">
+            flowchart TD
+    subgraph A[5. Cálculo do balanço hídrico]
+        B[5.1. Ordenar tabela consolidada] --&gt; C[5.2. Calcular balanço hídrico]
+    end
+        </div><p>Primeiramente é importado o módulo <strong>psycopg2</strong>.</p>
 <section id="ordenar-tabela-consolidada">
 <h2>5.1 Ordenar tabela consolidada<a class="headerlink" href="#ordenar-tabela-consolidada" title="Link para este cabeçalho"></a></h2>
 <p>A função <strong>criar_matriz</strong> cria uma matriz de balanço hídrico a partir dos dados do banco de dados.</p>

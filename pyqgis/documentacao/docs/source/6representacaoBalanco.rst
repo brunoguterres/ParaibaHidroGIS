@@ -3,7 +3,12 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-(ADICIONAR FLUXOGRAMA)
+.. mermaid::
+   
+   flowchart TD
+      subgraph A[6. Representação do balanço]
+         B[6.1. Carregamento da camada do balanço]
+      end
 
 As funções **carregar_camada_balanco** e **importar_camada_balanco** são o mesmo processo das funções definidas na documentação da etapa 2, nos itens 2.2 e 2.3. Isso porque as etapas estão em arquivos diferentes, então para chamar as funções é necessário repeti-las.
 

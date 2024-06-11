@@ -3,7 +3,12 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-(ADICIONAR FLUXOGRAMA)
+.. mermaid::
+
+    flowchart TD
+        subgraph A[5. Cálculo do balanço hídrico]
+            B[5.1. Ordenar tabela consolidada] --> C[5.2. Calcular balanço hídrico]
+        end
 
 Primeiramente é importado o módulo **psycopg2**.
 

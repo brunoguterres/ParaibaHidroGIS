@@ -7,7 +7,13 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-(ADICIONAR FLUXOGRAMA)
+
+.. mermaid::
+
+    flowchart TD    
+        subgraph A[1. Procedimentos Iniciais]
+            B[1.1. Definição dos parâmetros de conexão com o banco de dados] --> C[1.2. Escolha do cenário];
+        end
 
 1.1 Definição dos parâmetros de conexão com o BDG
 -------------------------------------------------

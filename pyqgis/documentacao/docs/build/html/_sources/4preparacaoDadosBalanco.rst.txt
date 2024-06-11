@@ -3,7 +3,12 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-(ADICIONAR FLUXOGRAMA)
+.. mermaid::
+
+    flowchart TD
+        subgraph A[4. Preparação de dados para o balanço hídrico]
+            B[4.1. União de atributos de disponibilidade e captações]
+        end
 
 Primeiramente é importado o módulo **psycopg2**.
 

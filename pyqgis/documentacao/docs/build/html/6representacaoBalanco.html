@@ -19,6 +19,8 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/translations.js?v=000972dd"></script>
+        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
+        <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -85,8 +87,12 @@
   <section id="representacao-do-balanco">
 <h1>6. Representação do balanço<a class="headerlink" href="#representacao-do-balanco" title="Link para este cabeçalho"></a></h1>
 <p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<p>(ADICIONAR FLUXOGRAMA)</p>
-<p>As funções <strong>carregar_camada_balanco</strong> e <strong>importar_camada_balanco</strong> são o mesmo processo das funções definidas na documentação da etapa 2, nos itens 2.2 e 2.3. Isso porque as etapas estão em arquivos diferentes, então para chamar as funções é necessário repeti-las.</p>
+<div class="mermaid">
+            flowchart TD
+   subgraph A[6. Representação do balanço]
+      B[6.1. Carregamento da camada do balanço]
+   end
+        </div><p>As funções <strong>carregar_camada_balanco</strong> e <strong>importar_camada_balanco</strong> são o mesmo processo das funções definidas na documentação da etapa 2, nos itens 2.2 e 2.3. Isso porque as etapas estão em arquivos diferentes, então para chamar as funções é necessário repeti-las.</p>
 <p>A única diferença é que na função <strong>carregar_camada_balanco</strong> são definidas as configurações da simbologia da camada <strong>ottobacias_isr</strong> com base nos valores únicos do campo <strong>classe_isr</strong>. As cores dos símbolos são atribuídas com base em um dicionário <strong>cores_classes</strong> e os rótulos das categorias são definidos em um dicionário <strong>rotulos_classes</strong>. Por fim, é criado um renderizador de símbolos categorizado através do <strong>QgsCategorizedSymbolRenderer</strong>, o qual é atribuído à camada <strong>ottobacias_isr</strong>.</p>
 <p>O método <strong>triggerRepaint</strong> é chamado na camada para garantir que as alterações de simbologia sejam aplicadas e então, a função retorna a camada ottobacias_isr.</p>
 <div class="admonition note">
