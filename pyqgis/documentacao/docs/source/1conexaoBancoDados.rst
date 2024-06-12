@@ -3,7 +3,7 @@
 
 .. warning::
     
-    A última versão do banco é a **versão 8** e deve ser utilizada para execução com a última atualização da aplicação. Isto é importante para que haja compatibilidade e evitar erros de execução difíceis de serem compreendidos pelo usuário. 
+    A partir da atualização para a última versão disponível da aplicação, os scripts utilizam dados de um BDG em nuvem definido como padrão, eliminando a necessidade do usuário restaurar o banco de dados localmente. Porém, em caso de não haver conexão com a internet, ou por outros motivos que impessam a conexão com o banco de dados padrão, utilizar o arquivo de backup na **versão 8**. Isto é importante para que haja compatibilidade e evitar erros de execução difíceis de serem compreendidos pelo usuário.
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
