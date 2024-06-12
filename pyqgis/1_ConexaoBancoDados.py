@@ -1,7 +1,7 @@
 def parametros_padrao_bd():
     parametros_conexao = {'nome_bd': 'bdg_prh_rpb',
-                          'usuario_bd': 'paraiba',
-                          'senha_bd': 'paraiba2024',
+                          'usuario_bd': 'pgadmin',
+                          'senha_bd': '4uX4fsZoW8@@5DZytMtU82',
                           'host_bd': 'postgre-cwb.postgres.database.azure.com',
                           'porta_bd': '5432',
                           'schema_cenario': 'cenario_2'}
