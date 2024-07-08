@@ -10,7 +10,6 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 .. image:: imagens/DiagramaEtapa1.png
     :align: center
 
-
 1.1 Definição dos parâmetros de conexão com o BDG
 -------------------------------------------------
 

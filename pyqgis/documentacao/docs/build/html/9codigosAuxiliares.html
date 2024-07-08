@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>10. Códigos Auxiliares &mdash; Documentação ParaibaHidroGIS 0.1</title>
+  <title>9. Códigos Auxiliares &mdash; Documentação ParaibaHidroGIS 0.1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -22,7 +22,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
-    <link rel="prev" title="9. Janela de informações" href="9janelaInformacoes.html" /> 
+    <link rel="next" title="10. Próximos Passos" href="10proximosPassos.html" />
+    <link rel="prev" title="8. Representação da seleção" href="8representacaoSelecao.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -53,16 +54,17 @@
 <li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a></li>
 <li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9janelaInformacoes.html">9. Janela de informações</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">10. Códigos Auxiliares</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#codigos-descontinuados">10.1. Códigos Descontinuados</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#comandos-uteis">10.2. Comandos Úteis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#codigos-extras">10.3. Códigos Extras</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#selecao-montante-multipontos">10.3.1. Seleção Montante Multipontos</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Códigos Auxiliares</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#codigos-descontinuados">9.1. Códigos Descontinuados</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comandos-uteis">9.2. Comandos Úteis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#codigos-extras">9.3. Códigos Extras</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#selecao-montante-multipontos">9.3.1. Seleção Montante Multipontos</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selecao-montante-e-dissolve">9.3.2. Seleção Montante e Dissolve</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="10proximosPassos.html">10. Próximos Passos</a></li>
 </ul>
 
         </div>
@@ -79,9 +81,9 @@
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">10. Códigos Auxiliares</li>
+      <li class="breadcrumb-item active">9. Códigos Auxiliares</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/10codigosAuxiliares.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
+            <a href="_sources/9codigosAuxiliares.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
       </li>
   </ul>
   <hr/>
@@ -90,10 +92,10 @@
            <div itemprop="articleBody">
              
   <section id="codigos-auxiliares">
-<h1>10. Códigos Auxiliares<a class="headerlink" href="#codigos-auxiliares" title="Link para este cabeçalho"></a></h1>
+<h1>9. Códigos Auxiliares<a class="headerlink" href="#codigos-auxiliares" title="Link para este cabeçalho"></a></h1>
 <p>Este diretório contém arquivos antigos, que foram descontinuados no processo de desenvolvimento do aplicativo principal, ou arquivos que foram criados para atividades específicas relacionadas ao projeto mas que não fazem parte do desenvolvimento do aplicativo principal.</p>
 <section id="codigos-descontinuados">
-<h2>10.1. Códigos Descontinuados<a class="headerlink" href="#codigos-descontinuados" title="Link para este cabeçalho"></a></h2>
+<h2>9.1. Códigos Descontinuados<a class="headerlink" href="#codigos-descontinuados" title="Link para este cabeçalho"></a></h2>
 <p><strong>a) geral.py</strong>: Este arquivo é uma versão antiga que já foi o código principal do aplicativo em algum momento do desenvolvimento. Ele foi descontinuado, mas possui alguns códigos de processamentos que podem ser úteis.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
@@ -101,15 +103,16 @@
 </div>
 <p><strong>b) 7_SelecaoOttobacia.py</strong>: Este arquivo é uma versão antiga da etapa 7 do aplicativo, com outras ferramentas para seleção da ottobacia, utilizando o QgsMapToolIdentify para identificar feições e obter informações detalhadas da camada, enquanto a nova versão faz a seleção pela coordenada com outra funcionalidade.</p>
 <p><strong>c) 8_RepresentacaoSelecao.py</strong>: Este arquivo é uma versão antiga da etapa 8 do aplicativo. Nessa versão são criadas views no banco de dados, enquanto no código novo são utilizadas camadas virtuais. É uma versão mais robusta para a representação da seleção.</p>
+<p><strong>d) 9_JanelaInformacoes.py</strong>: Esse arquivo foi retirado do código principal pois não funcionava direito. Essa forma não é a mais adequada para fazer a janela de informações, portanto, optou-se pela retirada do código para posterior construção da janela em um plugin.</p>
 </section>
 <section id="comandos-uteis">
-<h2>10.2. Comandos Úteis<a class="headerlink" href="#comandos-uteis" title="Link para este cabeçalho"></a></h2>
+<h2>9.2. Comandos Úteis<a class="headerlink" href="#comandos-uteis" title="Link para este cabeçalho"></a></h2>
 <p><strong>comando_uteis.py</strong>: Neste arquivo são apresentados alguns comandos que possam ser utilizados em algum momento do desenvolvimento.</p>
 </section>
 <section id="codigos-extras">
-<h2>10.3. Códigos Extras<a class="headerlink" href="#codigos-extras" title="Link para este cabeçalho"></a></h2>
+<h2>9.3. Códigos Extras<a class="headerlink" href="#codigos-extras" title="Link para este cabeçalho"></a></h2>
 <section id="selecao-montante-multipontos">
-<h3>10.3.1. Seleção Montante Multipontos<a class="headerlink" href="#selecao-montante-multipontos" title="Link para este cabeçalho"></a></h3>
+<h3>9.3.1. Seleção Montante Multipontos<a class="headerlink" href="#selecao-montante-multipontos" title="Link para este cabeçalho"></a></h3>
 <p>Os arquivos deste diretório (SelecaoMontanteMultipontos) foram criados no contexto de uma demanda específica do William Cantos Corrêa, para análise de porcentagem de área de diferentes tipos de usos do solo para a região à montante de cada ponto de monitoramento de qualidade de água. Foram também selecionados pontos de ETAS e Outorgas à montante de cada ponto de monitoramento. Para cada tipo de seleção foi criado um arquivo python individual.</p>
 <div class="admonition note">
 <p class="admonition-title">Nota</p>
@@ -135,6 +138,15 @@
 </div></blockquote>
 <p><em>RESULTADO</em>: Este código exporta uma tabela no formato excel (.xlsx) com o número total de outorgas contidas à montante de cada ponto de monitoramento.</p>
 </section>
+<section id="selecao-montante-e-dissolve">
+<h3>9.3.2. Seleção Montante e Dissolve<a class="headerlink" href="#selecao-montante-e-dissolve" title="Link para este cabeçalho"></a></h3>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Esse código não funciona de forma independente.</p>
+</div>
+<p>O código <strong>SelecaoMontanteDissolve.py</strong> é uma alternativa para fazer o dissolve da seleção a montante sem precisar utilizar o banco de dados.</p>
+<p>Basicamente o código seleciona as sub-bacias a montante com base em critérios específicos e consultas SQL. Realiza também um dissolve para combinar as sub-bacias selecionadas em uma única camada. Carrega e estiliza a nova camada resultante da dissolução, adicionando-a ao projeto QGIS.</p>
+</section>
 </section>
 </section>
 
@@ -142,7 +154,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="9janelaInformacoes.html" class="btn btn-neutral float-left" title="9. Janela de informações" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="8representacaoSelecao.html" class="btn btn-neutral float-left" title="8. Representação da seleção" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="10proximosPassos.html" class="btn btn-neutral float-right" title="10. Próximos Passos" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
