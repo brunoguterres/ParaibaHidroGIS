@@ -19,8 +19,6 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/translations.js?v=000972dd"></script>
-        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
-        <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -62,6 +60,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="9janelaInformacoes.html">9. Janela de informações</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10codigosAuxiliares.html">10. Códigos Auxiliares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11proximosPassos.html">11. Próximos Passos</a></li>
 </ul>
 
         </div>
@@ -95,12 +94,8 @@
 <p>É necessário verificar a itemização dessa etapa.</p>
 </div>
 <p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<div class="mermaid">
-            flowchart TD
-    subgraph A[8. Representação da seleção]
-        B[8.1.] --&gt; C[8.2.]
-    end
-        </div><p>Primeiramente é importado o módulo <strong>psycopg2</strong>.</p>
+<img alt="_images/DiagramaEtapa8.png" class="align-center" src="_images/DiagramaEtapa8.png" />
+<p>Primeiramente é importado o módulo <strong>psycopg2</strong>.</p>
 <p>A função <strong>carregar_camada_balanco</strong> possui o mesmo processo da função definida na documentação da etapa 2, no item 2.3.</p>
 <p>É feita a conexão com o banco de dados PostgreSQL usando o <strong>psycopg2</strong>.</p>
 <section id="carregamento-da-camada-de-bacia-montante">

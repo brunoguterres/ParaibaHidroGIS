@@ -8,12 +8,8 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-.. mermaid::
-
-    flowchart TD
-        subgraph A[8. Representação da seleção]
-            B[8.1.] --> C[8.2.]
-        end
+.. image:: imagens/DiagramaEtapa8.png
+    :align: center
 
 Primeiramente é importado o módulo **psycopg2**.
 

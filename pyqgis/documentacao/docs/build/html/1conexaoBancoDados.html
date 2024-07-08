@@ -19,8 +19,6 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/translations.js?v=000972dd"></script>
-        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
-        <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -66,6 +64,7 @@
 <li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
 <li class="toctree-l1"><a class="reference internal" href="9janelaInformacoes.html">9. Janela de informações</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10codigosAuxiliares.html">10. Códigos Auxiliares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11proximosPassos.html">11. Próximos Passos</a></li>
 </ul>
 
         </div>
@@ -99,12 +98,8 @@
 <p>A última versão do banco é a <strong>versão 8</strong> e deve ser utilizada para execução com a última atualização da aplicação. Isto é importante para que haja compatibilidade e evitar erros de execução difíceis de serem compreendidos pelo usuário.</p>
 </div>
 <p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<div class="mermaid">
-            flowchart TD
-    subgraph A[1. Procedimentos Iniciais]
-        B[1.1. Definição dos parâmetros de conexão com o banco de dados] --&gt; C[1.2. Escolha do cenário];
-    end
-        </div><section id="definicao-dos-parametros-de-conexao-com-o-bdg">
+<img alt="_images/DiagramaEtapa1.png" class="align-center" src="_images/DiagramaEtapa1.png" />
+<section id="definicao-dos-parametros-de-conexao-com-o-bdg">
 <h2>1.1 Definição dos parâmetros de conexão com o BDG<a class="headerlink" href="#definicao-dos-parametros-de-conexao-com-o-bdg" title="Link para este cabeçalho"></a></h2>
 <p>A função <strong>parametros_padrao_bd</strong> define os parâmetros de conexão <em>padrão</em> com o banco de dados.</p>
 <table class="docutils align-default">

@@ -19,8 +19,6 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script src="_static/translations.js?v=000972dd"></script>
-        <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
-        <script>mermaid.initialize({startOnLoad:true});</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
@@ -67,6 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
 <li class="toctree-l1"><a class="reference internal" href="9janelaInformacoes.html">9. Janela de informações</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10codigosAuxiliares.html">10. Códigos Auxiliares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="11proximosPassos.html">11. Próximos Passos</a></li>
 </ul>
 
         </div>
@@ -96,12 +95,8 @@
   <section id="inicializacao-do-mapa">
 <h1>2. Inicialização do Mapa<a class="headerlink" href="#inicializacao-do-mapa" title="Link para este cabeçalho"></a></h1>
 <p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<div class="mermaid">
-            flowchart TD
-    subgraph A[2. Inicialização do Mapa]
-        B[2.1. Limpeza das camadas residuais] --&gt; C[2.2. Importação de camadas da bacia] --&gt; D[2.3. Carregamento de camadas da bacia no mapa] --&gt; E[2.4. Carregamento de basemap]
-    end
-        </div><p>O <strong>import requests</strong> faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.</p>
+<img alt="_images/DiagramaEtapa2.png" class="align-center" src="_images/DiagramaEtapa2.png" />
+<p>O <strong>import requests</strong> faz a importação da biblioteca Requests, a qual é utilizada para fazer requisições HTTP em python de forma simples e eficiente.</p>
 <section id="limpeza-das-camadas-residuais">
 <h2>2.1. Limpeza das camadas residuais<a class="headerlink" href="#limpeza-das-camadas-residuais" title="Link para este cabeçalho"></a></h2>
 <p>A função <strong>limpeza_residuos</strong> realiza a limpeza de camadas residuais do projeto no QGIS.</p>

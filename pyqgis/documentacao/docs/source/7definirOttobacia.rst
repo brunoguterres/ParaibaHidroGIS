@@ -3,12 +3,8 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-.. mermaid::
-
-    flowchart TD
-        subgraph A[7. Seleção à montante]
-            B[7.1. Seleção de código otto da ottobacia] --> C[7.2. Criar camada de seleção à montante] --> E[7.3. Limpeza de camadas extras]
-        end
+.. image:: imagens/DiagramaEtapa7.png
+    :align: center
 
 Primeiramente é importado o módulo **psycopg2**.
 
