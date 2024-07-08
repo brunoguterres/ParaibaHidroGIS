@@ -23,3 +23,4 @@ Conteúdo
    8representacaoSelecao
    9janelaInformacoes
    10codigosAuxiliares
+   11proximosPassos
