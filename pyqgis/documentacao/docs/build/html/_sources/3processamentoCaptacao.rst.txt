@@ -3,12 +3,8 @@
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 
-.. mermaid::
-
-    flowchart TD
-        subgraph A[3. Definir vazões de captações e disponibilidade]
-            B[3.1. Processamento dos dados de captação]
-        end
+.. image:: imagens/DiagramaEtapa3.png
+    :align: center
 
 O módulo **psycopg2** é uma biblioteca do PostgreSQL para Python. Essa biblioteca permite a conexão e interação com um banco de dados PostgreSQL a partir do Python.
 

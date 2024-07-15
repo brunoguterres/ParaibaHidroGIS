@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>9. Janela de informações &mdash; Documentação ParaibaHidroGIS 0.1</title>
+  <title>10. Próximos Passos &mdash; Documentação ParaibaHidroGIS 0.1</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
@@ -22,8 +22,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
-    <link rel="next" title="10. Códigos Auxiliares" href="10codigosAuxiliares.html" />
-    <link rel="prev" title="8. Representação da seleção" href="8representacaoSelecao.html" /> 
+    <link rel="prev" title="10. Códigos Auxiliares" href="9codigosAuxiliares.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -54,8 +53,12 @@
 <li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a></li>
 <li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">9. Janela de informações</a></li>
-<li class="toctree-l1"><a class="reference internal" href="10codigosAuxiliares.html">10. Códigos Auxiliares</a></li>
+<li class="toctree-l1"><a class="reference internal" href="9codigosAuxiliares.html">10. Códigos Auxiliares</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">10. Próximos Passos</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#melhorias-no-balanco-hidrico">10.1. Melhorias no Balanço Hídrico</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plugin">10.2. Plugin</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -72,9 +75,9 @@
           <div role="navigation" aria-label="Navegação da página">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">9. Janela de informações</li>
+      <li class="breadcrumb-item active">10. Próximos Passos</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/9janelaInformacoes.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
+            <a href="_sources/10proximosPassos.rst.txt" rel="nofollow"> Ver código-fonte da página</a>
       </li>
   </ul>
   <hr/>
@@ -82,22 +85,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="janela-de-informacoes">
-<h1>9. Janela de informações<a class="headerlink" href="#janela-de-informacoes" title="Link para este cabeçalho"></a></h1>
-<p>O fluxograma de processos desta etapa é apresentado a seguir:</p>
-<p>Primeiramente é importado o módulo <strong>psycopg2</strong>.</p>
-<p>É feita a conexão com o banco de dados PostgreSQL usando o <strong>psycopg2</strong>.</p>
-<p>Então é executada uma consulta inicial para obter o código da bacia (cod_otto_bacia) usando consulta. O valor é selecionado a partir da coluna <em>cobacia</em> da tabela <em>ottobacia_selecionada</em>.</p>
-<p>A função <strong>apresenta_informacoes</strong> cria uma janela de mensagem (QMessageBox) para exibir as informações sobre a área selecionada. As informações são passadas através do dicionário <strong>informacoes_selecao</strong>.</p>
-<p>A função <strong>obter_informacoes</strong> inicializa um dicionário <strong>informacoes_selecao</strong> com os valores de cobacia, nome_rio, area_mont, n_trechos_mont, isr_otto, q_cap_mont, disp_acum. Para obter esses valores, são realizadas consultas SQL.</p>
+  <section id="proximos-passos">
+<h1>10. Próximos Passos<a class="headerlink" href="#proximos-passos" title="Link para este cabeçalho"></a></h1>
+<p>Este diretório contém sugestões e atividades para os próximos do projeto.</p>
+<section id="melhorias-no-balanco-hidrico">
+<h2>10.1. Melhorias no Balanço Hídrico<a class="headerlink" href="#melhorias-no-balanco-hidrico" title="Link para este cabeçalho"></a></h2>
+<p><strong>a) Sofisticar:</strong> envolve refinar o código existente.</p>
+<p><strong>b) Otimizar cálculo:</strong> envolve aprimorar o desempenho do código, utilizando banco de dados em nuvem, além de otimizar os algoritmos existentes para melhorar a eficiência computacional.</p>
+<p><strong>c) Janela de informações:</strong> adicionar funcionalidade para apresentar uma janela com as informações de interesse.</p>
+<p><strong>d) Cores:</strong> ainda em questão de refinamento, abrir discussão sobre a escolha de cores para a visualização dos atributos.</p>
+<p><strong>e) Resultados:</strong> exportar os resultados, gerar relatórios dos dados de cenários, tabelas em CSV ou Excel, PDF.</p>
+<p><strong>f) ISR:</strong> ordenar o ISR do menos para o mais crítico.</p>
+</section>
+<section id="plugin">
+<h2>10.2. Plugin<a class="headerlink" href="#plugin" title="Link para este cabeçalho"></a></h2>
+<p>Desenvolvimento de um plugin a partir do código do balanço hídrico. Desenvolver uma interface, incluir funcionalidades adicionais que possam ser úteis.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Rodapé">
-        <a href="8representacaoSelecao.html" class="btn btn-neutral float-left" title="8. Representação da seleção" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
-        <a href="10codigosAuxiliares.html" class="btn btn-neutral float-right" title="10. Códigos Auxiliares" accesskey="n" rel="next">Próximo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="9codigosAuxiliares.html" class="btn btn-neutral float-left" title="10. Códigos Auxiliares" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
     </div>
 
   <hr/>

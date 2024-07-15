@@ -1,9 +1,9 @@
-11. Próximos Passos
+10. Próximos Passos
 ===================
 
 Este diretório contém sugestões e atividades para os próximos do projeto.
 
-11.1. Melhorias no Balanço Hídrico
+10.1. Melhorias no Balanço Hídrico
 ----------------------------------
 
 **a) Sofisticar:** envolve refinar o código existente. 
@@ -16,7 +16,9 @@ Este diretório contém sugestões e atividades para os próximos do projeto.
 
 **e) Resultados:** exportar os resultados, gerar relatórios dos dados de cenários, tabelas em CSV ou Excel, PDF.
 
-11.2. Plugin
+**f) ISR:** ordenar o ISR do menos para o mais crítico.
+
+10.2. Plugin
 -------------
 
 Desenvolvimento de um plugin a partir do código do balanço hídrico. Desenvolver uma interface, incluir funcionalidades adicionais que possam ser úteis.

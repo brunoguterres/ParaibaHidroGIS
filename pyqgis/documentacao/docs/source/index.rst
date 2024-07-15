@@ -21,6 +21,5 @@ Conteúdo
    6representacaoBalanco
    7definirOttobacia
    8representacaoSelecao
-   9janelaInformacoes
-   10codigosAuxiliares
-   11proximosPassos
+   9codigosAuxiliares
+   10proximosPassos
