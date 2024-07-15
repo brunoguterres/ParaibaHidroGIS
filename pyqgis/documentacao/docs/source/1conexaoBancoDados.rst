@@ -15,17 +15,20 @@ O fluxograma de processos desta etapa é apresentado a seguir:
 
 A função **parametros_padrao_bd** define os parâmetros de conexão *padrão* com o banco de dados.
 
-+-------------+-------------+
-| **host**    | localhost   |
-+-------------+-------------+
-| **nome**    | bdg_prh_rpb |
-+-------------+-------------+
-| **usuario** | postgres    |
-+-------------+-------------+
-| **senha**   | cobrape     |
-+-------------+-------------+
-| **porta**   | 5432        |
-+-------------+-------------+
+.. table::
+    :align: center
+    
+    +-------------+-------------+
+    | **host**    | localhost   |
+    +-------------+-------------+
+    | **nome**    | bdg_prh_rpb |
+    +-------------+-------------+
+    | **usuario** | postgres    |
+    +-------------+-------------+
+    | **senha**   | cobrape     |
+    +-------------+-------------+
+    | **porta**   | 5432        |
+    +-------------+-------------+
 
 A variável **parametros_conexao** cria um dicionário que contém parâmetros de conexão padrão (host, nome do banco, usuário, senha, porta e schema) com o banco de dados. 
 

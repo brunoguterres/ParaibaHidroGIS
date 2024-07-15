@@ -15,7 +15,9 @@ release = '0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinxcontrib.mermaid'
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
 ]
 
 templates_path = ['_templates']
@@ -28,3 +30,9 @@ language = 'pt_BR'
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+
+latex_elements = {
+    'papersize': 'a4paper',
+    'pointsize': '10pt',
+    'preamble': '',
+}

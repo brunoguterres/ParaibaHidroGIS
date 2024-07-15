@@ -71,13 +71,16 @@ A simbologia RGBA (Red, Green, Blue, Alpha) é um modelo de cor usado para defin
 
 A intensidade varia de 0 a 255 para todos, sendo que quanto maior o valor, mais próximo da saturação e luminosidade da cor estará aquele componente. Para a transparência, quanto maior o valor, menor é a transparência. Os valores também podem ser normalizados de 0 a 1. O preto é representado pelo 0 em todos os componentes.
 
-+---------------------------------------------+ 
-|**Exemplo**:                                 |
-+=============================================+
-|azul = (0, 0, 1, 1)                          |
-|                                             |
-|vermelho semi-transparente = (1, 0, 0, 0.5)  |
-+---------------------------------------------+
+.. table::
+    :align: center
+
+    +---------------------------------------------+ 
+    |**Exemplo**:                                 |
+    +=============================================+
+    |azul = (0, 0, 1, 1)                          |
+    |                                             |
+    |vermelho semi-transparente = (1, 0, 0, 0.5)  |
+    +---------------------------------------------+
 
 
 2.4.  Carregamento de basemap
