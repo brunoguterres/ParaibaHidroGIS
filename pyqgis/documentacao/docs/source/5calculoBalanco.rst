@@ -1,4 +1,4 @@
-5. Cálculo do balanço hídrico
+5. Cálculo do Balanço Hídrico
 =============================
 
 O fluxograma de processos desta etapa é apresentado a seguir:

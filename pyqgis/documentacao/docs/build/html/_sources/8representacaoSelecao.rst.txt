@@ -1,4 +1,4 @@
-8. Representação da seleção
+8. Representação da Seleção
 ===========================
 
 .. warning::

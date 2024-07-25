@@ -3,7 +3,7 @@
 
 .. warning::
     
-    A última versão do banco é a **versão 8** e deve ser utilizada para execução com a última atualização da aplicação. Isto é importante para que haja compatibilidade e evitar erros de execução difíceis de serem compreendidos pelo usuário. 
+    Atualmente, o aplicativo funciona com o banco na nuvem. Contudo, caso o usuário deseje utilizar um banco local, a última versão do banco é a **versão 8** e deve ser utilizada para execução com a última atualização da aplicação. Isto é importante para que haja compatibilidade e evitar erros de execução difíceis de serem compreendidos pelo usuário. 
 
 O fluxograma de processos desta etapa é apresentado a seguir:
 

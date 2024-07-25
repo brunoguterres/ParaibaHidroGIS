@@ -1,4 +1,4 @@
-4. Preparação de dados para balanço hídrico
+4. Preparação de dados para Balanço Hídrico
 ===========================================
 
 O fluxograma de processos desta etapa é apresentado a seguir:

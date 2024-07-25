@@ -48,11 +48,11 @@
 <li class="toctree-l1"><a class="reference internal" href="1conexaoBancoDados.html">1. Conexão com o Banco de Dados</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2inicializacaoMapa.html">2. Inicialização do Mapa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3processamentoCaptacao.html">3. Processamento de captações</a></li>
-<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para balanço hídrico</a></li>
-<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do balanço hídrico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para Balanço Hídrico</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do Balanço Hídrico</a></li>
 <li class="toctree-l1"><a class="reference internal" href="6representacaoBalanco.html">6. Representação do balanço</a></li>
 <li class="toctree-l1"><a class="reference internal" href="7definirOttobacia.html">7. Seleção da ottobacia</a></li>
-<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a></li>
+<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da Seleção</a></li>
 <li class="toctree-l1"><a class="reference internal" href="9codigosAuxiliares.html">9. Códigos Auxiliares</a></li>
 <li class="toctree-l1"><a class="reference internal" href="10proximosPassos.html">10. Próximos Passos</a></li>
 </ul>
@@ -84,10 +84,27 @@
   <section id="documentacao-do-aplicativo-paraibahidrogis">
 <h1>Documentação do Aplicativo ParaibaHidroGIS<a class="headerlink" href="#documentacao-do-aplicativo-paraibahidrogis" title="Link para este cabeçalho"></a></h1>
 <p><strong>Paraiba HidroGIS</strong> é um aplicativo desenvolvido para análise de bacias hidrográficas desenvolvido no contexto do Plano de Recursos Hídricos da Bacia Hidrográfia do Rio Paraíba (PRH-RPB).</p>
-<div class="admonition note">
-<p class="admonition-title">Nota</p>
-<p>Este projeto está em desenvolvimento ativo.</p>
-</div>
+<section id="resumo-da-ferramenta">
+<h2>Resumo da ferramenta<a class="headerlink" href="#resumo-da-ferramenta" title="Link para este cabeçalho"></a></h2>
+<p>Esta ferramenta está sendo desenvolvida com o propósito de servir para o auxílio nos trabalhos de projetos de Recursos Hídricos, sendo um facilitador nos procedimentos de cálculo do balanço hídrico.</p>
+<p>O desenvolvimento é realizado no contexto do projeto do Plano de Recursos Hídricos da Bacia do Rio Paraíba (PRH-BPB).</p>
+<p>Baseado na liguagem de programação python incorporada ao software QGIS.</p>
+</section>
+<section id="objetivos-da-documentacao">
+<h2>Objetivos da documentação<a class="headerlink" href="#objetivos-da-documentacao" title="Link para este cabeçalho"></a></h2>
+<p>Esta documentação tem por objetivo primordial orientar a equipe de desenvolvimento de modo a detalhar todas as etapas e processos de execução da ferramenta. Deve ser utilizada também como material de consulta para utilização por profissionais envovidos nas etapas de testes e validação de suas funcionalidades.</p>
+</section>
+<section id="estrutura">
+<h2>Estrutura<a class="headerlink" href="#estrutura" title="Link para este cabeçalho"></a></h2>
+<p>A estrutura funcional da ferramenta foi criada de forma hierarquica de modo a propiciar melhor entendimento sobre todo os detalhes das etapas envolvidas no processo de execução da ferramenta. Para isto, foram definidos os conceitos de Etapas, Processos e Funções.</p>
+<p><strong>ETAPAS:</strong> O primeiro nível de organização estrutural. Neste nível abstrai-se qualquer tipo de detalhamento, sendo apenas descritos de forma geral o processo do início ao fim.</p>
+<p><strong>PROCESSOS:</strong> O segundo nível de organização estrutural. Neste nível apresenta-se um detalhamento maior das etapas, a fim de que se possa diminuir o nível de abastração e identificar melhor as funcionalidades.</p>
+<p><strong>FUNÇÕES:</strong> O terceiro nível de organização estrutural. Neste nível são detalhadas todas as funções executadas em cada processo, de modo individual. É o nível com menor grau de abstração, sendo possível identificar todas as estruturas funcionais da ferramenta.</p>
+</section>
+<section id="fluxograma-de-etapas">
+<h2>Fluxograma de etapas<a class="headerlink" href="#fluxograma-de-etapas" title="Link para este cabeçalho"></a></h2>
+<img alt="_images/Diagrama.png" class="align-center" src="_images/Diagrama.png" />
+</section>
 <section id="conteudo">
 <h2>Conteúdo<a class="headerlink" href="#conteudo" title="Link para este cabeçalho"></a></h2>
 <div class="toctree-wrapper compound">
@@ -115,11 +132,11 @@
 <li class="toctree-l2"><a class="reference internal" href="3processamentoCaptacao.html#processamento-dos-dados-de-captacao">3.1. Processamento dos dados de captação</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para balanço hídrico</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="4preparacaoDadosBalanco.html">4. Preparação de dados para Balanço Hídrico</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="4preparacaoDadosBalanco.html#uniao-entre-disponibilidade-hidrica-e-captacoes">4.1 União entre disponibilidade hídrica e captações</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do balanço hídrico</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="5calculoBalanco.html">5. Cálculo do Balanço Hídrico</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="5calculoBalanco.html#ordenar-tabela-consolidada">5.1 Ordenar tabela consolidada</a></li>
 <li class="toctree-l2"><a class="reference internal" href="5calculoBalanco.html#id1">5.2 Calculo do Balanço Hídrico</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="5calculoBalanco.html#salvar-resultados">5.2.1 Salvar resultados</a></li>
@@ -132,7 +149,7 @@
 <li class="toctree-l2"><a class="reference internal" href="7definirOttobacia.html#selecao-de-codigo-otto-da-ottobacia">7.1. Seleção de código otto da ottobacia</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da seleção</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="8representacaoSelecao.html">8. Representação da Seleção</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="8representacaoSelecao.html#carregamento-da-camada-de-bacia-montante">8.1. Carregamento da camada de bacia montante</a></li>
 <li class="toctree-l2"><a class="reference internal" href="8representacaoSelecao.html#selecao-dos-rios-a-jusante">8.2. Seleção dos rios a jusante</a></li>
 </ul>
